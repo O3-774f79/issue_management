@@ -1,7 +1,9 @@
 import React from 'react';
 import TableIssue from '../../component/table';
-import {Tag, Divider, Icon} from 'antd';
+import {Tag, Button, Icon} from 'antd';
+import Test from '../../component/testdrawer';
 const Issue = () => {
+  const [show, setShow] = React.useState (false);
   const [data, setData] = React.useState ([
     {
       key: '1',
@@ -80,7 +82,13 @@ const Issue = () => {
     },
   ]);
   return (
+    <React.Fragment>
+      <Button type="primary" onClick={() => setShow (true)}>
+        Open
+      </Button>
       <TableIssue columns={column} data={data} />
+      <Test visible={show} onClose={() => setShow (false)} />
+    </React.Fragment>
   );
 };
 
