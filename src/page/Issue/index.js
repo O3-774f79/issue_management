@@ -1,12 +1,11 @@
 import React from 'react';
 import TableIssue from '../../component/table';
-import Ddraw1 from './drawer'
 
-import { Tag, Divider, Icon, Button, Drawer } from 'antd';
-
-
-
+import { Tag, Button, Icon } from 'antd';
+import Drawerplate from '../../component/drawerplate/index';
 const Issue = () => {
+  // const [dis, setDis] = React.useState(false);
+  const [show, setShow] = React.useState(false);
   const [data, setData] = React.useState([
     {
       key: '1',
@@ -30,7 +29,7 @@ const Issue = () => {
       status: 'close',
     },
   ]);
-  
+
   const [column, setColumn] = React.useState([
     {
       title: 'Issue_title',
@@ -75,8 +74,8 @@ const Issue = () => {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
-        <span style={{ cursor: 'pointer' }}>
-          <Icon type="search" height="50em" width="50em" />
+        <span style={{ cursor: 'pointer' }} onClick={() => setShow(true)}>
+          <Icon type="search" height="50em" width="50em"  />
           {' '}
           display
           {' '}
@@ -88,9 +87,14 @@ const Issue = () => {
 
 
   return (
-    [<TableIssue columns={column} data={data} />
-    ,<Ddraw1 />]
-    
+
+    <React.Fragment>
+      <Button type="primary" onClick={() => setShow(true)}>
+      <Icon type="plus-circle" />Add
+      </Button>
+      <TableIssue columns={column} data={data} />
+      <Drawerplate visible={show} onClose={() => setShow(false)} />
+    </React.Fragment>
   );
 };
 

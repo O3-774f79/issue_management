@@ -5,6 +5,7 @@ import {AuthContext} from './context/auth';
 import LayoutTemplate from './component/layout';
 import Login from './page/Login';
 import Issue from './page/Issue';
+import ChangePass from './page/ChangePass';
 
 function App (props) {
   const [authTokens, setAuthTokens] = useState ();
@@ -25,6 +26,7 @@ function App (props) {
           
           <Redirect to ='/login' />
           <PrivateRoute path="/issue" component={Issue} />
+          <PrivateRoute path="/ChangePass" component={ChangePass} />
             {/* <Route path="/issue" component={Issue} /> */}
           </LayoutTemplate>
         </div>

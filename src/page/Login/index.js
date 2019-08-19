@@ -12,7 +12,7 @@ import {
   Card,
   Col,
   Row,
-  Alert,
+  
 } from 'antd'
 
 const Login = props => {
