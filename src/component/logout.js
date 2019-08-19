@@ -1,12 +1,12 @@
-import React from "react";
-import { Button } from "../components/AuthForms";
-import { useAuth } from "../context/auth";
+import React from 'react';
+import {Button} from '../components/AuthForms';
+import {useAuth} from '../context/auth';
 
-function Logout(props) {
-  const { setAuthTokens } = useAuth();
+function LogoutTab (props) {
+  const {setAuthTokens} = useAuth ();
 
-  function logOut() {
-    setAuthTokens();
+  function logOut () {
+    setAuthTokens ();
   }
 
   return (
@@ -17,4 +17,4 @@ function Logout(props) {
   );
 }
 
-export default Logout;
+export default LogoutTab;
