@@ -1,8 +1,13 @@
 import React from 'react';
 import TableIssue from '../../component/table';
-import {Tag, Divider, Icon} from 'antd';
+import Ddraw1 from './drawer'
+
+import { Tag, Divider, Icon, Button, Drawer } from 'antd';
+
+
+
 const Issue = () => {
-  const [data, setData] = React.useState ([
+  const [data, setData] = React.useState([
     {
       key: '1',
       issue_title: 'test test',
@@ -25,7 +30,8 @@ const Issue = () => {
       status: 'close',
     },
   ]);
-  const [column, setColumn] = React.useState ([
+  
+  const [column, setColumn] = React.useState([
     {
       title: 'Issue_title',
       dataIndex: 'issue_title',
@@ -45,21 +51,21 @@ const Issue = () => {
           case 'waitting':
             return (
               <Tag color="yellow" key={status}>
-                {status.toUpperCase ()}
+                {status.toUpperCase()}
               </Tag>
             );
             break;
           case 'open':
             return (
               <Tag color="red" key={status}>
-                {status.toUpperCase ()}
+                {status.toUpperCase()}
               </Tag>
             );
             break;
           case 'close':
             return (
               <Tag color="blue" key={status}>
-                {status.toUpperCase ()}
+                {status.toUpperCase()}
               </Tag>
             );
         }
@@ -69,7 +75,7 @@ const Issue = () => {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
-        <span style={{cursor: 'pointer'}}>
+        <span style={{ cursor: 'pointer' }}>
           <Icon type="search" height="50em" width="50em" />
           {' '}
           display
@@ -79,8 +85,12 @@ const Issue = () => {
       ),
     },
   ]);
+
+
   return (
-      <TableIssue columns={column} data={data} />
+    [<TableIssue columns={column} data={data} />
+    ,<Ddraw1 />]
+    
   );
 };
 

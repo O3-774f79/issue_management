@@ -10,7 +10,8 @@ function PrivateRoute({component: Component, ...rest}) {
       {...rest}
       render={props =>
         authTokens
-          ? <LayoutTemplate><Component {...props} /></LayoutTemplate>
+          // ? <LayoutTemplate><Component {...props} /></LayoutTemplate>
+          ? <Component {...props} />
           : <Redirect
               to={{pathname: '/login', state: {referer: props.location}}}
             />}
