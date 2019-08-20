@@ -10,8 +10,9 @@ import {
 
 } from 'antd';
 
+
 const index = () => {
-    
+
     return (
         <div className="login-box">
             <Row type="flex" align="middle">
@@ -26,8 +27,8 @@ const index = () => {
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Old password"
                                     name="password"
-                                    // value={this.state.UserInput}
-                                    // onChange={this.UserChange}
+                                // value={this.state.UserInput}
+                                // onChange={this.UserChange}
 
                                 />
                             </Form.Item>
@@ -38,8 +39,8 @@ const index = () => {
                                     type="password"
                                     placeholder="Password"
                                     name="password"
-                                    // value={this.state.PassInput}
-                                    // onChange={this.PassChange}
+                                // value={this.state.PassInput}
+                                // onChange={this.PassChange}
 
 
                                 />
@@ -51,22 +52,33 @@ const index = () => {
                                     type="password"
                                     placeholder="Confirm Password"
                                     name="Conpassword"
-                                    // value={this.state.PassInput}
-                                    // onChange={this.PassChange}
+                                // value={this.state.PassInput}
+                                // onChange={this.PassChange}
 
 
                                 />
                             </Form.Item>
                             <Form.Item>
-                                <Button type="primary"
-                                    htmlType="submit"
-                                    className="login-form-button"
+                                <Col>
+                                    <Button type="primary"
+                                        htmlType="submit"
+                                        className="login-form-button"
                                     // onClick={this.handleSubmit}
 
-                                >
-                                    Submit
+                                    >
+                                        Submit
                                 </Button>
+                                </Col>
+                                <Col>
+                                    <Button type="danger"
+                                        htmlType="cancel"
+                                        className="login-form-button"
+                                    // onClick={this.handleSubmit}
 
+                                    >
+                                        Cancel
+                                </Button>
+                                </Col>
                             </Form.Item>
                         </Form>
                     </Card>

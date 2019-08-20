@@ -24,7 +24,7 @@ const Login = props => {
   const referer = '/issue';
   const _handleSubmit = () => {
     axios
-      .post('https://digitalsignature.herokuapp.com/api/Login', {
+      .post('/Login', {
         userName,
         password,
       })

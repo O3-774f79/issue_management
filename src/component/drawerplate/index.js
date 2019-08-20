@@ -12,7 +12,10 @@ import {
   Form,
 } from 'antd';
 
+import Axios from 'axios';
+
 import moment from 'moment';
+
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -39,12 +42,21 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
   </div>
 );
 class Drawerplate extends React.Component {
+
   state = {
-    dis: false,
+    disabledStat: false,
+    hiddenStat: false,
     visible: false,
     comments: [],
     submitting: false,
     value: '',
+    StateticketName: '',
+    Statedescription: '',
+    StatepriorityId: 0,
+    Statestatus: '',
+
+
+
   };
 
   onClose = () => {
@@ -52,6 +64,52 @@ class Drawerplate extends React.Component {
       visible: false,
     });
   };
+
+  openticket = (event) => {
+    event.preventDefault();
+    Axios.post(
+      '/Ticket/OpenTicket', {
+
+        ticketName: this.state.StateticketName,
+        description: this.state.Statedescription,
+        priorityId: this.state.StatepriorityId,
+        status: this.state.Statestatus,
+
+      }
+    ).then((ople) => {
+      console.log("Success to Open ticket")
+      console.log(this.state.Statedescription)
+
+    }).catch(error => {
+      console.log("error Open ticket".error)
+    })
+
+  }
+
+  onChangeSTicketName = e => {
+    this.setState({
+      StateticketName: e.target.value
+    })
+
+  }
+  onChangeSDescription = e => {
+    this.setState({
+      Statedescription: e.target.value
+    })
+
+  }
+  onChangeSPriorityID = value => {
+    this.setState({
+      StatepriorityId: parseInt(value)
+    })
+
+  }
+  onChangeSStatus = value => {
+    this.setState({
+      Statestatus: value
+    })
+
+  }
 
   handleSubmit = () => {
     if (!this.state.value) {
@@ -101,7 +159,7 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Type" >
 
-                  <Select defaultValue="K2"  >
+                  <Select defaultValue="K2" disabled={false} >
                     <Option value="1">K2</Option>
                     <Option value="2">F/O</Option>
                   </Select>
@@ -111,29 +169,34 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Priority">
 
 
-                  <Select defaultValue="Low" disabled={false} >
+                  <Select defaultValue="Low" disabled={false}
+                    onChange={this.onChangeSPriorityID}
+                  >
                     <Option value="1">Low</Option>
                     <Option value="2">Medium</Option>
-                    <Option value="2">High</Option>
+                    <Option value="3">High</Option>
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Name" >
+                <Form.Item layout="horizontal" label="TicketName" >
 
-                  <Input type='text' name='Inputname' disabled={false} />
+                  <Input type='text' name='TicketName' disabled={false}
+                    onChange={this.onChangeSTicketName}
+                    value={this.state.StateticketName}
+                  />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item layout="horizontal" label="Tel." >
 
-                  <Input type='text' name='InputTel' />
-                </Form.Item>
-              </Col>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Over" >
-
-                  <Input type='text' name='InputOver' />
+                <Form.Item layout="horizontal" label="Status" >
+                  <Select defaultValue="Status" disabled={false}
+                    onChange={this.onChangeSStatus}
+                  >
+                    <Option value="OPEN">Open</Option>
+                    <Option value="WAITING">Waiting</Option>
+                    <Option value="CLOSE">Closed</Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -142,45 +205,65 @@ class Drawerplate extends React.Component {
                   <Input type='text' name='Inputother' />
                 </Form.Item>
               </Col>
-              <Col span={24}>
-                <Form.Item>
+              <Col span={12}>
+                <Form.Item layout="horizontal" label="" >
 
-                  {comments.length > 0 && <CommentList comments={comments} />}
-                  <Comment
-                    avatar={
-                      <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt="Han Solo"
-                      />
-                    }
-                    content={
-                      <Editor
-                        onChange={this.handleChange}
-                        onSubmit={this.handleSubmit}
-                        submitting={submitting}
-                        value={value}
-                      />
-                    }
+                </Form.Item>
+              </Col>
+
+              <Col spane={24}>
+                <Form.Item layout="horizontal" label="Description">
+                  <TextArea rows={4} type='text' name='Description'
+                    onChange={this.onChangeSDescription}
+                    value={this.state.Statedescription}
                   />
                 </Form.Item>
-                <Col span={4}></Col>
-                <Col span={4}></Col>
-                <Col span={4}></Col>
-                <Col span={4}></Col>
-                <Col span={4}></Col>
-                <Col span={4}>
-                  <Form.Item>
-                    <Button type="primary"
-                      htmlType="submit"
-                      className="login-form-button"
-                      onClick={this.handleSubmit}
+              </Col>
 
-                    >
-                      Submit
+
+
+              <Col span={24}>
+                <div hidden={this.state.hiddenStat}  >
+                  <Form.Item>
+
+                    {comments.length > 0 && <CommentList comments={comments} />}
+                    <Comment
+                      avatar={
+                        <Avatar
+                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          alt="Han Solo"
+                        />
+                      }
+                      content={
+                        <Editor
+                          onChange={this.handleChange}
+                          onSubmit={this.handleSubmit}
+                          submitting={submitting}
+                          value={value}
+                        />
+                      }
+                    />
+                  </Form.Item>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}>
+                    <Form.Item>
+                      <Button type="primary"
+                        htmlType="submit"
+                        className="login-form-button"
+                        onClick={this.openticket}
+
+                      >
+                        Submit
               </Button>
 
-                  </Form.Item>
-                </Col>
+                    </Form.Item>
+
+                  </Col>
+                </div>
               </Col>
             </Row>
           </Form>
