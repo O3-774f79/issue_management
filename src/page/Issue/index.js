@@ -52,6 +52,11 @@ const Issue = () => {
   const [show, setShow] = React.useState(false);
   
   
+  const onclickDisplay = () => {
+    
+  }
+
+
   // const [data, setData] = React.useState([
   //   {
   //     key: '1',
@@ -85,7 +90,7 @@ const Issue = () => {
       title: 'ticketName',
       dataIndex: 'ticketName',
       
-      width: '20%',
+      width: '10%',
       editable: true,
     },
     {
@@ -102,7 +107,7 @@ const Issue = () => {
     {
       title: 'Priority',
       dataIndex: 'priorityId',
-      width: '10%',
+      width: '5%',
     },
     {
       title: 'Status',  
@@ -137,8 +142,9 @@ const Issue = () => {
     {
       title: 'Action',
       key: 'action',
+      width:'15%',
       render: (text, record) => (
-        <span style={{ cursor: 'pointer' }} onClick={() => [setShow(true),setDis(true),setHid(false),console.log({dis})] }>
+        <span style={{ cursor: 'pointer' }} onClick={() => [setShow(true),setDis(true),setHid(false)] }>
           <Icon type="search" height="50em" width="50em"  />
           {' '}
           display
@@ -153,7 +159,7 @@ const Issue = () => {
   return (
 
     <React.Fragment>
-      <Button type="primary" onClick={() => [setShow(true),setDis(false),setHid(true),console.log({dis})]} >
+      <Button type="primary" onClick={() => [setShow(true),setDis(false),setHid(true)]} >
       <Icon type="plus-circle" />Add
       </Button>
       <TableIssue columns={column} data={data} />

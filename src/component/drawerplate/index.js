@@ -80,6 +80,18 @@ class Drawerplate extends React.Component {
       console.log("Success to Open ticket")
       console.log(this.state.Statedescription)
 
+      //  Maybe not better way to do like this
+      this.setState({
+        StateticketName: '',
+        Statedescription: '',
+        StatepriorityId: 0,
+        Statestatus: '',
+
+      })
+      event.preventDefault();
+      //  
+
+
     }).catch(error => {
       console.log("error Open ticket".error)
     })
@@ -154,7 +166,9 @@ class Drawerplate extends React.Component {
           visible={this.props.visible}
           width='50%'
         >
-          <Form>
+          <Form
+            onSubmit={this.openticket}
+          >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Type" >
@@ -190,7 +204,7 @@ class Drawerplate extends React.Component {
 
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Status" >
-                  <Select defaultValue="Status" disabled={false}
+                  <Select defaultValue="OPEN" disabled={false}
                     onChange={this.onChangeSStatus}
                   >
                     <Option value="OPEN">Open</Option>
@@ -205,12 +219,12 @@ class Drawerplate extends React.Component {
                   <Input type='text' name='Inputother' />
                 </Form.Item>
               </Col>
-             <Col span={12}>
-             </Col>
+              <Col span={12}>
+              </Col>
 
               <Col span={24}>
                 <Form.Item layout="horizontal" label="Description" >
-                  <TextArea rows={4} type='text' name='Description' 
+                  <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
                     value={this.state.Statedescription}
                   />
@@ -224,7 +238,7 @@ class Drawerplate extends React.Component {
                   <Form.Item>
 
                     {comments.length > 0 && <CommentList comments={comments} />}
-                    <Comment hidden={this.props.hidStat} 
+                    <Comment hidden={this.props.hidStat}
                       avatar={
                         <Avatar
                           src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -251,7 +265,7 @@ class Drawerplate extends React.Component {
                       <Button type="primary"
                         htmlType="submit"
                         className="login-form-button"
-                        onClick={this.openticket}
+                      // onClick={this.openticket}
 
                       >
                         Submit
