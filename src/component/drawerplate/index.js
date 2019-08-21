@@ -159,7 +159,7 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Type" >
 
-                  <Select defaultValue="K2" disabled={false} >
+                  <Select defaultValue="K2" disabled={this.props.disStat} >
                     <Option value="1">K2</Option>
                     <Option value="2">F/O</Option>
                   </Select>
@@ -169,7 +169,7 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Priority">
 
 
-                  <Select defaultValue="Low" disabled={false}
+                  <Select defaultValue="Low" disabled={this.props.disStat}
                     onChange={this.onChangeSPriorityID}
                   >
                     <Option value="1">Low</Option>
@@ -205,15 +205,12 @@ class Drawerplate extends React.Component {
                   <Input type='text' name='Inputother' />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item layout="horizontal" label="" >
+             <Col span={12}>
+             </Col>
 
-                </Form.Item>
-              </Col>
-
-              <Col spane={24}>
-                <Form.Item layout="horizontal" label="Description">
-                  <TextArea rows={4} type='text' name='Description'
+              <Col span={24}>
+                <Form.Item layout="horizontal" label="Description" >
+                  <TextArea rows={4} type='text' name='Description' 
                     onChange={this.onChangeSDescription}
                     value={this.state.Statedescription}
                   />
@@ -223,11 +220,11 @@ class Drawerplate extends React.Component {
 
 
               <Col span={24}>
-                <div hidden={this.state.hiddenStat}  >
+                <div  >
                   <Form.Item>
 
                     {comments.length > 0 && <CommentList comments={comments} />}
-                    <Comment
+                    <Comment hidden={this.props.hidStat} 
                       avatar={
                         <Avatar
                           src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"

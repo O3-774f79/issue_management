@@ -25,9 +25,7 @@ import Axios from 'axios';
 
 const Issue = () => {
 
-let props = {
-
-}
+  
 
   const [data, setData] = React.useState();
   useEffect(() => {
@@ -49,11 +47,11 @@ let props = {
   
 
 
-  // const [dis, setDis] = React.useState(false);
+  const [dis, setDis] = React.useState(false);
+  const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
   
-
-
+  
   // const [data, setData] = React.useState([
   //   {
   //     key: '1',
@@ -87,26 +85,29 @@ let props = {
       title: 'ticketName',
       dataIndex: 'ticketName',
       
-      width: '40%',
+      width: '20%',
       editable: true,
     },
     {
       title: 'ticketNo',
       dataIndex: 'ticketNo',
-      
+      width: '20%',
       editable: true,
     },
     {
       title: 'description',
       dataIndex: 'description',
+      width: '40%',
     },
     {
       title: 'Priority',
       dataIndex: 'priorityId',
+      width: '10%',
     },
     {
       title: 'Status',  
       key: 'status',
+      width: '10%',
       dataIndex: 'status',
       render: status => {
         switch (status) {
@@ -137,7 +138,7 @@ let props = {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
-        <span style={{ cursor: 'pointer' }} onClick={() => setShow(true)}>
+        <span style={{ cursor: 'pointer' }} onClick={() => [setShow(true),setDis(true),setHid(false),console.log({dis})] }>
           <Icon type="search" height="50em" width="50em"  />
           {' '}
           display
@@ -152,11 +153,14 @@ let props = {
   return (
 
     <React.Fragment>
-      <Button type="primary" onClick={() => setShow(true)}>
+      <Button type="primary" onClick={() => [setShow(true),setDis(false),setHid(true),console.log({dis})]} >
       <Icon type="plus-circle" />Add
       </Button>
       <TableIssue columns={column} data={data} />
-      <Drawerplate visible={show} onClose={() => setShow(false)} />
+      <Drawerplate visible={show} onClose={() => setShow(false)}  
+      disStat={dis} 
+      hidStat={hid}
+      />
     </React.Fragment>
   );
 };
