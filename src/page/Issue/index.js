@@ -4,59 +4,52 @@ import TableIssue from '../../component/table';
 import { Tag, Button, Icon } from 'antd';
 import Drawerplate from '../../component/drawerplate/index';
 import Axios from 'axios';
-
-// const componentDidMount = () =>{
-//         Axios.get(
-//           'https://ticket-issue.herokuapp.com/api/Ticket/GetAllTicket',{
-
-//           }
-//         )
-//         .then((result) =>{
-//          this.setState({data: result.data}) 
-//         }
-//         )
-//         .catch(error => {
-//            console.log("error alert" .error)
-//         })
-// }
-
-
-
-
+import {useAuth} from '../../context/auth';
 const Issue = () => {
-
-  
-
-  const [data, setData] = React.useState();
-  useEffect(() => {
-    Axios.get(
-      '/Ticket/GetAllTicket',{
-  
-      }
-    )
-    .then((result) =>{
-    setData(result.data);
-     console.log(data)
-    }
-    )
-    .catch(error => {
-       console.log("error alert" .error)
-    })
-
-  },[])
-  
-
-
+  const {authTokens} = useAuth ();
+  console.log('aa',authTokens)
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
-  
-  
-  const onclickDisplay = () => {
-    
+  const [rowid, setRID] = React.useState(0);
+  const [tickname, setTickname] = React.useState('');
+  const [des, setDes] = React.useState('');
+  const [prio, setPrio] = React.useState(0);
+  const [stat, setStat] = React.useState('');
+  const [tickno, setTickNo] = React.useState('');
+  const [priorityList, setPriorityList] = React.useState([])
+  const [data, setData] = React.useState();
+  const [tableload, setLoadTable] = React.useState(true)
+
+  useEffect(() => {
+    Axios.get(
+      '/Ticket/GetAllTicket', {
+      }
+    )
+      .then((result) => {
+        setData(result.data);
+        console.log(data)
+      })
+      .catch(error => {
+        console.log("error alert".error)
+      })
+  }, [])
+  function onClickDisplay(record) {
+    setShow(true);
+    setDis(true);
+    setHid(false);
+    setRID(rowid + record.id);
+    setTickname(record.ticketName);
+    setDes(record.description);
+    setPrio(prio + record.priorityId);
+    setStat(record.status);
+    setTickNo(record.ticketNo);
+    console.log(record);
+    console.log(record.id);
+    console.log(record.priorityId);
+    console.log(prio);
+    console.log(rowid);
   }
-
-
   // const [data, setData] = React.useState([
   //   {
   //     key: '1',
@@ -89,7 +82,7 @@ const Issue = () => {
     {
       title: 'ticketName',
       dataIndex: 'ticketName',
-      
+
       width: '10%',
       editable: true,
     },
@@ -110,7 +103,7 @@ const Issue = () => {
       width: '5%',
     },
     {
-      title: 'Status',  
+      title: 'Status',
       key: 'status',
       width: '10%',
       dataIndex: 'status',
@@ -142,30 +135,39 @@ const Issue = () => {
     {
       title: 'Action',
       key: 'action',
-      width:'15%',
+      width: '15%',
       render: (text, record) => (
-        <span style={{ cursor: 'pointer' }} onClick={() => [setShow(true),setDis(true),setHid(false)] }>
-          <Icon type="search" height="50em" width="50em"  />
+        <span style={{ cursor: 'pointer' }}
+          // onClick={() => [setShow(true),setDis(true),setHid(false)] }>
+          onClick={() => onClickDisplay(record)}>
+          <Icon type="search" height="50em" width="50em" />
           {' '}
           display
           {' '}
-          {record.name}
+          {record.description}
         </span>
       ),
     },
   ]);
 
 
-  return (
 
+
+  return (
     <React.Fragment>
-      <Button type="primary" onClick={() => [setShow(true),setDis(false),setHid(true)]} >
-      <Icon type="plus-circle" />Add
+      <Button type="primary" onClick={() => [setShow(true), setDis(false), setHid(true)]} >
+        <Icon type="plus-circle" />Add
       </Button>
-      <TableIssue columns={column} data={data} />
-      <Drawerplate visible={show} onClose={() => setShow(false)}  
-      disStat={dis} 
-      hidStat={hid}
+      <TableIssue columns={column} data={data} loading={tableload} />
+      <Drawerplate visible={show} onClose={() => setShow(false)}
+        disStat={dis}
+        hidStat={hid}
+        rowStat={rowid}
+        desStat={des}
+        ticknStat={tickname}
+        prioStat={prio}
+        statStat={stat}
+        tickNoStat={tickno}
       />
     </React.Fragment>
   );

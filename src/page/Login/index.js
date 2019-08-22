@@ -74,7 +74,7 @@ const Login = props => {
               <Button onClick={() => _handleSubmit()}>login</Button>
               </Form.Item>
               <Form.Item>
-              <Link to="/signup">Don't have an account?</Link>
+              <Link to="/register">Don't have an account?</Link>
               {isError && <div>The username or password provided were incorrect!</div>}
               </Form.Item>
               </Form>

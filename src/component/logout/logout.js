@@ -3,8 +3,9 @@ import {BrowserRouter as Router, Link, Route, Redirect} from 'react-router-dom';
 import {Menu, Icon, Dropdown, Avatar, Button} from 'antd';
 import {useAuth} from '../../context/auth';
 const LogoutTab = props => {
-  const {setAuthTokens} = useAuth ();
-  
+  const {setAuthTokens,authTokens} = useAuth ();
+  console.log(`het`,setAuthTokens)
+  console.log('checkckckck',authTokens)
   function logOut () {
     setAuthTokens ();
   }
@@ -49,11 +50,11 @@ const LogoutTab = props => {
               color: '#000',
               fontSize: '15px',
               marginRight: 5,
-              paddign: 5,
+              paddign: 10,
             }}
           >
             <Avatar size={30} icon="user" style={{marginRight: 5}} />
-            {props.user || 'user test111111111111111111'}
+            {authTokens.firstNameTh}
           </span>
         </Button>
       </Dropdown>

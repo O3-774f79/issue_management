@@ -28,10 +28,9 @@ const index = () => {
                             <Form.Item>
 
                                 <Input
-                                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                    type="text"
-                                    placeholder="Email"
-                                    name="email"
+                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                    placeholder="Old password"
+                                    name="password"
                                 // value={this.state.UserInput}
                                 // onChange={this.UserChange}
 
@@ -40,10 +39,10 @@ const index = () => {
                             <Form.Item>
 
                                 <Input
-                                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
-                                    type="text"
-                                    placeholder="First name"
-                                    name="firstname"
+                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
+                                    type="password"
+                                    placeholder="Password"
+                                    name="password"
                                 // value={this.state.PassInput}
                                 // onChange={this.PassChange}
 
@@ -53,17 +52,31 @@ const index = () => {
                             <Form.Item>
 
                                 <Input
-                                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
-                                    type="text"
-                                    placeholder="Last name"
-                                    name="lastname"
+                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                    name="Conpassword"
                                 // value={this.state.PassInput}
                                 // onChange={this.PassChange}
 
 
                                 />
                             </Form.Item>
-                       
+                            <Form.Item>
+
+                                <Select 
+                                
+                                name='roleSel' 
+                                placeholder="Select role"
+                                // defaultValue="User"
+                                // disabled={this.props.disStat}
+                                // onChange={this.onChangeSPriorityID}
+                                >
+                                    <Option value="1">User</Option>
+                                    <Option value="2">Manager</Option>
+                                    <Option value="3">Admin</Option>
+                                </Select>
+                            </Form.Item>
                             <Form.Item>
                                 <Col>
                                     <Button type="primary"

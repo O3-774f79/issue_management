@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
   Button,
@@ -19,6 +19,7 @@ import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
+
 
 const CommentList = ({ comments }) => (
   <List
@@ -50,14 +51,17 @@ class Drawerplate extends React.Component {
     comments: [],
     submitting: false,
     value: '',
+    StateID: '',
     StateticketName: '',
     Statedescription: '',
     StatepriorityId: 0,
     Statestatus: '',
+    Priovalue: '',
 
 
 
   };
+
 
   onClose = () => {
     this.setState({
@@ -65,38 +69,68 @@ class Drawerplate extends React.Component {
     });
   };
 
-  openticket = (event) => {
+  handleOnSubmit = (event) => {
     event.preventDefault();
-    Axios.post(
-      '/Ticket/OpenTicket', {
+    if (this.props.disStat === false) {
+      return (
+        Axios.post(
+          '/Ticket/OpenTicket', {
 
-        ticketName: this.state.StateticketName,
-        description: this.state.Statedescription,
-        priorityId: this.state.StatepriorityId,
-        status: this.state.Statestatus,
+            ticketName: this.state.StateticketName,
+            description: this.state.Statedescription,
+            priorityId: this.state.StatepriorityId,
+            status: this.state.Statestatus,
 
-      }
-    ).then((ople) => {
-      console.log("Success to Open ticket")
-      console.log(this.state.Statedescription)
+          }
+        ).then((ople) => {
+          console.log("Success to Open ticket")
+          console.log(this.state.Statedescription)
 
-      //  Maybe not better way to do like this
-      this.setState({
-        StateticketName: '',
-        Statedescription: '',
-        StatepriorityId: 0,
-        Statestatus: '',
+          //  Maybe not better way to do like this
+          this.setState({
+            StateticketName: '',
+            Statedescription: '',
+            StatepriorityId: 0,
+            Statestatus: '',
 
-      })
-      event.preventDefault();
-      //  
+          })
+          event.preventDefault();
+          //  
 
 
-    }).catch(error => {
-      console.log("error Open ticket".error)
-    })
+        }).catch(error => {
+          console.log("error Open ticket".error)
+        })
 
+      )
+    } else {
+      return (
+        console.log("Else"),
+        Axios.post(
+          '/Ticket/UpdateTicket', {
+            id: 0,
+            ticketName: this.state.StateticketName,
+            description: this.state.Statedescription,
+            priorityId: this.state.StatepriorityId,
+            status: this.state.Statestatus,
+            comments: '',
+          }
+        ).then((ople) => {
+          console.log("Success to Update ticket")
+          console.log(this.state.Statedescription)
+
+
+
+
+        }).catch(error => {
+          console.log("error Update ticket".error)
+        })
+
+
+      )
+    }
   }
+
 
   onChangeSTicketName = e => {
     this.setState({
@@ -167,13 +201,13 @@ class Drawerplate extends React.Component {
           width='50%'
         >
           <Form
-            onSubmit={this.openticket}
+            onSubmit={this.handleOnSubmit}
           >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Type" >
 
-                  <Select defaultValue="K2" disabled={this.props.disStat} >
+                  <Select name='typeSel' defaultValue="K2" disabled={this.props.disStat} >
                     <Option value="1">K2</Option>
                     <Option value="2">F/O</Option>
                   </Select>
@@ -183,13 +217,27 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Priority">
 
 
-                  <Select defaultValue="Low" disabled={this.props.disStat}
+                  <Select
+                    name='prioritySel'
+                    placeholder="Select Priority"
+                    // defaultValue="Low" 
+                    disabled={this.props.disStat}
                     onChange={this.onChangeSPriorityID}
+                    value={this.props.prioStat}
                   >
-                    <Option value="1">Low</Option>
-                    <Option value="2">Medium</Option>
-                    <Option value="3">High</Option>
+                    <Option value="0">Low</Option>
+                    <Option value="1">Medium</Option>
+                    <Option value="2">High</Option>
                   </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item layout="horizontal" label="Ticket No." >
+
+                  <Input type='text' name='TicketNo' disabled={this.props.disStat}
+                    value={this.props.tickNoStat}
+                  // value={this.state.StateticketName}
+                  />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -197,15 +245,20 @@ class Drawerplate extends React.Component {
 
                   <Input type='text' name='TicketName' disabled={false}
                     onChange={this.onChangeSTicketName}
-                    value={this.state.StateticketName}
+                    // value={this.state.StateticketName}
+                    value={this.props.ticknStat}
                   />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Status" >
-                  <Select defaultValue="OPEN" disabled={false}
+                  <Select
+                    placeholder="Select status"
+                    // defaultValue="Status" 
+                    disabled={false}
                     onChange={this.onChangeSStatus}
+                    value={this.props.statStat}
                   >
                     <Option value="OPEN">Open</Option>
                     <Option value="WAITING">Waiting</Option>
@@ -226,7 +279,8 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
-                    value={this.state.Statedescription}
+                    // value={this.state.Statedescription}
+                    value={this.props.desStat}
                   />
                 </Form.Item>
               </Col>
