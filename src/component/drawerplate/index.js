@@ -228,7 +228,7 @@ class Drawerplate extends React.Component {
     return (
       <div>
         <Drawer
-          title="Basic Drawer"
+          title={this.props.titledraw}
           placement="right"
           closable={false}
           onClose={this.props.onClose}

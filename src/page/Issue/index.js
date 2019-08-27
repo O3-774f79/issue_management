@@ -21,7 +21,7 @@ const Issue = () => {
   const [priorityName, setPriorityName] = React.useState([])
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(true)
-
+  const [titledraw, setTitledraw] = React.useState('');
   useEffect(() => {
     Axios.get(
       '/Ticket/GetAllTicket', {
@@ -46,6 +46,7 @@ const Issue = () => {
     setPriorityName(record.priorityName)
     setStat(record.status);
     setTickNo(record.ticketNo);
+    setTitledraw('Show Ticket');
     console.log(record);
     console.log(record.id);
     console.log(record.priorityId);
@@ -57,6 +58,7 @@ const Issue = () => {
     setShow(true);
     setDis(false);
     setHid(true);
+    setTitledraw('Add Ticket');
     // setRID(0);
     // setTickname('');
     // setDes('');
@@ -64,33 +66,6 @@ const Issue = () => {
     // setStat('OPEN');
     // setTickNo('');
   }
-  // const [data, setData] = React.useState([
-  //   {
-  //     key: '1',
-  //     issue_title: 'test test',
-  //     name: 'test test',
-  //     address: 'New York No. 1 Lake Park',
-  //     status: 'open',
-  //   },
-  //   {
-  //     key: '2',
-  //     issue_title: 'test test',
-  //     name: 'test test',
-  //     address: 'London No. 1 Lake Park',
-  //     status: 'waitting',
-  //   },
-  //   {
-  //     key: '3',
-  //     issue_title: 'test test',
-  //     name: 'test test',
-  //     address: 'Sidney No. 1 Lake Park',
-  //     status: 'close',
-
-
-
-
-  //   },
-  // ]);
 
   const [column, setColumn] = React.useState([
     {
@@ -186,6 +161,7 @@ const Issue = () => {
         statStat={stat}
         tickNoStat={tickno}
         // prioName={prioName}
+        titledraw={titledraw}
         
       />
     </React.Fragment>
