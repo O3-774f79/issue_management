@@ -4,10 +4,10 @@ import TableIssue from '../../component/table';
 import { Tag, Button, Icon } from 'antd';
 import Drawerplate from '../../component/drawerplate/index';
 import Axios from 'axios';
-import {useAuth} from '../../context/auth';
+import { useAuth } from '../../context/auth';
 const Issue = () => {
-  const {authTokens} = useAuth ();
-  console.log('aa',authTokens)
+  const { authTokens } = useAuth();
+  console.log('aa', authTokens)
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
@@ -18,6 +18,7 @@ const Issue = () => {
   const [stat, setStat] = React.useState('');
   const [tickno, setTickNo] = React.useState('');
   const [priorityList, setPriorityList] = React.useState([])
+  const [priorityName, setPriorityName] = React.useState([])
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(true)
 
@@ -42,6 +43,7 @@ const Issue = () => {
     setTickname(record.ticketName);
     setDes(record.description);
     setPrio(prio + record.priorityId);
+    setPriorityName(record.priorityName)
     setStat(record.status);
     setTickNo(record.ticketNo);
     console.log(record);
@@ -49,6 +51,18 @@ const Issue = () => {
     console.log(record.priorityId);
     console.log(prio);
     console.log(rowid);
+  }
+
+  function onClickAdd() {
+    setShow(true);
+    setDis(false);
+    setHid(true);
+    // setRID(0);
+    // setTickname('');
+    // setDes('');
+    // setPrio('Low');
+    // setStat('OPEN');
+    // setTickNo('');
   }
   // const [data, setData] = React.useState([
   //   {
@@ -99,7 +113,7 @@ const Issue = () => {
     },
     {
       title: 'Priority',
-      dataIndex: 'priorityId',
+      dataIndex: 'priorityName',
       width: '5%',
     },
     {
@@ -155,7 +169,10 @@ const Issue = () => {
 
   return (
     <React.Fragment>
-      <Button type="primary" onClick={() => [setShow(true), setDis(false), setHid(true)]} >
+      <Button type="primary"
+        // onClick={() => [setShow(true), setDis(false), setHid(true)]} 
+        onClick={() => onClickAdd()}
+      >
         <Icon type="plus-circle" />Add
       </Button>
       <TableIssue columns={column} data={data} loading={tableload} />
@@ -168,6 +185,8 @@ const Issue = () => {
         prioStat={prio}
         statStat={stat}
         tickNoStat={tickno}
+        // prioName={prioName}
+        
       />
     </React.Fragment>
   );

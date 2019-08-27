@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Drawer,
   Button,
@@ -15,6 +15,7 @@ import {
 import Axios from 'axios';
 
 import moment from 'moment';
+
 
 
 const { Option } = Select;
@@ -42,6 +43,8 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </Form.Item>
   </div>
 );
+
+
 class Drawerplate extends React.Component {
 
   state = {
@@ -52,15 +55,47 @@ class Drawerplate extends React.Component {
     submitting: false,
     value: '',
     StateID: '',
-    StateticketName: '',
+    StateticketName: this.props.ticknStat,
     Statedescription: '',
     StatepriorityId: 0,
     Statestatus: '',
-    Priovalue: '',
-
+    Priovalue: [],
+    StatepriorityName: '',
+    data:[],
+    value: undefined,
 
 
   };
+
+  componentDidMount() {
+    Axios.get(
+        '/Priority/GetList', {
+
+        },
+    )
+        .then((result) => {
+
+            this.setState({ Priovalue: result.data })
+            const data = [];
+            result.foreach(r =>{
+              data.push({
+                value:r[0],
+                text:r[0]
+              })
+            })
+            console.log("Ceeeeeeeeeeeeeeb",result.data)
+
+
+
+
+        })
+        .catch(error => {
+            // this.setState({error:"Username or Password incorrect"})
+            console.log("Error From Board PAge".error)
+
+        }
+        )
+}
 
 
   onClose = () => {
@@ -189,7 +224,7 @@ class Drawerplate extends React.Component {
   render() {
 
     const { comments, submitting, value } = this.state;
-
+    const options = this.state.data.map(Priovalue => <Option key={Priovalue.value}>{Priovalue.text}</Option>)
     return (
       <div>
         <Drawer
@@ -220,14 +255,16 @@ class Drawerplate extends React.Component {
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
-                    // defaultValue="Low" 
+                    // defaultValue={this.state.StatepriorityaName} 
                     disabled={this.props.disStat}
                     onChange={this.onChangeSPriorityID}
-                    value={this.props.prioStat}
+                    // value={this.props.prioName}
+                    // value={this.state.StatepriorityName}
                   >
                     <Option value="0">Low</Option>
                     <Option value="1">Medium</Option>
                     <Option value="2">High</Option>
+                    {/* {options} */}
                   </Select>
                 </Form.Item>
               </Col>
@@ -235,8 +272,8 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Ticket No." >
 
                   <Input type='text' name='TicketNo' disabled={this.props.disStat}
-                    value={this.props.tickNoStat}
-                  // value={this.state.StateticketName}
+                    // value={this.props.tickNoStat}
+                    value={this.state.StateticketName}
                   />
                 </Form.Item>
               </Col>
@@ -245,8 +282,8 @@ class Drawerplate extends React.Component {
 
                   <Input type='text' name='TicketName' disabled={false}
                     onChange={this.onChangeSTicketName}
-                    // value={this.state.StateticketName}
-                    value={this.props.ticknStat}
+                    value={this.state.StateticketName}
+                  // value={this.props.ticknStat}
                   />
                 </Form.Item>
               </Col>
@@ -258,7 +295,8 @@ class Drawerplate extends React.Component {
                     // defaultValue="Status" 
                     disabled={false}
                     onChange={this.onChangeSStatus}
-                    value={this.props.statStat}
+                    // value={this.props.statStat}
+                    value={this.state.Statestatus}
                   >
                     <Option value="OPEN">Open</Option>
                     <Option value="WAITING">Waiting</Option>
@@ -279,8 +317,8 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
-                    // value={this.state.Statedescription}
-                    value={this.props.desStat}
+                    value={this.state.Statedescription}
+                  // value={this.props.desStat}
                   />
                 </Form.Item>
               </Col>

@@ -9,10 +9,31 @@ import {
     Card,
 
 } from 'antd';
+import Axios from 'axios';
 
 
-const index = () => {
+const ChagePass = () => {
 
+    const [oldpass, setOldpass] = useState('');
+    const [newpass, setNewpass] = useState('');
+    const [conpass, setConpass] = useState('');
+
+    const handlesubmit = (event) => {
+        // event.preventDefault();
+        Axios.post(
+            '/Password/ChangePassword', {
+                oldPassword: oldpass,
+                newPassword: newpass,
+                confirmNewPassword: conpass
+
+            })
+            .then((res) => {
+                console.log('Succes Change password', conpass)
+            })
+            .catch(error => {
+                console.log("error change password".error)
+            })
+    }
     return (
         <div className="login-box">
             <Row type="flex" align="middle">
@@ -26,9 +47,9 @@ const index = () => {
                                 <Input
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Old password"
-                                    name="password"
-                                // value={this.state.UserInput}
-                                // onChange={this.UserChange}
+                                    name="oldpassword"
+                                    value={oldpass}
+                                    onChange={e => setOldpass(e.target.value)}
 
                                 />
                             </Form.Item>
@@ -38,9 +59,9 @@ const index = () => {
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Password"
-                                    name="password"
-                                // value={this.state.PassInput}
-                                // onChange={this.PassChange}
+                                    name="newpassword"
+                                    value={newpass}
+                                    onChange={e => setNewpass(e.target.value)}
 
 
                                 />
@@ -52,8 +73,8 @@ const index = () => {
                                     type="password"
                                     placeholder="Confirm Password"
                                     name="Conpassword"
-                                // value={this.state.PassInput}
-                                // onChange={this.PassChange}
+                                    value={conpass}
+                                    onChange={e => setConpass(e.target.value)}
 
 
                                 />
@@ -63,7 +84,8 @@ const index = () => {
                                     <Button type="primary"
                                         htmlType="submit"
                                         className="login-form-button"
-                                    // onClick={this.handleSubmit}
+                                        onClick={() => handlesubmit()}
+
 
                                     >
                                         Submit
@@ -71,7 +93,7 @@ const index = () => {
                                 </Col>
                                 <Col>
                                     <Button type="danger"
-                                        htmlType="cancel"
+                                        // htmlType="cancel"
                                         className="login-form-button"
                                     // onClick={this.handleSubmit}
 
@@ -88,4 +110,4 @@ const index = () => {
     )
 }
 
-export default index
+export default ChagePass
