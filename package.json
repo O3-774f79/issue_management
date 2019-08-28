@@ -1,12 +1,13 @@
 {
   "name": "issue-system",
   "version": "0.1.0",
-  "proxy":"https://ticket-issue.herokuapp.com/api",
+  "proxy": "https://ticket-issue.herokuapp.com/api",
   "private": true,
   "dependencies": {
     "antd": "^3.21.4",
     "axios": "^0.19.0",
     "react": "^16.9.0",
+    "react-app-polyfill": "^1.0.2",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1"
@@ -23,13 +24,15 @@
   "browserslist": {
     "production": [
       ">0.2%",
+      "ie 11",
       "not dead",
       "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      "ie 11"
     ]
   }
 }
