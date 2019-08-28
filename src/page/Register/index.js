@@ -21,41 +21,83 @@ import Axios from 'axios';
 const Register = props => {
 
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [conpassword, setConPassword] = useState('');
+    const [Inemail, setEmail] = useState('');
+    const [Inpassword, setPassword] = useState('');
+    const [Inconpassword, setConPassword] = useState('');
     const [FnameTH, setFnameTH] = useState('');
     const [LnameTH, setLnameTH] = useState('');
     const [FnameEN, setFnameEN] = useState('');
     const [LnameEN, setLnameEN] = useState('');
-    const [userType, setUserType] = useState('');
+    const [InuserType, setUserType] = useState('');
     const [PhoneNo, setPhoneNo] = useState('');
+    const [CCode, setCcode] = useState('1000');
 
     const [GetUser, setGetUser] = useState([]);
-   
+
+    const [value, setValue] = useState ('User');
 
     const { Option } = Select;
 
     const HandleSubmit = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         Axios.post(
             '/Register', {
-                email: email,
-                password: password,
-                confirmPassword: conpassword,
+                email: Inemail,
+                password: Inpassword,
+                confirmPassword: Inconpassword,
                 firstNameTh: FnameTH,
                 lastNameTh: LnameTH,
                 firstNameEn: FnameEN,
                 lastNameEn: LnameEN,
-                userType: userType,
+                userType: InuserType,
                 telNo: PhoneNo,
+                companyCode:CCode,
+              
+                
             })
             .then((Resp) => {
+
+                // setEmail('');
+                // setPassword('');
+                // setConPassword('');
+                // setFnameTH('');
+                // setLnameTH('');
+                // setFnameEN('');
+                // setLnameEN('');
+                // setPhoneNo('');
+
+
+                console.log(Inemail)
+                console.log(Inpassword)
+                console.log(Inconpassword)
+                console.log(FnameTH)
+                console.log(LnameTH)
+                console.log(FnameEN)
+                console.log(LnameEN)
+                console.log(InuserType)
+                console.log(PhoneNo)
+                console.log(CCode)
+                console.log("Goods")
+                // event.preventDefault();
 
                 console.log("Success Register")
             })
             .catch(error => {
-                console.log("Error Regis".error)
+                console.log("Error Regis",error)
+
+                console.log(Inemail)
+                console.log(Inpassword)
+                console.log(Inconpassword)
+                console.log(FnameTH)
+                console.log(LnameTH)
+                console.log(FnameEN)
+                console.log(LnameEN)
+                console.log(InuserType)
+                console.log(PhoneNo)
+                console.log(CCode)
+                console.log("Bad")
+                
+                
             })
     }
     useEffect(() => {
@@ -65,15 +107,20 @@ const Register = props => {
         )
             .then((result) => {
                 setGetUser(result.data);
-                console.log(result.data)
+                console.log("Role get", result.data)
             })
             .catch(error => {
                 console.log("error get role".error)
             })
     }, [])
-    
 
 
+    const onChangeSelect = value => {
+        setValue(value);
+        setUserType(value);
+        console.log ("Check",value);
+    }
+    const options = GetUser.map(rolemap => <Option  value={rolemap.valueKey}>{rolemap.valueText}</Option>)
 
     return (
         <div className="login-box">
@@ -91,7 +138,7 @@ const Register = props => {
                                     prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="E-mail"
                                     name="mail"
-                                    value={email}
+                                    value={Inemail}
                                     onChange={e => setEmail(e.target.value)}
 
                                 />
@@ -103,7 +150,7 @@ const Register = props => {
                                     type="password"
                                     placeholder="Password"
                                     name="password"
-                                    value={password}
+                                    value={Inpassword}
                                     onChange={e => setPassword(e.target.value)}
 
 
@@ -116,7 +163,7 @@ const Register = props => {
                                     type="password"
                                     placeholder="Confirm Password"
                                     name="Conpassword"
-                                    value={conpassword}
+                                    value={Inconpassword}
                                     onChange={e => setConPassword(e.target.value)}
 
 
@@ -172,21 +219,24 @@ const Register = props => {
 
                                     name='roleSel'
                                     // placeholder="Select role"
-                                    // defaultValue="User"
+                                    // defaultValue={Getuser}
                                     // disabled={this.props.disStat}
-                                    value={userType}
-                                    onChange={e => setUserType(Number(e.target.value)
-                                        )
-                                    }
-                                  
+                                    // value={GetUser}
+                                    // value={userType}
+                                    // onChange={e => setUserType(Number(e.target.value)
+                                    //     )
+                                    // }
+                                    placeholder="Select role"
+                                    value={value}
+                                    onChange={onChangeSelect}
                                 >
-                                    {GetUser.map(role =>(
+                                    {/* {GetUser.map(role =>(
                                         <Option key={role.valueKey} value={role.valueKey}>
                                             {role.valueText}
                                         </Option>
                                         )
-                                    )}
-
+                                    )} */}
+                                    {options}
                                     {/* <Option value="1">User</Option>
                                     <Option value="2">Manager</Option>
                                     <Option value="3">Admin</Option> */}
@@ -197,6 +247,7 @@ const Register = props => {
                                 <Input
                                     prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Telephone Number"
+                                    type="text"
                                     name="TelNo"
                                     value={PhoneNo}
                                     onChange={e => setPhoneNo(e.target.value)}
@@ -215,9 +266,9 @@ const Register = props => {
                                 </Button>
                                 </Col>
                                 <Col>
-                                    <Link to='/login'>
+                                    <Link to='/issue'>
                                         <Button type="danger"
-                                            htmlType="cancel"
+                                            // htmlType="cancel"
                                             className="login-form-button"
 
 

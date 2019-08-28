@@ -19,11 +19,11 @@ const LayoutTemplate = props => (
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={['2']}
+        defaultSelectedKeys={['1']}
         style={{lineHeight: '64px', width: 300}}
       >
         <Menu.Item key="1"> <Link to="/issue">inbox </Link></Menu.Item>
-        <Menu.Item key="2">เพิ่มผู้ใช้</Menu.Item>
+        <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item>
       </Menu>
       <div style={{display: 'flex'}}>
         <NotificationRight />

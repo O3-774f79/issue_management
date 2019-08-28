@@ -17,7 +17,6 @@ import Axios from 'axios';
 import moment from 'moment';
 
 
-
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -61,7 +60,7 @@ class Drawerplate extends React.Component {
     Statestatus: '',
     Priovalue: [],
     StatepriorityName: '',
-    data:[],
+    data: [],
     value: undefined,
 
 
@@ -69,33 +68,28 @@ class Drawerplate extends React.Component {
 
   componentDidMount() {
     Axios.get(
-        '/Priority/GetList', {
-
-        },
+      '/Priority/GetList', {
+      },
     )
-        .then((result) => {
+      .then((result) => {
 
-            this.setState({ Priovalue: result.data })
-            const data = [];
-            result.foreach(r =>{
-              data.push({
-                value:r[0],
-                text:r[0]
-              })
-            })
-            console.log("Ceeeeeeeeeeeeeeb",result.data)
-
-
-
-
+        this.setState({
+          Priovalue: result.data
         })
-        .catch(error => {
-            // this.setState({error:"Username or Password incorrect"})
-            console.log("Error From Board PAge".error)
+        console.log("Ceeeeeeeeeeeeeeb", result.data)
+        console.log(this.state.Priovalue)
 
-        }
-        )
-}
+
+
+
+      })
+      .catch(error => {
+        // this.setState({error:"Username or Password incorrect"})
+        console.log("Error From Board PAge".error)
+
+      }
+      )
+  }
 
 
   onClose = () => {
@@ -103,6 +97,19 @@ class Drawerplate extends React.Component {
       visible: false,
     });
   };
+
+
+  onSelectPrio = value => {
+    this.setState({
+      value
+    })
+  }
+  onSelectStatus = () => {
+    this.setState({
+
+    })
+  }
+
 
   handleOnSubmit = (event) => {
     event.preventDefault();
@@ -119,19 +126,15 @@ class Drawerplate extends React.Component {
           }
         ).then((ople) => {
           console.log("Success to Open ticket")
-          console.log(this.state.Statedescription)
-
-          //  Maybe not better way to do like this
           this.setState({
             StateticketName: '',
             Statedescription: '',
-            StatepriorityId: 0,
-            Statestatus: '',
+            StatepriorityId: 1,
+            status: 'OPEN',
 
           })
-          event.preventDefault();
-          //  
 
+          // event.preventDefault();
 
         }).catch(error => {
           console.log("error Open ticket".error)
@@ -183,12 +186,14 @@ class Drawerplate extends React.Component {
     this.setState({
       StatepriorityId: parseInt(value)
     })
+    console.log("Show", this.state.StatepriorityId)
 
   }
   onChangeSStatus = value => {
     this.setState({
       Statestatus: value
     })
+    console.log('status is ', this.state.Statestatus)
 
   }
 
@@ -220,11 +225,14 @@ class Drawerplate extends React.Component {
     this.setState({
       value: e.target.value,
     });
+
   };
   render() {
 
     const { comments, submitting, value } = this.state;
-    const options = this.state.data.map(Priovalue => <Option key={Priovalue.value}>{Priovalue.text}</Option>)
+    const options =
+      this.state.Priovalue.map(Fdata =>
+        <Option value={Fdata.id}>{Fdata.priorityName}</Option>)
     return (
       <div>
         <Drawer
@@ -258,22 +266,22 @@ class Drawerplate extends React.Component {
                     // defaultValue={this.state.StatepriorityaName} 
                     disabled={this.props.disStat}
                     onChange={this.onChangeSPriorityID}
-                    // value={this.props.prioName}
-                    // value={this.state.StatepriorityName}
+                  // value={this.props.prioName}
+                  // value={this.state.Priovalue}
                   >
-                    <Option value="0">Low</Option>
+                    {/* <Option value="0">Low</Option>
                     <Option value="1">Medium</Option>
-                    <Option value="2">High</Option>
-                    {/* {options} */}
+                    <Option value="2">High</Option> */}
+                    {options}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
-                  <Input type='text' name='TicketNo' disabled={this.props.disStat}
-                    // value={this.props.tickNoStat}
-                    value={this.state.StateticketName}
+                  <Input type='text' name='TicketNo' disabled={this.props.tickNodis}
+                  // value={this.props.tickNoStat}
+                  // value={this.state.StateticketName}
                   />
                 </Form.Item>
               </Col>
@@ -292,11 +300,11 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Status" >
                   <Select
                     placeholder="Select status"
-                    // defaultValue="Status" 
+                    defaultValue="OPEN"
                     disabled={false}
                     onChange={this.onChangeSStatus}
-                    // value={this.props.statStat}
-                    value={this.state.Statestatus}
+                  // value={this.props.statStat}
+                  // value={this.state.Statestatus}
                   >
                     <Option value="OPEN">Open</Option>
                     <Option value="WAITING">Waiting</Option>

@@ -28,7 +28,7 @@ function App (props) {
           
           <PrivateRoute path="/issue" component={Issue} />
           <PrivateRoute path="/ChangePass" component={ChangePass} />
-          <Route path="/register" component={Register} />
+          <PrivateRoute path="/register" component={Register} />
             {/* <Route path="/issue" component={Issue} /> */}
           {/* </LayoutTemplate> */}
         </div>

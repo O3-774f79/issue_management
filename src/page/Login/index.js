@@ -73,10 +73,10 @@ const Login = props => {
               <Form.Item>
               <Button onClick={() => _handleSubmit()}>login</Button>
               </Form.Item>
-              <Form.Item>
+              {/* <Form.Item>
               <Link to="/register">Don't have an account?</Link>
               {isError && <div>The username or password provided were incorrect!</div>}
-              </Form.Item>
+              </Form.Item> */}
               </Form>
             </Card>
           </Col>

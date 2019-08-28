@@ -8,6 +8,7 @@ import { useAuth } from '../../context/auth';
 const Issue = () => {
   const { authTokens } = useAuth();
   console.log('aa', authTokens)
+  const [tickNodis, setTickNodis] = React.useState(false);
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
@@ -22,6 +23,7 @@ const Issue = () => {
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(true)
   const [titledraw, setTitledraw] = React.useState('');
+  
   useEffect(() => {
     Axios.get(
       '/Ticket/GetAllTicket', {
@@ -46,6 +48,7 @@ const Issue = () => {
     setPriorityName(record.priorityName)
     setStat(record.status);
     setTickNo(record.ticketNo);
+    setTickNodis(true);
     setTitledraw('Show Ticket');
     console.log(record);
     console.log(record.id);
@@ -59,6 +62,7 @@ const Issue = () => {
     setDis(false);
     setHid(true);
     setTitledraw('Add Ticket');
+    setTickNodis(true);
     // setRID(0);
     // setTickname('');
     // setDes('');
@@ -162,7 +166,7 @@ const Issue = () => {
         tickNoStat={tickno}
         // prioName={prioName}
         titledraw={titledraw}
-        
+        tickNodis={tickNodis}
       />
     </React.Fragment>
   );
