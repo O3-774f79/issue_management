@@ -14,7 +14,7 @@ import {
 
 import Axios from 'axios';
 
-import moment from 'moment';
+import moment, { relativeTimeThreshold } from 'moment';
 
 
 const { Option } = Select;
@@ -52,21 +52,69 @@ class Drawerplate extends React.Component {
     visible: false,
     comments: [],
     submitting: false,
-    value: '',
-    StateID: '',
-    StateticketName: this.props.ticknStat,
-    Statedescription: '',
-    StatepriorityId: 0,
-    Statestatus: '',
+    // value: '',
+    TicketID: '',
+    TicketNo: '',
+    TicketName: '',
+    TicketDesc: '',
+    PriorityID: 0,
+    PriorityName: '',
+    TicketStatus: '',
     Priovalue: [],
     StatepriorityName: '',
     data: [],
+    dataList: {},
     value: undefined,
 
 
   };
 
   componentDidMount() {
+    console.log(`lisaaaaaaaaaaaaaaaaaaaaaat`, this.props.dataList)
+    // this.setState({
+    //   disabledStat: true,
+    //   hiddenStat: false,
+    //   TicketNo: this.props.TicketNoStat,
+    //   TicketName: this.props.TicketnameStat,
+    //   TicketDesc: this.props.desStat,
+    //   TicketID: this.props.rowStat,
+    //   PriorityID: this.props.prioStat,
+    //   PriorityName: this.props.prioName,
+    //   TicketStatus: this.props.statStat,
+    //   dataList:this.props.dataList
+    // })
+    // if (this.props.formcontrol === 'add') {
+
+    //   this.setState({
+    //     disabledStat: false,
+    //     hiddenStat: true,
+    //     TicketNo: '',
+    //     TicketID: 0,
+    //     TicketName: '',
+    //     TicketDesc: '',
+    //     PriorityID: 0,
+    //     PriorityName:'Low',
+    //     TicketStatus: '',
+
+
+    //   })
+    //   console.log('add props')
+    //   console.log(this.state.TicketNo)
+    //   console.log(this.state.TicketName)
+    //   console.log(this.state.TicketDesc)
+    //   console.log(this.state.TicketStatus)
+
+    // } else if( this.props.formcontrol === 'edit') {
+    //   this.setState({
+    //     disabledStat: true,
+    //     hiddenStat: false,
+    //    
+
+
+
+    //   })
+    // }
+
     Axios.get(
       '/Priority/GetList', {
       },
@@ -74,7 +122,8 @@ class Drawerplate extends React.Component {
       .then((result) => {
 
         this.setState({
-          Priovalue: result.data
+          Priovalue: result.data,
+
         })
         console.log("Ceeeeeeeeeeeeeeb", result.data)
         console.log(this.state.Priovalue)
@@ -89,6 +138,25 @@ class Drawerplate extends React.Component {
 
       }
       )
+  }
+
+
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.dataList !== nextProps.dataList) {
+      this.setState({
+        TicketID: nextProps.dataList.id,
+        TicketNo: nextProps.dataList.ticketNo,
+        TicketName: nextProps.dataList.ticketName,
+        TicketDesc: nextProps.dataList.description,
+        
+        PriorityID: nextProps.dataList.priorityId,
+        PriorityName: nextProps.dataList.priorityName,
+        TicketStatus: nextProps.dataList.status,
+
+      })
+
+    }
   }
 
 
@@ -118,18 +186,18 @@ class Drawerplate extends React.Component {
         Axios.post(
           '/Ticket/OpenTicket', {
 
-            ticketName: this.state.StateticketName,
-            description: this.state.Statedescription,
-            priorityId: this.state.StatepriorityId,
-            status: this.state.Statestatus,
+            ticketName: this.state.TicketName,
+            description: this.state.TicketDesc,
+            priorityId: this.state.PriorityID,
+            status: this.state.TicketStatus,
 
           }
         ).then((ople) => {
           console.log("Success to Open ticket")
           this.setState({
-            StateticketName: '',
-            Statedescription: '',
-            StatepriorityId: 1,
+            TicketName: '',
+            TicketDesc: '',
+            PriorityID: 1,
             status: 'OPEN',
 
           })
@@ -146,16 +214,19 @@ class Drawerplate extends React.Component {
         console.log("Else"),
         Axios.post(
           '/Ticket/UpdateTicket', {
-            id: 0,
-            ticketName: this.state.StateticketName,
-            description: this.state.Statedescription,
-            priorityId: this.state.StatepriorityId,
-            status: this.state.Statestatus,
+            id: this.state.TicketID,
+            // ticketNo: this.state.TicketNo,
+            ticketName: this.state.TicketName,
+            description: this.state.TicketDesc,
+            priorityId: this.state.PriorityID,
+            priorityName: this.state.PriorityName,
+            status: this.state.TicketStatus,
             comments: '',
+            // companycode: '1000',
           }
         ).then((ople) => {
           console.log("Success to Update ticket")
-          console.log(this.state.Statedescription)
+          console.log(this.state.TicketDesc)
 
 
 
@@ -172,28 +243,28 @@ class Drawerplate extends React.Component {
 
   onChangeSTicketName = e => {
     this.setState({
-      StateticketName: e.target.value
+      TicketName: e.target.value
     })
 
   }
   onChangeSDescription = e => {
     this.setState({
-      Statedescription: e.target.value
+      TicketDesc: e.target.value
     })
 
   }
   onChangeSPriorityID = value => {
     this.setState({
-      StatepriorityId: parseInt(value)
+      PriorityID: parseInt(value)
     })
-    console.log("Show", this.state.StatepriorityId)
+    console.log("Show", this.state.PriorityID)
 
   }
   onChangeSStatus = value => {
     this.setState({
-      Statestatus: value
+      TicketStatus: value
     })
-    console.log('status is ', this.state.Statestatus)
+    console.log('status is ', this.state.TicketStatus)
 
   }
 
@@ -234,6 +305,7 @@ class Drawerplate extends React.Component {
       this.state.Priovalue.map(Fdata =>
         <Option value={Fdata.id}>{Fdata.priorityName}</Option>)
     return (
+
       <div>
         <Drawer
           title={this.props.titledraw}
@@ -243,6 +315,7 @@ class Drawerplate extends React.Component {
           visible={this.props.visible}
           width='50%'
         >
+          <p>aa{JSON.stringify(this.state.dataList)}</p>
           <Form
             onSubmit={this.handleOnSubmit}
           >
@@ -263,15 +336,11 @@ class Drawerplate extends React.Component {
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
-                    // defaultValue={this.state.StatepriorityaName} 
+                    
                     disabled={this.props.disStat}
                     onChange={this.onChangeSPriorityID}
-                  // value={this.props.prioName}
-                  // value={this.state.Priovalue}
+                    value={this.state.PriorityName}
                   >
-                    {/* <Option value="0">Low</Option>
-                    <Option value="1">Medium</Option>
-                    <Option value="2">High</Option> */}
                     {options}
                   </Select>
                 </Form.Item>
@@ -280,8 +349,8 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Ticket No." >
 
                   <Input type='text' name='TicketNo' disabled={this.props.tickNodis}
-                  // value={this.props.tickNoStat}
-                  // value={this.state.StateticketName}
+                    // value={this.props.tickNoStat}
+                    value={this.state.TicketNo}
                   />
                 </Form.Item>
               </Col>
@@ -290,8 +359,8 @@ class Drawerplate extends React.Component {
 
                   <Input type='text' name='TicketName' disabled={false}
                     onChange={this.onChangeSTicketName}
-                    value={this.state.StateticketName}
-                  // value={this.props.ticknStat}
+                    value={this.state.TicketName}
+
                   />
                 </Form.Item>
               </Col>
@@ -303,8 +372,7 @@ class Drawerplate extends React.Component {
                     defaultValue="OPEN"
                     disabled={false}
                     onChange={this.onChangeSStatus}
-                  // value={this.props.statStat}
-                  // value={this.state.Statestatus}
+                    value={this.state.TicketStatus}
                   >
                     <Option value="OPEN">Open</Option>
                     <Option value="WAITING">Waiting</Option>
@@ -325,7 +393,7 @@ class Drawerplate extends React.Component {
                 <Form.Item layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
-                    value={this.state.Statedescription}
+                    value={this.state.TicketDesc}
                   // value={this.props.desStat}
                   />
                 </Form.Item>

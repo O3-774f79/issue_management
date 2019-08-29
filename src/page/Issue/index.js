@@ -19,11 +19,16 @@ const Issue = () => {
   const [stat, setStat] = React.useState('');
   const [tickno, setTickNo] = React.useState('');
   const [priorityList, setPriorityList] = React.useState([])
-  const [priorityName, setPriorityName] = React.useState([])
+  const [priorityName, setPriorityName] = React.useState("")
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(true)
   const [titledraw, setTitledraw] = React.useState('');
-  
+  const [recordList, setRecord] = React.useState({})
+
+
+  // Control form
+  const [formcontrol, setformcontrol] = React.useState('');
+
   useEffect(() => {
     Axios.get(
       '/Ticket/GetAllTicket', {
@@ -37,24 +42,21 @@ const Issue = () => {
         console.log("error alert".error)
       })
   }, [])
-  function onClickDisplay(record) {
-    setShow(true);
-    setDis(true);
-    setHid(false);
-    setRID(rowid + record.id);
-    setTickname(record.ticketName);
-    setDes(record.description);
-    setPrio(prio + record.priorityId);
-    setPriorityName(record.priorityName)
-    setStat(record.status);
-    setTickNo(record.ticketNo);
-    setTickNodis(true);
-    setTitledraw('Show Ticket');
-    console.log(record);
-    console.log(record.id);
-    console.log(record.priorityId);
-    console.log(prio);
-    console.log(rowid);
+  const onClickDisplay = async (record) => {
+    await setRecord(record)
+    await setPriorityName(record.priorityName)
+    await setDis(true);
+    await setHid(false);
+    // await setRID(rowid + record.id);
+    // await setTickname(record.ticketName);
+    // await setDes(record.description);
+    // await setPrio(prio + record.priorityId);
+    // await setStat(record.status);
+    // await setTickNo(record.ticketNo);
+    await setTickNodis(true);
+    await setTitledraw('Show Ticket');
+    await setformcontrol('edit');
+    await setShow(true);
   }
 
   function onClickAdd() {
@@ -63,12 +65,15 @@ const Issue = () => {
     setHid(true);
     setTitledraw('Add Ticket');
     setTickNodis(true);
+
+    setformcontrol('add');
     // setRID(0);
     // setTickname('');
     // setDes('');
     // setPrio('Low');
     // setStat('OPEN');
     // setTickNo('');
+
   }
 
   const [column, setColumn] = React.useState([
@@ -158,16 +163,19 @@ const Issue = () => {
       <Drawerplate visible={show} onClose={() => setShow(false)}
         disStat={dis}
         hidStat={hid}
-        rowStat={rowid}
-        desStat={des}
-        ticknStat={tickname}
-        prioStat={prio}
-        statStat={stat}
-        tickNoStat={tickno}
-        // prioName={prioName}
-        titledraw={titledraw}
+        // rowStat={rowid}
+        // desStat={des}
+        // TicketnameStat={tickname}
+        // prioStat={prio}
+        // statStat={stat}
+        // TicketNoStat={tickno}
+        // prioName={priorityName}
+        // titledraw={titledraw}
         tickNodis={tickNodis}
+        formcontrol={formcontrol}
+        dataList={recordList}
       />
+      <p>{JSON.stringify(recordList)}</p>
     </React.Fragment>
   );
 };
