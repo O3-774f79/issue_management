@@ -57,8 +57,8 @@ class Drawerplate extends React.Component {
     TicketNo: '',
     TicketName: '',
     TicketDesc: '',
-    PriorityID: 0,
-    PriorityName: '',
+    PriorityID: 1,
+    PriorityName: 1,
     TicketStatus: '',
     Priovalue: [],
     StatepriorityName: '',
@@ -151,7 +151,7 @@ class Drawerplate extends React.Component {
         TicketDesc: nextProps.dataList.description,
         
         PriorityID: nextProps.dataList.priorityId,
-        PriorityName: nextProps.dataList.priorityName,
+        // PriorityName: nextProps.dataList.priorityName,
         TicketStatus: nextProps.dataList.status,
 
       })
@@ -167,16 +167,8 @@ class Drawerplate extends React.Component {
   };
 
 
-  onSelectPrio = value => {
-    this.setState({
-      value
-    })
-  }
-  onSelectStatus = () => {
-    this.setState({
-
-    })
-  }
+ 
+ 
 
 
   handleOnSubmit = (event) => {
@@ -227,6 +219,7 @@ class Drawerplate extends React.Component {
         ).then((ople) => {
           console.log("Success to Update ticket")
           console.log(this.state.TicketDesc)
+          console.log(this.state.TicketName)
 
 
 
@@ -255,9 +248,10 @@ class Drawerplate extends React.Component {
   }
   onChangeSPriorityID = value => {
     this.setState({
-      PriorityID: parseInt(value)
+      PriorityID: value
     })
-    console.log("Show", this.state.PriorityID)
+   
+    console.log("Select ID ",value)
 
   }
   onChangeSStatus = value => {
@@ -337,11 +331,13 @@ class Drawerplate extends React.Component {
                     name='prioritySel'
                     placeholder="Select Priority"
                     
-                    disabled={this.props.disStat}
+                    // disabled={this.props.disStat}
+                    disabled={false}
                     onChange={this.onChangeSPriorityID}
-                    value={this.state.PriorityName}
+                    value={this.state.PriorityID}
                   >
                     {options}
+                  
                   </Select>
                 </Form.Item>
               </Col>
@@ -394,7 +390,7 @@ class Drawerplate extends React.Component {
                   <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
-                  // value={this.props.desStat}
+              
                   />
                 </Form.Item>
               </Col>
