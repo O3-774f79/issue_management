@@ -13,7 +13,6 @@ import {
 } from 'antd';
 
 import Axios from 'axios';
-
 import moment, { relativeTimeThreshold } from 'moment';
 
 
@@ -47,6 +46,8 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 class Drawerplate extends React.Component {
 
   state = {
+    openDrawer: false,
+
     disabledStat: false,
     hiddenStat: false,
     visible: false,
@@ -64,33 +65,27 @@ class Drawerplate extends React.Component {
     StatepriorityName: '',
     data: [],
     dataList: {},
-    value: undefined,
+    valueComments: '',
+    commentsList: [],
+    CommentList: []
 
 
   };
 
   componentDidMount() {
     console.log(`lisaaaaaaaaaaaaaaaaaaaaaat`, this.props.dataList)
-   
     Axios.get(
       '/Priority/GetList', {
       },
     )
       .then((result) => {
-
         this.setState({
           Priovalue: result.data,
-
         })
         console.log("Ceeeeeeeeeeeeeeb", result.data)
         console.log(this.state.Priovalue)
-
-
-
-
       })
       .catch(error => {
-        // this.setState({error:"Username or Password incorrect"})
         console.log("Error From Board PAge".error)
 
       }
@@ -100,27 +95,28 @@ class Drawerplate extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-
-   
-    
-
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
         TicketID: nextProps.dataList.id,
         TicketNo: nextProps.dataList.ticketNo,
         TicketName: nextProps.dataList.ticketName,
         TicketDesc: nextProps.dataList.description,
-
         PriorityID: nextProps.dataList.priorityId,
-        // PriorityName: nextProps.dataList.priorityName,
         TicketStatus: nextProps.dataList.status,
-
+        CommentList: nextProps.commentList
       })
-
+      Axios.get(
+        `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`)
+        .then((ResComment) => {
+          this.setState({
+            commentsList: ResComment.data
+          })
+        })
+        .catch(error => {
+          console.log("Error Comment".error)
+        }
+        )
     }
-
-  
-
   }
 
 
@@ -167,7 +163,7 @@ class Drawerplate extends React.Component {
       )
     } else {
       return (
-        console.log("Else"),
+        console.log("Update"),
         Axios.post(
           '/Ticket/UpdateTicket', {
             id: this.state.TicketID,
@@ -177,17 +173,13 @@ class Drawerplate extends React.Component {
             // priorityId: this.state.PriorityID,
             // priorityName: this.state.PriorityName,
             status: this.state.TicketStatus,
-            comments: '',
+            comment: this.state.valueComments,
             // companycode: '1000',
           }
         ).then((ople) => {
           console.log("Success to Update ticket")
           // console.log(this.state.TicketDesc)
-          // console.log(this.state.TicketName)
-
-
-
-
+          console.log(this.state.valueComments)
         }).catch(error => {
           console.log("error Update ticket".error)
         })
@@ -229,7 +221,7 @@ class Drawerplate extends React.Component {
   }
 
   handleSubmit = () => {
-    if (!this.state.value) {
+    if (!this.state.valueComments) {
       return;
     }
 
@@ -238,12 +230,11 @@ class Drawerplate extends React.Component {
     }); setTimeout(() => {
       this.setState({
         submitting: false,
-        value: '',
+        valueComments: '',
         comments: [
           {
-            author: 'Han Solo',
-            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-            content: <p>{this.state.value}</p>,
+            // author: this.props.AuthTokens,
+            content: <p>{this.state.valueComments}</p>,
             datetime: moment().fromNow(),
           },
           ...this.state.comments,
@@ -254,16 +245,20 @@ class Drawerplate extends React.Component {
 
   handleChange = e => {
     this.setState({
-      value: e.target.value,
+      valueComments: e.target.value,
     });
 
   };
   render() {
+    console.log("Show com", this.state.commentsList)
+
 
     const { comments, submitting, value } = this.state;
     const options =
       this.state.Priovalue.map(Fdata =>
         <Option value={Fdata.id}>{Fdata.priorityName}</Option>)
+
+
     return (
 
       <div>
@@ -275,7 +270,7 @@ class Drawerplate extends React.Component {
           visible={this.props.visible}
           width='50%'
         >
-         
+
           <Form
             onSubmit={this.handleOnSubmit}
           >
@@ -368,49 +363,49 @@ class Drawerplate extends React.Component {
                   <Form.Item>
 
                     {comments.length > 0 && <CommentList comments={comments} />}
-                    <Comment hidden={this.props.hidStat}
-                      avatar={
-                        <Avatar
-                          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                          alt="Han Solo"
+                    {/* {this.state.CommentList ? <h1>{JSON.stringify(this.state.CommentList)}</h1> : <h1>false</h1>} */}
+                    {this.state.CommentList.map(item => <li>
+                      <Comment hidden={this.props.hidStat}
+                        author={item.commentByName}
+                        content={item.comment}
                         />
-                      }
-                      content={
-                        <Editor
-                          onChange={this.handleChange}
-                          onSubmit={this.handleSubmit}
-                          submitting={submitting}
-                          value={value}
-                        />
-                      }
-                    />
+                        
+                    
+                    </li>)}
+                   
+                      <Editor
+                        onChange={this.handleChange}
+                        onSubmit={this.handleSubmit}
+                        submitting={submitting}
+                        value={this.state.valueComments}
+                      />
                   </Form.Item>
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}>
-                    <Form.Item>
-                      <Button type="primary"
-                        htmlType="submit"
-                        className="login-form-button"
-                      // onClick={this.openticket}
+                      <Col span={4}></Col>
+                      <Col span={4}></Col>
+                      <Col span={4}></Col>
+                      <Col span={4}></Col>
+                      <Col span={4}></Col>
+                      <Col span={4}>
+                        <Form.Item>
+                          <Button type="primary"
+                            htmlType="submit"
+                            className="login-form-button"
+                          // onClick={this.openticket}
 
-                      >
-                        Submit
+                          >
+                            Submit
               </Button>
 
-                    </Form.Item>
+                        </Form.Item>
 
-                  </Col>
+                      </Col>
                 </div>
               </Col>
             </Row>
           </Form>
         </Drawer>
       </div>
-    );
-  }
-}
-export default Drawerplate;
+          );
+        }
+      }
+      export default Drawerplate;

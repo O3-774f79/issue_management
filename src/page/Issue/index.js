@@ -7,7 +7,7 @@ import Axios from 'axios';
 import { useAuth } from '../../context/auth';
 const Issue = () => {
   const { authTokens } = useAuth();
-  console.log('aa', authTokens)
+  console.log('aaBBA', authTokens)
   const [tickNodis, setTickNodis] = React.useState(false);
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
@@ -24,6 +24,7 @@ const Issue = () => {
   const [tableload, setLoadTable] = React.useState(true)
   const [titledraw, setTitledraw] = React.useState('');
   const [recordList, setRecord] = React.useState({})
+  const [commentList,setCommentList] =React.useState([])
 
 
   // Control form
@@ -43,6 +44,9 @@ const Issue = () => {
       })
   }, [])
   const onClickDisplay = async (record) => {
+    const comment = await Axios.get(
+      `/Ticket/GetTicketComment?ticketId=${record.id}`)
+    await setCommentList(comment.data)
     await setRecord(record)
     await setPriorityName(record.priorityName)
     await setDis(true);
@@ -171,14 +175,14 @@ const Issue = () => {
         // statStat={stat}
         // TicketNoStat={tickno}
         // prioName={priorityName}
-        
+        authTokens={authTokens}
         titledraw={titledraw}
-
+        commentList={commentList}
         tickNodis={tickNodis}
         formcontrol={formcontrol}
         dataList={recordList}
       />
-     
+
     </React.Fragment>
   );
 };

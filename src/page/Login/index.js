@@ -18,10 +18,14 @@ import {
 const Login = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  
+  const [firstLogin, setfirstlogin] = useState(false);
+
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
+  const changepass = '/ChangePass';
   const _handleSubmit = () => {
     axios
       .post('/Login', {
@@ -31,7 +35,12 @@ const Login = props => {
       .then(result => {
         if (result.status === 200) {
           setAuthTokens(result.data.employee);
+          
+
+          setfirstlogin(result.data.employee.firstLogin);
           setLoggedIn(true);
+          console.log("res fl",result.data.employee.firstLogin)
+          
         } else {
           setIsError(true);
         }
@@ -42,7 +51,18 @@ const Login = props => {
 
   };
   if (isLoggedIn) {
-    return <Redirect to={referer} />;
+    console.log("stage fl ",firstLogin)
+    if(firstLogin){
+      console.log("true if",firstLogin)
+      return <Redirect to={changepass} />;
+    }
+    else {
+      console.log("false else")
+      return <Redirect to={referer}  />;
+    }
+
+
+    
   }
 
   return (

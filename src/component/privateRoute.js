@@ -4,6 +4,7 @@ import {useAuth} from '../context/auth';
 import LayoutTemplate from './layout';
 function PrivateRoute({component: Component, ...rest}) {
   const {authTokens} = useAuth ();
+
   return (
     <Route
       {...rest}
