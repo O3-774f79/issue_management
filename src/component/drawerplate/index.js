@@ -101,19 +101,7 @@ class Drawerplate extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps.disStat === false ){
-      this.setState({
-        TicketID: '',
-        TicketNo: '',
-        TicketName: '',
-        TicketDesc: '',
-
-        PriorityID: 1,
-        // PriorityName: nextProps.dataList.priorityName,
-        TicketStatus: 'Low',
-
-      })
-    }
+   
     
 
     if (this.props.dataList !== nextProps.dataList) {
