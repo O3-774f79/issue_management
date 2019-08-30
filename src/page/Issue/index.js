@@ -67,12 +67,12 @@ const Issue = () => {
     setTickNodis(true);
 
     setformcontrol('add');
-    // setRID(0);
-    // setTickname('');
-    // setDes('');
-    // setPrio('Low');
-    // setStat('OPEN');
-    // setTickNo('');
+    setRID(0);
+    setTickname('');
+    setDes('');
+    setPrio('Low');
+    setStat('OPEN');
+    setTickNo('');
 
   }
 
@@ -163,6 +163,7 @@ const Issue = () => {
       <Drawerplate visible={show} onClose={() => setShow(false)}
         disStat={dis}
         hidStat={hid}
+
         // rowStat={rowid}
         // desStat={des}
         // TicketnameStat={tickname}
@@ -170,12 +171,14 @@ const Issue = () => {
         // statStat={stat}
         // TicketNoStat={tickno}
         // prioName={priorityName}
-        // titledraw={titledraw}
+        
+        titledraw={titledraw}
+
         tickNodis={tickNodis}
         formcontrol={formcontrol}
         dataList={recordList}
       />
-      <p>{JSON.stringify(recordList)}</p>
+     
     </React.Fragment>
   );
 };

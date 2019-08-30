@@ -71,50 +71,7 @@ class Drawerplate extends React.Component {
 
   componentDidMount() {
     console.log(`lisaaaaaaaaaaaaaaaaaaaaaat`, this.props.dataList)
-    // this.setState({
-    //   disabledStat: true,
-    //   hiddenStat: false,
-    //   TicketNo: this.props.TicketNoStat,
-    //   TicketName: this.props.TicketnameStat,
-    //   TicketDesc: this.props.desStat,
-    //   TicketID: this.props.rowStat,
-    //   PriorityID: this.props.prioStat,
-    //   PriorityName: this.props.prioName,
-    //   TicketStatus: this.props.statStat,
-    //   dataList:this.props.dataList
-    // })
-    // if (this.props.formcontrol === 'add') {
-
-    //   this.setState({
-    //     disabledStat: false,
-    //     hiddenStat: true,
-    //     TicketNo: '',
-    //     TicketID: 0,
-    //     TicketName: '',
-    //     TicketDesc: '',
-    //     PriorityID: 0,
-    //     PriorityName:'Low',
-    //     TicketStatus: '',
-
-
-    //   })
-    //   console.log('add props')
-    //   console.log(this.state.TicketNo)
-    //   console.log(this.state.TicketName)
-    //   console.log(this.state.TicketDesc)
-    //   console.log(this.state.TicketStatus)
-
-    // } else if( this.props.formcontrol === 'edit') {
-    //   this.setState({
-    //     disabledStat: true,
-    //     hiddenStat: false,
-    //    
-
-
-
-    //   })
-    // }
-
+   
     Axios.get(
       '/Priority/GetList', {
       },
@@ -143,13 +100,29 @@ class Drawerplate extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+
+    if(nextProps.disStat === false ){
+      this.setState({
+        TicketID: '',
+        TicketNo: '',
+        TicketName: '',
+        TicketDesc: '',
+
+        PriorityID: 1,
+        // PriorityName: nextProps.dataList.priorityName,
+        TicketStatus: 'Low',
+
+      })
+    }
+    
+
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
         TicketID: nextProps.dataList.id,
         TicketNo: nextProps.dataList.ticketNo,
         TicketName: nextProps.dataList.ticketName,
         TicketDesc: nextProps.dataList.description,
-        
+
         PriorityID: nextProps.dataList.priorityId,
         // PriorityName: nextProps.dataList.priorityName,
         TicketStatus: nextProps.dataList.status,
@@ -157,6 +130,9 @@ class Drawerplate extends React.Component {
       })
 
     }
+
+  
+
   }
 
 
@@ -167,8 +143,8 @@ class Drawerplate extends React.Component {
   };
 
 
- 
- 
+
+
 
 
   handleOnSubmit = (event) => {
@@ -208,18 +184,18 @@ class Drawerplate extends React.Component {
           '/Ticket/UpdateTicket', {
             id: this.state.TicketID,
             // ticketNo: this.state.TicketNo,
-            ticketName: this.state.TicketName,
-            description: this.state.TicketDesc,
-            priorityId: this.state.PriorityID,
-            priorityName: this.state.PriorityName,
+            // ticketName: this.state.TicketName,
+            // description: this.state.TicketDesc,
+            // priorityId: this.state.PriorityID,
+            // priorityName: this.state.PriorityName,
             status: this.state.TicketStatus,
             comments: '',
             // companycode: '1000',
           }
         ).then((ople) => {
           console.log("Success to Update ticket")
-          console.log(this.state.TicketDesc)
-          console.log(this.state.TicketName)
+          // console.log(this.state.TicketDesc)
+          // console.log(this.state.TicketName)
 
 
 
@@ -238,20 +214,22 @@ class Drawerplate extends React.Component {
     this.setState({
       TicketName: e.target.value
     })
+    console.log(this.state.TicketName)
 
   }
   onChangeSDescription = e => {
     this.setState({
       TicketDesc: e.target.value
     })
+    console.log(this.state.TicketDesc)
 
   }
   onChangeSPriorityID = value => {
     this.setState({
       PriorityID: value
     })
-   
-    console.log("Select ID ",value)
+
+    console.log("Select ID ", value)
 
   }
   onChangeSStatus = value => {
@@ -309,7 +287,7 @@ class Drawerplate extends React.Component {
           visible={this.props.visible}
           width='50%'
         >
-          <p>aa{JSON.stringify(this.state.dataList)}</p>
+         
           <Form
             onSubmit={this.handleOnSubmit}
           >
@@ -330,14 +308,14 @@ class Drawerplate extends React.Component {
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
-                    
-                    // disabled={this.props.disStat}
-                    disabled={false}
+
+                    disabled={this.props.disStat}
+                    // disabled={false}
                     onChange={this.onChangeSPriorityID}
                     value={this.state.PriorityID}
                   >
                     {options}
-                  
+
                   </Select>
                 </Form.Item>
               </Col>
@@ -390,7 +368,7 @@ class Drawerplate extends React.Component {
                   <TextArea rows={4} type='text' name='Description'
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
-              
+
                   />
                 </Form.Item>
               </Col>
