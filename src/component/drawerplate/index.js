@@ -23,7 +23,7 @@ const { TextArea } = Input;
 const CommentList = ({ comments }) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+    // header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
     itemLayout="horizontal"
     renderItem={props => <Comment {...props} />}
   />
@@ -95,6 +95,7 @@ class Drawerplate extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+    
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
         TicketID: nextProps.dataList.id,
@@ -111,6 +112,7 @@ class Drawerplate extends React.Component {
           this.setState({
             commentsList: ResComment.data
           })
+          
         })
         .catch(error => {
           console.log("Error Comment".error)
@@ -162,10 +164,16 @@ class Drawerplate extends React.Component {
 
       )
     } else {
+     if(this.state.valueComments !== ''){
       return (
-        console.log("Update"),
+     
+        console.log("Update comment"),
+     
+       
         Axios.post(
           '/Ticket/UpdateTicket', {
+
+          
             id: this.state.TicketID,
             // ticketNo: this.state.TicketNo,
             // ticketName: this.state.TicketName,
@@ -177,7 +185,7 @@ class Drawerplate extends React.Component {
             // companycode: '1000',
           }
         ).then((ople) => {
-          console.log("Success to Update ticket")
+          console.log("Success to Update ticket Comment")
           // console.log(this.state.TicketDesc)
           console.log(this.state.valueComments)
         }).catch(error => {
@@ -186,7 +194,40 @@ class Drawerplate extends React.Component {
 
 
       )
+    } else {
+      return (
+     
+        console.log("Update Form"),
+     
+       
+        Axios.post(
+          '/Ticket/UpdateTicket', {
+
+          
+            id: this.state.TicketID,
+            // ticketNo: this.state.TicketNo,
+            // ticketName: this.state.TicketName,
+            description: this.state.TicketDesc,
+            // priorityId: this.state.PriorityID,
+            // priorityName: this.state.PriorityName,
+            status: this.state.TicketStatus,
+            // comment: this.state.valueComments,
+            // companycode: '1000',
+          }
+        ).then((ople) => {
+          console.log("Success to Update ticket Form ")
+          // console.log(this.state.TicketDesc)
+          console.log(this.state.TicketStatus)
+        }).catch(error => {
+          console.log("error Update ticket".error)
+        })
+
+
+      )
+    
+
     }
+  }
   }
 
 
@@ -362,7 +403,7 @@ class Drawerplate extends React.Component {
                 <div  >
                   <Form.Item>
 
-                    {comments.length > 0 && <CommentList comments={comments} />}
+                  
                     {/* {this.state.CommentList ? <h1>{JSON.stringify(this.state.CommentList)}</h1> : <h1>false</h1>} */}
                     {this.state.CommentList.map(item => <li>
                       <Comment hidden={this.props.hidStat}
@@ -372,7 +413,7 @@ class Drawerplate extends React.Component {
                         
                     
                     </li>)}
-                   
+                    {comments.length > 0 && <CommentList comments={comments} />}
                       <Editor
                         onChange={this.handleChange}
                         onSubmit={this.handleSubmit}

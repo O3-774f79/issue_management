@@ -31,6 +31,7 @@ const Issue = () => {
   const [formcontrol, setformcontrol] = React.useState('');
 
   useEffect(() => {
+   
     Axios.get(
       '/Ticket/GetAllTicket', {
       }
@@ -42,9 +43,10 @@ const Issue = () => {
       .catch(error => {
         console.log("error alert".error)
       })
-  }, [])
+  }, [show])
   const onClickDisplay = async (record) => {
-    const comment = await Axios.get(
+    const comment = 
+    await Axios.get(
       `/Ticket/GetTicketComment?ticketId=${record.id}`)
     await setCommentList(comment.data)
     await setRecord(record)
@@ -71,13 +73,14 @@ const Issue = () => {
     setTickNodis(true);
 
     setformcontrol('add');
-    setRID(0);
-    setTickname('');
-    setDes('');
-    setPrio('Low');
-    setStat('OPEN');
-    setTickNo('');
-
+    // setRID(0);
+    // setTickname('');
+    // setDes('');
+    // setPrio('Low');
+    // setStat('OPEN');
+    // setTickNo('');
+    setRecord('');
+    console.log('add button on')
   }
 
   const [column, setColumn] = React.useState([

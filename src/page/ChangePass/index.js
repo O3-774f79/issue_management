@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link, Redirect } from 'react-router-dom';
 import {
     Button,
     Input,
@@ -50,7 +51,7 @@ const ChagePass = () => {
                                     name="oldpassword"
                                     value={oldpass}
                                     onChange={e => setOldpass(e.target.value)}
-
+                                    autoComplete={false}
                                 />
                             </Form.Item>
                             <Form.Item>
@@ -92,14 +93,16 @@ const ChagePass = () => {
                                 </Button>
                                 </Col>
                                 <Col>
-                                    <Button type="danger"
-                                        // htmlType="cancel"
-                                        className="login-form-button"
-                                    // onClick={this.handleSubmit}
+                                    <Link to='/issue' >
+                                        <Button type="danger"
+                                            // htmlType="cancel"
+                                            className="login-form-button"
+                                        // onClick={this.handleSubmit}
 
-                                    >
-                                        Cancel
+                                        >
+                                            Cancel
                                 </Button>
+                                    </Link>
                                 </Col>
                             </Form.Item>
                         </Form>
