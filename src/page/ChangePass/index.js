@@ -19,6 +19,8 @@ const ChagePass = () => {
     const [newpass, setNewpass] = useState('');
     const [conpass, setConpass] = useState('');
 
+    const [statussubmit, setStatussubmit] = useState(false);
+    const [message, setMessage] = useState('');
     const handlesubmit = (event) => {
         // event.preventDefault();
         Axios.post(
@@ -30,9 +32,13 @@ const ChagePass = () => {
             })
             .then((res) => {
                 console.log('Succes Change password', conpass)
+                setStatussubmit(true)
+                setMessage('Change Password Complete')
             })
             .catch(error => {
                 console.log("error change password".error)
+                setStatussubmit(false)
+                setMessage('Please Check Password not correct')
             })
     }
     return (
@@ -80,6 +86,9 @@ const ChagePass = () => {
 
                                 />
                             </Form.Item>
+                            {statussubmit ? 
+                            <Form.Item>{message}</Form.Item>: 
+                            <Form.Item><p style={{color:"red"}}>{message}</p></Form.Item>}
                             <Form.Item>
                                 <Col>
                                     <Button type="primary"
