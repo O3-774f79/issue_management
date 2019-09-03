@@ -31,7 +31,7 @@ const Issue = () => {
   const [formcontrol, setformcontrol] = React.useState('');
 
   useEffect(() => {
-   
+  if (authTokens.userType === 'ADMIN'){
     Axios.get(
       '/Ticket/GetAllTicket', {
       }
@@ -39,11 +39,28 @@ const Issue = () => {
       .then((result) => {
         setData(result.data);
         console.log(data)
+        console.log('ADMIN')
       })
       .catch(error => {
         console.log("error alert".error)
       })
+  } else if (authTokens.userType === 'USER'){
+    Axios.get(
+      '/Ticket/GetList', {
+      }
+    )
+      .then((result) => {
+        setData(result.data);
+        console.log(data)
+        console.log('USer')
+      })
+      .catch(error => {
+        console.log("error alert".error)
+      })
+  }
+    
   }, [show])
+
   const onClickDisplay = async (record) => {
     const comment = 
     await Axios.get(
