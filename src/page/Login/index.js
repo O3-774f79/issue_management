@@ -25,7 +25,7 @@ const Login = props => {
   const [isError, setIsError] = useState(false);
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
-  const changepass = '/ChangePass';
+  const changepass = '/ChangePassFL';
   const _handleSubmit = () => {
     axios
       .post('/Login', {

@@ -6,7 +6,9 @@ import LayoutTemplate from './component/layout';
 import Login from './page/Login';
 import Issue from './page/Issue';
 import ChangePass from './page/ChangePass';
+import ChangePassFL from './page/ChangePass/ChangepassFL';
 import Register from './page/Register';
+
 
 function App (props) {
   const [authTokens, setAuthTokens] = useState ();
@@ -28,6 +30,7 @@ function App (props) {
           
           <PrivateRoute path="/issue" component={Issue} />
           <PrivateRoute path="/ChangePass" component={ChangePass} />
+          <Route path="/ChangePassFL" component={ChangePassFL} />
           <PrivateRoute path="/register" component={Register} />
             {/* <Route path="/issue" component={Issue} /> */}
           {/* </LayoutTemplate> */}
