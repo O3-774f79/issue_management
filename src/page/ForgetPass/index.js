@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Link, Redirect } from 'react-router-dom';
+
 import {
     Button,
     Input,
@@ -11,9 +13,13 @@ import {
 
 
 } from 'antd';
+import axios from 'axios';
 
+const Forgetpass = () => {
 
-const index = () => {
+    const [email, setEmail] = useState('');
+    const [Fname, setFname] = useState('');
+    const [Lname, setLname] = useState('');
 
     const { Option } = Select;
 
@@ -63,7 +69,7 @@ const index = () => {
 
                                 />
                             </Form.Item>
-                       
+
                             <Form.Item>
                                 <Col>
                                     <Button type="primary"
@@ -76,14 +82,16 @@ const index = () => {
                                 </Button>
                                 </Col>
                                 <Col>
-                                    <Button type="danger"
-                                        htmlType="cancel"
-                                        className="login-form-button"
-                                    // onClick={this.handleSubmit}
+                                    <Link to='/login' >
+                                        <Button type="danger"
 
-                                    >
-                                        Cancel
+                                            className="login-form-button"
+                                        // onClick={this.handleSubmit}
+
+                                        >
+                                            Cancel
                                 </Button>
+                                    </Link>
                                 </Col>
                             </Form.Item>
                         </Form>
@@ -94,4 +102,4 @@ const index = () => {
     )
 }
 
-export default index
+export default Forgetpass

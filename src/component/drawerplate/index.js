@@ -10,6 +10,8 @@ import {
   Avatar,
   List,
   Form,
+  Divider,
+  Icon,
 } from 'antd';
 
 import Axios from 'axios';
@@ -20,17 +22,10 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 
-const CommentList = ({ comments }) => (
-  <List
-    dataSource={comments}
-    // header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-    itemLayout="horizontal"
-    renderItem={props => <Comment {...props} />}
-  />
-);
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
+
     <Form.Item>
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
@@ -53,7 +48,7 @@ class Drawerplate extends React.Component {
     visible: false,
     comments: [],
     submitting: false,
-    // value: '',
+    loading: false,
     TicketID: '',
     TicketNo: '',
     TicketName: '',
@@ -66,14 +61,14 @@ class Drawerplate extends React.Component {
     data: [],
     dataList: {},
     valueComments: '',
-    commentsList: [],
-    CommentList: []
+    CommentList: [],
+
 
 
   };
 
   componentDidMount() {
-    console.log(`lisaaaaaaaaaaaaaaaaaaaaaat`, this.props.dataList)
+
     Axios.get(
       '/Priority/GetList', {
       },
@@ -82,11 +77,10 @@ class Drawerplate extends React.Component {
         this.setState({
           Priovalue: result.data,
         })
-        console.log("Ceeeeeeeeeeeeeeb", result.data)
-        console.log(this.state.Priovalue)
+
       })
       .catch(error => {
-        console.log("Error From Board PAge".error)
+
 
       }
       )
@@ -95,7 +89,7 @@ class Drawerplate extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    
+
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
         TicketID: nextProps.dataList.id,
@@ -110,12 +104,13 @@ class Drawerplate extends React.Component {
         `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`)
         .then((ResComment) => {
           this.setState({
-            commentsList: ResComment.data
+            CommentList: ResComment.data
           })
-          
+
+
         })
         .catch(error => {
-          console.log("Error Comment".error)
+
         }
         )
     }
@@ -125,6 +120,7 @@ class Drawerplate extends React.Component {
   onClose = () => {
     this.setState({
       visible: false,
+      CommentList: [],
     });
   };
 
@@ -135,6 +131,14 @@ class Drawerplate extends React.Component {
 
   handleOnSubmit = (event) => {
     event.preventDefault();
+    this.setState({
+      loading: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+      })
+    }, 3000);
     if (this.props.disStat === false) {
       return (
         Axios.post(
@@ -147,7 +151,7 @@ class Drawerplate extends React.Component {
 
           }
         ).then((ople) => {
-          console.log("Success to Open ticket")
+
           this.setState({
             TicketName: '',
             TicketDesc: '',
@@ -155,79 +159,91 @@ class Drawerplate extends React.Component {
             status: 'OPEN',
 
           })
-
-          // event.preventDefault();
+          
 
         }).catch(error => {
-          console.log("error Open ticket".error)
+
         })
 
       )
     } else {
-     if(this.state.valueComments !== ''){
-      return (
-     
-        console.log("Update comment"),
-     
-       
-        Axios.post(
-          '/Ticket/UpdateTicket', {
-
-          
-            id: this.state.TicketID,
-            // ticketNo: this.state.TicketNo,
-            // ticketName: this.state.TicketName,
-            // description: this.state.TicketDesc,
-            // priorityId: this.state.PriorityID,
-            // priorityName: this.state.PriorityName,
-            status: this.state.TicketStatus,
-            comment: this.state.valueComments,
-            // companycode: '1000',
-          }
-        ).then((ople) => {
-          console.log("Success to Update ticket Comment")
-          // console.log(this.state.TicketDesc)
-          console.log(this.state.valueComments)
-        }).catch(error => {
-          console.log("error Update ticket".error)
-        })
+      if (this.state.valueComments !== '') {
+        return (
 
 
-      )
-    } else {
-      return (
-     
-        console.log("Update Form"),
-     
-       
-        Axios.post(
-          '/Ticket/UpdateTicket', {
 
-          
-            id: this.state.TicketID,
-            // ticketNo: this.state.TicketNo,
-            // ticketName: this.state.TicketName,
-            description: this.state.TicketDesc,
-            // priorityId: this.state.PriorityID,
-            // priorityName: this.state.PriorityName,
-            status: this.state.TicketStatus,
-            // comment: this.state.valueComments,
-            // companycode: '1000',
-          }
-        ).then((ople) => {
-          console.log("Success to Update ticket Form ")
-          // console.log(this.state.TicketDesc)
-          console.log(this.state.TicketStatus)
-        }).catch(error => {
-          console.log("error Update ticket".error)
-        })
+          Axios.post(
+            '/Ticket/UpdateTicket', {
 
 
-      )
-    
+              id: this.state.TicketID,
+              // ticketNo: this.state.TicketNo,
+              // ticketName: this.state.TicketName,
+              // description: this.state.TicketDesc,
+              // priorityId: this.state.PriorityID,
+              // priorityName: this.state.PriorityName,
+              status: this.state.TicketStatus,
+              comment: this.state.valueComments,
+              // companycode: '1000',
+            }
+          ).then((ople) => {
 
+
+            Axios.get(
+              `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`)
+              .then((ResComment) => {
+                this.setState({
+                  CommentList: ResComment.data
+                })
+
+              })
+              .catch(error => {
+              }
+              )
+
+
+            this.setState({
+              valueComments: '',
+
+            })
+
+
+
+          }).catch(error => {
+          })
+
+
+        )
+      } else {
+        return (
+
+
+          Axios.post(
+            '/Ticket/UpdateTicket', {
+
+
+              id: this.state.TicketID,
+              // ticketNo: this.state.TicketNo,
+              // ticketName: this.state.TicketName,
+              description: this.state.TicketDesc,
+              // priorityId: this.state.PriorityID,
+              // priorityName: this.state.PriorityName,
+              status: this.state.TicketStatus,
+              // comment: this.state.valueComments,
+              // companycode: '1000',
+            }
+          ).then((ople) => {
+
+          }).catch(error => {
+
+          })
+
+
+        )
+
+
+      }
     }
-  }
   }
 
 
@@ -235,29 +251,24 @@ class Drawerplate extends React.Component {
     this.setState({
       TicketName: e.target.value
     })
-    console.log(this.state.TicketName)
 
   }
   onChangeSDescription = e => {
     this.setState({
       TicketDesc: e.target.value
     })
-    console.log(this.state.TicketDesc)
-
   }
   onChangeSPriorityID = value => {
     this.setState({
       PriorityID: value
     })
 
-    console.log("Select ID ", value)
 
   }
   onChangeSStatus = value => {
     this.setState({
       TicketStatus: value
     })
-    console.log('status is ', this.state.TicketStatus)
 
   }
 
@@ -268,13 +279,13 @@ class Drawerplate extends React.Component {
 
     this.setState({
       submitting: true,
-    }); setTimeout(() => {
+    });
+    setTimeout(() => {
       this.setState({
         submitting: false,
         valueComments: '',
         comments: [
           {
-            // author: this.props.AuthTokens,
             content: <p>{this.state.valueComments}</p>,
             datetime: moment().fromNow(),
           },
@@ -291,8 +302,7 @@ class Drawerplate extends React.Component {
 
   };
   render() {
-    console.log("Show com", this.state.commentsList)
-
+   
 
     const { comments, submitting, value } = this.state;
     const options =
@@ -317,37 +327,28 @@ class Drawerplate extends React.Component {
           >
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Type" >
-
-                  <Select name='typeSel' defaultValue="K2" disabled={this.props.disStat} >
-                    <Option value="1">K2</Option>
-                    <Option value="2">F/O</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item layout="horizontal" label="Priority">
-
-
+                <Form.Item layout="horizontal" label="Priority" >
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
 
                     disabled={this.props.disStat}
-                    // disabled={false}
+
                     onChange={this.onChangeSPriorityID}
                     value={this.state.PriorityID}
                   >
                     {options}
 
                   </Select>
+
                 </Form.Item>
               </Col>
+
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
                   <Input type='text' name='TicketNo' disabled={this.props.tickNodis}
-                    // value={this.props.tickNoStat}
+
                     value={this.state.TicketNo}
                   />
                 </Form.Item>
@@ -379,9 +380,9 @@ class Drawerplate extends React.Component {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Other" >
+                <Form.Item layout="horizontal"  >
 
-                  <Input type='text' name='Inputother' />
+
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -401,52 +402,61 @@ class Drawerplate extends React.Component {
 
               <Col span={24}>
                 <div  >
-                  <Form.Item>
+                  <Form.Item label="Comment">
 
-                  
-                    {/* {this.state.CommentList ? <h1>{JSON.stringify(this.state.CommentList)}</h1> : <h1>false</h1>} */}
-                    {this.state.CommentList.map(item => <li>
-                      <Comment hidden={this.props.hidStat}
-                        author={item.commentByName}
-                        content={item.comment}
+
+
+                    {this.state.CommentList.map(item =>
+
+                      <li>
+                        <Comment
+                          hidden={this.props.hidStat}
+                          avatar='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                          author={item.commentByName}
+                          content={item.comment}
+
                         />
-                        
-                    
-                    </li>)}
-                    {comments.length > 0 && <CommentList comments={comments} />}
-                      <Editor
-                        onChange={this.handleChange}
-                        onSubmit={this.handleSubmit}
-                        submitting={submitting}
-                        value={this.state.valueComments}
-                      />
-                  </Form.Item>
-                      <Col span={4}></Col>
-                      <Col span={4}></Col>
-                      <Col span={4}></Col>
-                      <Col span={4}></Col>
-                      <Col span={4}></Col>
-                      <Col span={4}>
-                        <Form.Item>
-                          <Button type="primary"
-                            htmlType="submit"
-                            className="login-form-button"
-                          // onClick={this.openticket}
 
-                          >
-                            Submit
+
+                      </li>
+
+                    )}
+
+
+                    <Editor
+                      hidden={this.props.hidStat}
+                      onChange={this.handleChange}
+                      onSubmit={this.handleSubmit}
+                      submitting={submitting}
+                      value={this.state.valueComments}
+                    />
+                  </Form.Item>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}>{}</Col>
+                  <Col span={4}></Col>
+                  <Col span={4}></Col>
+                  <Col span={4}>
+                    <Form.Item>
+                      <Button type="primary"
+                        loading={this.state.loading}
+                        htmlType="submit"
+                        className="login-form-button"
+
+                      >
+                        Submit
               </Button>
 
-                        </Form.Item>
+                    </Form.Item>
 
-                      </Col>
+                  </Col>
                 </div>
               </Col>
             </Row>
           </Form>
         </Drawer>
       </div>
-          );
-        }
-      }
-      export default Drawerplate;
+    );
+  }
+}
+export default Drawerplate;

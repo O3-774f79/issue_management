@@ -34,12 +34,12 @@ const Register = props => {
 
     const [GetUser, setGetUser] = useState([]);
 
-    const [value, setValue] = useState ('User');
+    const [value, setValue] = useState('User');
 
     const { Option } = Select;
 
     const HandleSubmit = (event) => {
-        // event.preventDefault();
+
         Axios.post(
             '/Register', {
                 email: Inemail,
@@ -51,53 +51,18 @@ const Register = props => {
                 lastNameEn: LnameEN,
                 userType: InuserType,
                 telNo: PhoneNo,
-                companyCode:CCode,
-              
-                
+                companyCode: CCode,
+
+
             })
             .then((Resp) => {
 
-                // setEmail('');
-                // setPassword('');
-                // setConPassword('');
-                // setFnameTH('');
-                // setLnameTH('');
-                // setFnameEN('');
-                // setLnameEN('');
-                // setPhoneNo('');
 
-
-                console.log(Inemail)
-                console.log(Inpassword)
-                console.log(Inconpassword)
-                console.log(FnameTH)
-                console.log(LnameTH)
-                console.log(FnameEN)
-                console.log(LnameEN)
-                console.log(InuserType)
-                console.log(PhoneNo)
-                console.log(CCode)
-                console.log("Goods")
-                // event.preventDefault();
-
-                console.log("Success Register")
             })
             .catch(error => {
-                console.log("Error Regis",error)
 
-                console.log(Inemail)
-                console.log(Inpassword)
-                console.log(Inconpassword)
-                console.log(FnameTH)
-                console.log(LnameTH)
-                console.log(FnameEN)
-                console.log(LnameEN)
-                console.log(InuserType)
-                console.log(PhoneNo)
-                console.log(CCode)
-                console.log("Bad")
-                
-                
+
+
             })
     }
     useEffect(() => {
@@ -107,10 +72,10 @@ const Register = props => {
         )
             .then((result) => {
                 setGetUser(result.data);
-                console.log("Role get", result.data)
+
             })
             .catch(error => {
-                console.log("error get role".error)
+
             })
     }, [])
 
@@ -118,9 +83,9 @@ const Register = props => {
     const onChangeSelect = value => {
         setValue(value);
         setUserType(value);
-        console.log ("Check",value);
+
     }
-    const options = GetUser.map(rolemap => <Option  value={rolemap.valueKey}>{rolemap.valueText}</Option>)
+    const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)
 
     return (
         <div className="login-box">
@@ -129,7 +94,7 @@ const Register = props => {
                     <Card title='Register' type="flex" justify="center" align="middle" style={{ width: 350 }}>
 
                         <Form className="login-form" style={{ width: "80%", height: "100%", textAlign: 'center' }}
-                        // onSubmit={this.HandleSubmit}
+
                         >
 
                             <Form.Item>
@@ -218,28 +183,14 @@ const Register = props => {
                                 <Select
 
                                     name='roleSel'
-                                    // placeholder="Select role"
-                                    // defaultValue={Getuser}
-                                    // disabled={this.props.disStat}
-                                    // value={GetUser}
-                                    // value={userType}
-                                    // onChange={e => setUserType(Number(e.target.value)
-                                    //     )
-                                    // }
+
                                     placeholder="Select role"
                                     value={value}
                                     onChange={onChangeSelect}
                                 >
-                                    {/* {GetUser.map(role =>(
-                                        <Option key={role.valueKey} value={role.valueKey}>
-                                            {role.valueText}
-                                        </Option>
-                                        )
-                                    )} */}
+
                                     {options}
-                                    {/* <Option value="1">User</Option>
-                                    <Option value="2">Manager</Option>
-                                    <Option value="3">Admin</Option> */}
+
                                 </Select>
                             </Form.Item>
                             <Form.Item>
@@ -268,7 +219,6 @@ const Register = props => {
                                 <Col>
                                     <Link to='/issue'>
                                         <Button type="danger"
-                                            // htmlType="cancel"
                                             className="login-form-button"
 
 

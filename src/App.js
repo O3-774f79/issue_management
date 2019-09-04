@@ -8,6 +8,7 @@ import Issue from './page/Issue';
 import ChangePass from './page/ChangePass';
 import ChangePassFL from './page/ChangePass/ChangepassFL';
 import Register from './page/Register';
+import Forgetpass from './page/ForgetPass';
 
 
 function App (props) {
@@ -31,6 +32,7 @@ function App (props) {
           <PrivateRoute path="/issue" component={Issue} />
           <PrivateRoute path="/ChangePass" component={ChangePass} />
           <Route path="/ChangePassFL" component={ChangePassFL} />
+          <Route path="/Forgetpass" component={Forgetpass} />
           <PrivateRoute path="/register" component={Register} />
             {/* <Route path="/issue" component={Issue} /> */}
           {/* </LayoutTemplate> */}

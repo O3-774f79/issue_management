@@ -1,13 +1,13 @@
 import React, { Component, useState, useEffect } from 'react';
 import TableIssue from '../../component/table';
 
-import { Tag, Button, Icon } from 'antd';
+import { Tag, Button, Icon, Alert, } from 'antd';
 import Drawerplate from '../../component/drawerplate/index';
 import Axios from 'axios';
 import { useAuth } from '../../context/auth';
 const Issue = () => {
   const { authTokens } = useAuth();
-  console.log('aaBBA', authTokens)
+
   const [tickNodis, setTickNodis] = React.useState(false);
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
@@ -21,61 +21,59 @@ const Issue = () => {
   const [priorityList, setPriorityList] = React.useState([])
   const [priorityName, setPriorityName] = React.useState("")
   const [data, setData] = React.useState();
-  const [tableload, setLoadTable] = React.useState(true)
+  const [tableload, setLoadTable] = React.useState(false)
   const [titledraw, setTitledraw] = React.useState('');
   const [recordList, setRecord] = React.useState({})
-  const [commentList,setCommentList] =React.useState([])
+  const [commentList, setCommentList] = React.useState([])
 
 
   // Control form
   const [formcontrol, setformcontrol] = React.useState('');
 
   useEffect(() => {
-  if (authTokens.userType === 'ADMIN'){
-    Axios.get(
-      '/Ticket/GetAllTicket', {
-      }
-    )
-      .then((result) => {
-        setData(result.data);
-        console.log(data)
-        console.log('ADMIN')
-      })
-      .catch(error => {
-        console.log("error alert".error)
-      })
-  } else if (authTokens.userType === 'USER'){
-    Axios.get(
-      '/Ticket/GetList', {
-      }
-    )
-      .then((result) => {
-        setData(result.data);
-        console.log(data)
-        console.log('USer')
-      })
-      .catch(error => {
-        console.log("error alert".error)
-      })
-  }
-    
+    setLoadTable(true);
+    setTimeout(() => {
+      setLoadTable(false);
+    }, 1500);
+    if (authTokens.userType === 'ADMIN') {
+      Axios.get(
+        '/Ticket/GetAllTicket', {
+        }
+      )
+        .then((result) => {
+          setData(result.data);
+
+        })
+        .catch(error => {
+
+        })
+    } else if (authTokens.userType === 'USER') {
+      Axios.get(
+        '/Ticket/GetList', {
+        }
+      )
+        .then((result) => {
+          setData(result.data);
+
+        })
+        .catch(error => {
+
+        })
+    }
+
   }, [show])
 
   const onClickDisplay = async (record) => {
-    const comment = 
-    await Axios.get(
-      `/Ticket/GetTicketComment?ticketId=${record.id}`)
+    const comment =
+      await Axios.get(
+        `/Ticket/GetTicketComment?ticketId=${record.id}`)
     await setCommentList(comment.data)
     await setRecord(record)
     await setPriorityName(record.priorityName)
     await setDis(true);
     await setHid(false);
-    // await setRID(rowid + record.id);
-    // await setTickname(record.ticketName);
-    // await setDes(record.description);
-    // await setPrio(prio + record.priorityId);
-    // await setStat(record.status);
-    // await setTickNo(record.ticketNo);
+
+
     await setTickNodis(true);
     await setTitledraw('Show Ticket');
     await setformcontrol('edit');
@@ -90,14 +88,10 @@ const Issue = () => {
     setTickNodis(true);
 
     setformcontrol('add');
-    // setRID(0);
-    // setTickname('');
-    // setDes('');
-    // setPrio('Low');
-    // setStat('OPEN');
-    // setTickNo('');
+
+
     setRecord('');
-    console.log('add button on')
+
   }
 
   const [column, setColumn] = React.useState([
@@ -160,7 +154,7 @@ const Issue = () => {
       width: '15%',
       render: (text, record) => (
         <span style={{ cursor: 'pointer' }}
-          // onClick={() => [setShow(true),setDis(true),setHid(false)] }>
+
           onClick={() => onClickDisplay(record)}>
           <Icon type="search" height="50em" width="50em" />
           {' '}
@@ -178,7 +172,7 @@ const Issue = () => {
   return (
     <React.Fragment>
       <Button type="primary"
-        // onClick={() => [setShow(true), setDis(false), setHid(true)]} 
+
         onClick={() => onClickAdd()}
       >
         <Icon type="plus-circle" />Add
@@ -188,13 +182,6 @@ const Issue = () => {
         disStat={dis}
         hidStat={hid}
 
-        // rowStat={rowid}
-        // desStat={des}
-        // TicketnameStat={tickname}
-        // prioStat={prio}
-        // statStat={stat}
-        // TicketNoStat={tickno}
-        // prioName={priorityName}
         authTokens={authTokens}
         titledraw={titledraw}
         commentList={commentList}
