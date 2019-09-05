@@ -12,16 +12,16 @@ import {
   Form,
   Divider,
   Icon,
+  Alert,
 } from 'antd';
 
 import Axios from 'axios';
 import moment, { relativeTimeThreshold } from 'moment';
 
 
+
 const { Option } = Select;
 const { TextArea } = Input;
-
-
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <div>
@@ -49,6 +49,8 @@ class Drawerplate extends React.Component {
     comments: [],
     submitting: false,
     loading: false,
+    CheckError: false,
+    CheckSuccess: false,
     TicketID: '',
     TicketNo: '',
     TicketName: '',
@@ -62,7 +64,7 @@ class Drawerplate extends React.Component {
     dataList: {},
     valueComments: '',
     CommentList: [],
-
+    Message: '',
 
 
   };
@@ -133,6 +135,9 @@ class Drawerplate extends React.Component {
     event.preventDefault();
     this.setState({
       loading: true,
+      CheckError: false,
+      CheckSuccess: false,
+      Message: '',
     });
     setTimeout(() => {
       this.setState({
@@ -157,12 +162,20 @@ class Drawerplate extends React.Component {
             TicketDesc: '',
             PriorityID: 1,
             status: 'OPEN',
+            CheckError: false,
+            CheckSuccess: true,
+            Message: 'Open Ticket complete'
 
           })
-          
+
 
         }).catch(error => {
 
+          this.setState({
+            CheckError: true,
+            CheckSuccess: false,
+            Message: error.message
+          })
         })
 
       )
@@ -193,7 +206,7 @@ class Drawerplate extends React.Component {
               `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`)
               .then((ResComment) => {
                 this.setState({
-                  CommentList: ResComment.data
+                  CommentList: ResComment.data,
                 })
 
               })
@@ -233,9 +246,18 @@ class Drawerplate extends React.Component {
               // companycode: '1000',
             }
           ).then((ople) => {
+            this.setState({
+              CheckError: false,
+              CheckSuccess: true,
+              Message: 'Update Ticket complete'
+            })
 
           }).catch(error => {
-
+            this.setState({
+              CheckError: true,
+              CheckSuccess: false,
+              Message: error.message,
+            })
           })
 
 
@@ -302,7 +324,7 @@ class Drawerplate extends React.Component {
 
   };
   render() {
-   
+
 
     const { comments, submitting, value } = this.state;
     const options =
@@ -356,7 +378,8 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="TicketName" >
 
-                  <Input type='text' name='TicketName' disabled={false}
+                  <Input type='text' name='TicketName'  
+                  disabled={this.props.disStat}
                     onChange={this.onChangeSTicketName}
                     value={this.state.TicketName}
 
@@ -411,7 +434,7 @@ class Drawerplate extends React.Component {
                       <li>
                         <Comment
                           hidden={this.props.hidStat}
-                          avatar='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                          avatar={<Avatar src='../../../src/img/user.png' />}
                           author={item.commentByName}
                           content={item.comment}
 
@@ -449,6 +472,12 @@ class Drawerplate extends React.Component {
 
                     </Form.Item>
 
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item>
+                      {this.state.CheckSuccess ? <Alert type='success' message={this.state.Message} /> : null}
+                      {this.state.CheckError ? <Alert type='error' message={this.state.Message} /> : null}
+                    </Form.Item>
                   </Col>
                 </div>
               </Col>

@@ -17,6 +17,8 @@ import {
 
 } from 'antd'
 
+
+
 const Login = props => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -25,16 +27,27 @@ const Login = props => {
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const [message, setMessage] = useState('');
+
+
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
   const changepass = '/ChangePassFL';
+
+
+
   const _handleSubmit = () => {
+
+    setMessage('');
+
+
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 3000);
     axios
-      .post('/Login', {
+      .post('/login', {
         userName,
         password,
       })
@@ -50,11 +63,14 @@ const Login = props => {
 
         } else {
           setIsError(true);
+          setMessage(result.data.message)
 
         }
       })
       .catch(e => {
         setIsError(true);
+        setMessage(e.response.data.message)
+
       });
 
   };
@@ -102,12 +118,13 @@ const Login = props => {
                   <Button htmlType="submit" type='primary' loading={loading} onClick={() => _handleSubmit()}>Login</Button>
                 </Form.Item>
                 <Form.Item>
-                
+
                   <Link to='/forgetpass'><p>Forget Password</p></Link>
                 </Form.Item>
                 <Form.Item>
-
-                  {isError && <Alert type="error" message="The username or password provided were incorrect!" />}
+                  {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
+                  {/* {errorStat ? <Alert type='error' message={message}></Alert> : null} */}
+                  {isError && <p style={{ color: 'red' }}>{message}</p>}
                 </Form.Item>
               </Form>
             </Card>

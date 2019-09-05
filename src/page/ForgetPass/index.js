@@ -10,24 +10,64 @@ import {
     Icon,
     Card,
     Select,
+    Alert,
 
 
 } from 'antd';
-import axios from 'axios';
+import Axios from 'axios';
 
 const Forgetpass = () => {
 
     const [email, setEmail] = useState('');
     const [Fname, setFname] = useState('');
     const [Lname, setLname] = useState('');
+    const [statussubmit, setStatussubmit] = useState(false);
+    const [errorStat, setError] = useState(false);
+    const [message, setMessage] = useState('');
 
-    const { Option } = Select;
+    const handlesubmit = (event) => {
+        setStatussubmit(false)
+        setError(false)
+        setMessage('')
+        Axios.post(
+            '/Password/ForgetPassword', {
+                email: email,
+                firstnameEN: Fname,
+                lastnameEN: Lname,
 
+            })
+            .then((res) => {
+
+                if (res.status === 200) {
+
+                    if (res.data.isError === true) {
+                        setStatussubmit(false)
+                        setError(true)
+                        setMessage(res.data.message);
+
+
+                    } else {
+
+                        setStatussubmit(true)
+                        setError(false)
+                        setMessage('Email sended please check your inbox')
+
+                    }
+                }
+            })
+            .catch(isError => {
+
+                setStatussubmit(false)
+                setError(true)
+                setMessage('กรุณากรอกข้อมูลให้ครบ')
+
+            })
+    }
     return (
         <div className="login-box">
             <Row type="flex" align="middle">
                 <Col className="login-box-body" >
-                    <Card title='Register' type="flex" justify="center" align="middle" style={{ width: 350 }}>
+                    <Card title='Forget Password' type="flex" justify="center" align="middle" style={{ width: 350 }}>
 
                         <Form className="login-form" style={{ width: "80%", height: "100%", textAlign: 'center' }}>
 
@@ -38,8 +78,8 @@ const Forgetpass = () => {
                                     type="text"
                                     placeholder="Email"
                                     name="email"
-                                // value={this.state.UserInput}
-                                // onChange={this.UserChange}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
 
                                 />
                             </Form.Item>
@@ -48,10 +88,10 @@ const Forgetpass = () => {
                                 <Input
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="text"
-                                    placeholder="First name"
+                                    placeholder="First name English"
                                     name="firstname"
-                                // value={this.state.PassInput}
-                                // onChange={this.PassChange}
+                                    value={Fname}
+                                    onChange={e => setFname(e.target.value)}
 
 
                                 />
@@ -63,8 +103,8 @@ const Forgetpass = () => {
                                     type="text"
                                     placeholder="Last name"
                                     name="lastname"
-                                // value={this.state.PassInput}
-                                // onChange={this.PassChange}
+                                    value={Lname}
+                                    onChange={e => setLname(e.target.value)}
 
 
                                 />
@@ -75,7 +115,7 @@ const Forgetpass = () => {
                                     <Button type="primary"
                                         htmlType="submit"
                                         className="login-form-button"
-                                    // onClick={this.handleSubmit}
+                                        onClick={() => handlesubmit()}
 
                                     >
                                         Submit
@@ -86,12 +126,17 @@ const Forgetpass = () => {
                                         <Button type="danger"
 
                                             className="login-form-button"
-                                        // onClick={this.handleSubmit}
 
                                         >
                                             Cancel
                                 </Button>
                                     </Link>
+                                </Col>
+                            </Form.Item>
+                            <Form.Item>
+                                <Col>
+                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
+                                    {errorStat ? <Alert type='error' message={message}></Alert> : null}
                                 </Col>
                             </Form.Item>
                         </Form>

@@ -9,6 +9,8 @@ import {
     Icon,
     Card,
     Select,
+    Alert,
+
 
 
 } from 'antd';
@@ -34,12 +36,32 @@ const Register = props => {
 
     const [GetUser, setGetUser] = useState([]);
 
-    const [value, setValue] = useState('User');
+    const [value, setValue] = useState('USER');
+
+    const [statussubmit, setStatussubmit] = useState(false);
+    const [errorStat, setError] = useState(false);
+    const [message, setMessage] = useState([]);
+    // useState({
+    //     Email:'',
+    //     TelNo:'',
+    //     Password:'',
+    //     UserType:'',
+    //     LastNameEN:'',
+    //     LastNameTH:'',
+    //     CompanyCode:'',
+    //     FirstNameEN:'',
+    //     FirstNameTH:'',
+    // });
+
 
     const { Option } = Select;
 
-    const HandleSubmit = (event) => {
 
+
+    const HandleSubmit = (event) => {
+        setStatussubmit(false)
+        setError(false)
+        setMessage('')
         Axios.post(
             '/Register', {
                 email: Inemail,
@@ -56,15 +78,20 @@ const Register = props => {
 
             })
             .then((Resp) => {
-
+                console.logo("Dat Resp", Resp)
 
             })
             .catch(error => {
-
-
-
+                console.log("This is TelNo", error.response.data)
+                setError(true);
+                setMessage('erorororororororo')
+                
+              
             })
     }
+
+
+
     useEffect(() => {
         Axios.get(
             '/Role/GetRole', {
@@ -100,6 +127,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Email */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="E-mail"
                                     name="mail"
@@ -111,6 +139,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Password */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Password"
@@ -124,6 +153,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Confirm Password */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Confirm Password"
@@ -137,6 +167,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* FirstName TH */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Firstname TH"
                                     name="FirstnameTH"
@@ -148,6 +179,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Lastname TH */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Lastname TH"
                                     name="LastnameTH"
@@ -159,6 +191,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Firstname EN */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Firstname EN"
                                     name="FirstnameEN"
@@ -170,6 +203,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Lastname EN */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Lastname EN"
                                     name="LastnameEN"
@@ -196,6 +230,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* TelNo */}
                                 <Input
+                                    // required
                                     prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Telephone Number"
                                     type="text"
@@ -226,6 +261,12 @@ const Register = props => {
                                             Cancel
                                 </Button>
                                     </Link>
+                                </Col>
+                            </Form.Item>
+                            <Form.Item>
+                                <Col>
+                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
+                                    {errorStat ? <Alert type='error' message={message}></Alert> : null}
                                 </Col>
                             </Form.Item>
                         </Form>

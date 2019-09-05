@@ -12,13 +12,7 @@ const Issue = () => {
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
-  const [rowid, setRID] = React.useState(0);
-  const [tickname, setTickname] = React.useState('');
-  const [des, setDes] = React.useState('');
-  const [prio, setPrio] = React.useState(0);
-  const [stat, setStat] = React.useState('');
-  const [tickno, setTickNo] = React.useState('');
-  const [priorityList, setPriorityList] = React.useState([])
+ 
   const [priorityName, setPriorityName] = React.useState("")
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(false)
