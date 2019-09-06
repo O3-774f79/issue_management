@@ -13,6 +13,7 @@ import {
   Divider,
   Icon,
   Alert,
+  Tooltip,
 } from 'antd';
 
 import Axios from 'axios';
@@ -23,14 +24,14 @@ import moment, { relativeTimeThreshold } from 'moment';
 const { Option } = Select;
 const { TextArea } = Input;
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+const Editor = ({ onChange, onSubmit, submitting, value, hidden }) => (
   <div>
 
     <Form.Item>
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
     <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary"  >
         Add Comment
       </Button>
     </Form.Item>
@@ -65,6 +66,7 @@ class Drawerplate extends React.Component {
     valueComments: '',
     CommentList: [],
     Message: '',
+    date: '',
 
 
   };
@@ -91,6 +93,10 @@ class Drawerplate extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+    this.setState({
+    CheckSuccess: false,
+      message:''
+  })
 
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
@@ -100,7 +106,8 @@ class Drawerplate extends React.Component {
         TicketDesc: nextProps.dataList.description,
         PriorityID: nextProps.dataList.priorityId,
         TicketStatus: nextProps.dataList.status,
-        CommentList: nextProps.commentList
+        CommentList: nextProps.commentList,
+
       })
       Axios.get(
         `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`)
@@ -108,7 +115,7 @@ class Drawerplate extends React.Component {
           this.setState({
             CommentList: ResComment.data
           })
-
+          console.log(ResComment.data)
 
         })
         .catch(error => {
@@ -122,6 +129,7 @@ class Drawerplate extends React.Component {
   onClose = () => {
     this.setState({
       visible: false,
+     
       CommentList: [],
     });
   };
@@ -197,10 +205,14 @@ class Drawerplate extends React.Component {
               // priorityName: this.state.PriorityName,
               status: this.state.TicketStatus,
               comment: this.state.valueComments,
+              datetime: moment().format('YYYY MM DD'),
               // companycode: '1000',
             }
           ).then((ople) => {
 
+            console.log(moment().format('YYYY MM DD hh:mm:ss'))
+            console.log(moment().fromNow())
+            console.log(moment().format())
 
             Axios.get(
               `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`)
@@ -309,7 +321,7 @@ class Drawerplate extends React.Component {
         comments: [
           {
             content: <p>{this.state.valueComments}</p>,
-            datetime: moment().fromNow(),
+            // datetime: moment().fromNow(),
           },
           ...this.state.comments,
         ],
@@ -325,7 +337,7 @@ class Drawerplate extends React.Component {
   };
   render() {
 
-
+    const { getFieldDecorator } = this.props.form;
     const { comments, submitting, value } = this.state;
     const options =
       this.state.Priovalue.map(Fdata =>
@@ -378,8 +390,8 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="TicketName" >
 
-                  <Input type='text' name='TicketName'  
-                  disabled={this.props.disStat}
+                  <Input type='text' name='TicketName'
+                    disabled={this.props.disStat}
                     onChange={this.onChangeSTicketName}
                     value={this.state.TicketName}
 
@@ -425,7 +437,7 @@ class Drawerplate extends React.Component {
 
               <Col span={24}>
                 <div  >
-                  <Form.Item label="Comment">
+                  {!this.props.hidStat ? <Form.Item label="Comment"  >
 
 
 
@@ -433,11 +445,15 @@ class Drawerplate extends React.Component {
 
                       <li>
                         <Comment
-                          hidden={this.props.hidStat}
-                          avatar={<Avatar src='../../../src/img/user.png' />}
-                          author={item.commentByName}
-                          content={item.comment}
 
+                          avatar={item.isOwner
+                            ? <Avatar icon="tag" /> :
+                            <Avatar icon='tool' />}
+                          author={item.isOwner
+                            ? <p style={{ color: 'red' }}> {item.commentByName}</p>
+                            : <p style={{ color: 'green' }}> {item.commentByName}</p>}
+                          content={item.comment}
+                          datetime={item.commentDate}
                         />
 
 
@@ -447,13 +463,13 @@ class Drawerplate extends React.Component {
 
 
                     <Editor
-                      hidden={this.props.hidStat}
+
                       onChange={this.handleChange}
                       onSubmit={this.handleSubmit}
                       submitting={submitting}
                       value={this.state.valueComments}
                     />
-                  </Form.Item>
+                  </Form.Item> : null}
                   <Col span={4}></Col>
                   <Col span={4}></Col>
                   <Col span={4}>{}</Col>
@@ -488,4 +504,4 @@ class Drawerplate extends React.Component {
     );
   }
 }
-export default Drawerplate;
+export default Form.create()(Drawerplate);

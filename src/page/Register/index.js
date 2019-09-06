@@ -21,7 +21,7 @@ import Axios from 'axios';
 
 
 const Register = props => {
-
+    
 
     const [Inemail, setEmail] = useState('');
     const [Inpassword, setPassword] = useState('');
@@ -41,6 +41,7 @@ const Register = props => {
     const [statussubmit, setStatussubmit] = useState(false);
     const [errorStat, setError] = useState(false);
     const [message, setMessage] = useState([]);
+    const [round, setRound] = useState([]);
     // useState({
     //     Email:'',
     //     TelNo:'',
@@ -62,6 +63,7 @@ const Register = props => {
         setStatussubmit(false)
         setError(false)
         setMessage('')
+        // setRound([]);
         Axios.post(
             '/Register', {
                 email: Inemail,
@@ -82,11 +84,24 @@ const Register = props => {
 
             })
             .catch(error => {
-                console.log("This is TelNo", error.response.data)
+               
                 setError(true);
-                setMessage('erorororororororo')
+                // setMessage(error.response.data.TelNo[0]);
                 
-              
+                if(error.response.data.Email !== undefined){
+                    // setError(true);
+                    // setMessage(error.response.data.Email[0])
+                    round.push({Err:error.response.data.Email[0]})
+                    
+                }
+                if(error.response.data.Password !== undefined){
+                    // setError(true);
+                    // setMessage(error.response.data.Password[0])
+                    round.push({Err:error.response.data.Password[0]})
+
+                }
+
+                console.log(round);     
             })
     }
 
@@ -113,7 +128,7 @@ const Register = props => {
 
     }
     const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)
-
+    
     return (
         <div className="login-box">
             <Row type="flex" align="middle">
@@ -265,8 +280,9 @@ const Register = props => {
                             </Form.Item>
                             <Form.Item>
                                 <Col>
-                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
-                                    {errorStat ? <Alert type='error' message={message}></Alert> : null}
+                                    {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
+                                    {errorStat ? 
+                                    round.map( item => (<Alert type='error' message={item.Err}></Alert>)  ) : null}
                                 </Col>
                             </Form.Item>
                         </Form>
