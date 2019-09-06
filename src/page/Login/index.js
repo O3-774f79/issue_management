@@ -20,6 +20,7 @@ import {
 
 
 const Login = props => {
+
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,6 +32,7 @@ const Login = props => {
   const [message, setMessage] = useState('');
 
 
+
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
   const changepass = '/ChangePassFL';
@@ -39,6 +41,10 @@ const Login = props => {
 
   const _handleSubmit = () => {
 
+
+
+
+    setIsError(false);
     setMessage('');
 
 
@@ -47,7 +53,7 @@ const Login = props => {
       setLoading(false);
     }, 3000);
     axios
-      .post('/login', {
+      .post('/Login', {
         userName,
         password,
       })
@@ -61,11 +67,12 @@ const Login = props => {
 
 
 
-        } else {
+        } if (result.status === 401) {
           setIsError(true);
           setMessage(result.data.message)
 
         }
+
       })
       .catch(e => {
         setIsError(true);
@@ -90,7 +97,7 @@ const Login = props => {
   }
 
   return (
-    <div>
+    <div className='bg'>
       <div className="login-box">
         <Row type="flex" align="middle">
           <Col className="login-box-body" >
@@ -98,21 +105,34 @@ const Login = props => {
 
               <Form className="login-form" style={{ width: "80%", height: "100%", textAlign: 'center' }}>
                 {props.title}
-                <Form.Item>
+                <Form.Item
+
+                >
                   <Input
+                    required
                     value={userName}
                     name="id"
                     type="text"
                     onChange={e => setUserName(e.target.value)}
+
                   />
+
                 </Form.Item>
-                <Form.Item>
+                <Form.Item
+
+                >
                   <Input
+                    required
                     value={password}
                     name="password"
                     type="password"
                     onChange={e => setPassword(e.target.value)}
                   />
+                </Form.Item>
+                <Form.Item>
+                  {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
+                  {/* {errorStat ? <Alert type='error' message={message}></Alert> : null} */}
+                  {isError ? <p style={{ color: 'red' }}>{message}</p> : null}
                 </Form.Item>
                 <Form.Item>
                   <Button htmlType="submit" type='primary' loading={loading} onClick={() => _handleSubmit()}>Login</Button>
@@ -121,11 +141,7 @@ const Login = props => {
 
                   <Link to='/forgetpass'><p>Forget Password</p></Link>
                 </Form.Item>
-                <Form.Item>
-                  {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
-                  {/* {errorStat ? <Alert type='error' message={message}></Alert> : null} */}
-                  {isError && <p style={{ color: 'red' }}>{message}</p>}
-                </Form.Item>
+
               </Form>
             </Card>
           </Col>

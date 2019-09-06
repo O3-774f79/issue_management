@@ -21,7 +21,7 @@ import Axios from 'axios';
 
 
 const Register = props => {
-    
+
 
     const [Inemail, setEmail] = useState('');
     const [Inpassword, setPassword] = useState('');
@@ -30,7 +30,7 @@ const Register = props => {
     const [LnameTH, setLnameTH] = useState('');
     const [FnameEN, setFnameEN] = useState('');
     const [LnameEN, setLnameEN] = useState('');
-    const [InuserType, setUserType] = useState('');
+    const [InuserType, setUserType] = useState('USER');
     const [PhoneNo, setPhoneNo] = useState('');
     const [CCode, setCcode] = useState('1000');
 
@@ -42,17 +42,7 @@ const Register = props => {
     const [errorStat, setError] = useState(false);
     const [message, setMessage] = useState([]);
     const [round, setRound] = useState([]);
-    // useState({
-    //     Email:'',
-    //     TelNo:'',
-    //     Password:'',
-    //     UserType:'',
-    //     LastNameEN:'',
-    //     LastNameTH:'',
-    //     CompanyCode:'',
-    //     FirstNameEN:'',
-    //     FirstNameTH:'',
-    // });
+
 
 
     const { Option } = Select;
@@ -80,28 +70,23 @@ const Register = props => {
 
             })
             .then((Resp) => {
-                console.logo("Dat Resp", Resp)
 
+                if (Resp.data.isError === true) {
+                    setStatussubmit(false)
+                    setMessage(Resp.data.message)
+                } else {
+                    setStatussubmit(true)
+                    setMessage('Registercomplete')
+                }
             })
             .catch(error => {
-               
-                setError(true);
-                // setMessage(error.response.data.TelNo[0]);
+                console.log(error.response)
                 
-                if(error.response.data.Email !== undefined){
-                    // setError(true);
-                    // setMessage(error.response.data.Email[0])
-                    round.push({Err:error.response.data.Email[0]})
-                    
-                }
-                if(error.response.data.Password !== undefined){
-                    // setError(true);
-                    // setMessage(error.response.data.Password[0])
-                    round.push({Err:error.response.data.Password[0]})
+                setError(true);
+                setMessage('Register Incorrect data');
 
-                }
 
-                console.log(round);     
+
             })
     }
 
@@ -128,7 +113,7 @@ const Register = props => {
 
     }
     const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)
-    
+
     return (
         <div className="login-box">
             <Row type="flex" align="middle">
@@ -139,10 +124,10 @@ const Register = props => {
 
                         >
 
-                            <Form.Item>
+                            <Form.Item >
                                 {/* Email */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="E-mail"
                                     name="mail"
@@ -154,7 +139,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Password */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Password"
@@ -168,7 +153,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Confirm Password */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Confirm Password"
@@ -182,7 +167,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* FirstName TH */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Firstname TH"
                                     name="FirstnameTH"
@@ -194,7 +179,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Lastname TH */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Lastname TH"
                                     name="LastnameTH"
@@ -206,7 +191,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Firstname EN */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Firstname EN"
                                     name="FirstnameEN"
@@ -218,7 +203,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* Lastname EN */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Lastname EN"
                                     name="LastnameEN"
@@ -245,7 +230,7 @@ const Register = props => {
                             <Form.Item>
                                 {/* TelNo */}
                                 <Input
-                                    // required
+                                    required
                                     prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Telephone Number"
                                     type="text"
@@ -271,7 +256,6 @@ const Register = props => {
                                         <Button type="danger"
                                             className="login-form-button"
 
-
                                         >
                                             Cancel
                                 </Button>
@@ -280,9 +264,8 @@ const Register = props => {
                             </Form.Item>
                             <Form.Item>
                                 <Col>
-                                    {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
-                                    {errorStat ? 
-                                    round.map( item => (<Alert type='error' message={item.Err}></Alert>)  ) : null}
+                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
+                                    {errorStat ? <Alert type="error" message={message} ></Alert> : null}
                                 </Col>
                             </Form.Item>
                         </Form>

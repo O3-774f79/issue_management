@@ -20,10 +20,14 @@ const ChagePassFL = () => {
     const [newpass, setNewpass] = useState('');
     const [conpass, setConpass] = useState('');
 
+    const [statussubmit, setStatussubmit] = useState(false);
+    const [message, setMessage] = useState('');
     const [redirect, setRedirect] = useState(false);
 
     const handlesubmit = (event) => {
-        // event.preventDefault();
+
+        setStatussubmit(false);
+        setMessage('');
         Axios.post(
             '/Password/ChangePassword', {
                 oldPassword: oldpass,
@@ -32,13 +36,21 @@ const ChagePassFL = () => {
 
             })
             .then((res) => {
-                console.log('Succes Change password', conpass)
-                setRedirect(true)
+
+                if (res.data.isError === true) {
+                    setStatussubmit(false)
+                    setMessage(res.data.message)
+                } else {
+                    setStatussubmit(true)
+                    setMessage('Change Password Complete')
+                }
             })
             .catch(error => {
-                console.log("error change password".error)
+
+                setStatussubmit(false)
+                setMessage('Please Check NewPassword not correct')
             })
-            
+
     }
     return (
         <div className="login-box">
@@ -51,6 +63,7 @@ const ChagePassFL = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Old password"
                                     name="oldpassword"
@@ -62,6 +75,7 @@ const ChagePassFL = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Password"
@@ -75,6 +89,7 @@ const ChagePassFL = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Confirm Password"
@@ -85,9 +100,12 @@ const ChagePassFL = () => {
 
                                 />
                             </Form.Item>
+                            {statussubmit ?
+                                <Form.Item>{message}</Form.Item> :
+                                <Form.Item><p style={{ color: "red" }}>{message}</p></Form.Item>}
                             <Form.Item>
                                 <Col>
-                                {redirect ?<Redirect to="/issue"/>:null}
+                                    {redirect ? <Redirect to="/issue" /> : null}
                                     <Button type="primary"
                                         htmlType="submit"
                                         className="login-form-button"

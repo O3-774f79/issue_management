@@ -337,7 +337,6 @@ class Drawerplate extends React.Component {
   };
   render() {
 
-    const { getFieldDecorator } = this.props.form;
     const { comments, submitting, value } = this.state;
     const options =
       this.state.Priovalue.map(Fdata =>
@@ -504,4 +503,4 @@ class Drawerplate extends React.Component {
     );
   }
 }
-export default Form.create()(Drawerplate);
+export default Drawerplate;

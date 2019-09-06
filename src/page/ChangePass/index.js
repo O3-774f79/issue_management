@@ -22,7 +22,8 @@ const ChagePass = () => {
     const [statussubmit, setStatussubmit] = useState(false);
     const [message, setMessage] = useState('');
     const handlesubmit = (event) => {
-     
+        setStatussubmit(false);
+        setMessage('');
         Axios.post(
             '/Password/ChangePassword', {
                 oldPassword: oldpass,
@@ -31,14 +32,21 @@ const ChagePass = () => {
 
             })
             .then((res) => {
-            
-                setStatussubmit(true)
-                setMessage('Change Password Complete')
+
+                if (res.data.isError === true) {
+                    setStatussubmit(false)
+                    setMessage(res.data.message)
+                } else {
+                    setStatussubmit(true)
+                    setMessage('Change Password Complete')
+                }
             })
             .catch(error => {
-            
+
+
                 setStatussubmit(false)
-                setMessage('Please Check Password not correct')
+                setMessage('Please Check NewPassword not correct')
+
             })
     }
     return (
@@ -52,6 +60,7 @@ const ChagePass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     placeholder="Old password"
                                     name="oldpassword"
@@ -63,6 +72,7 @@ const ChagePass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Password"
@@ -76,6 +86,7 @@ const ChagePass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="password"
                                     placeholder="Confirm Password"
@@ -86,9 +97,9 @@ const ChagePass = () => {
 
                                 />
                             </Form.Item>
-                            {statussubmit ? 
-                            <Form.Item>{message}</Form.Item>: 
-                            <Form.Item><p style={{color:"red"}}>{message}</p></Form.Item>}
+                            {statussubmit ?
+                                <Form.Item>{message}</Form.Item> :
+                                <Form.Item><p style={{ color: "red" }}>{message}</p></Form.Item>}
                             <Form.Item>
                                 <Col>
                                     <Button type="primary"
@@ -104,9 +115,9 @@ const ChagePass = () => {
                                 <Col>
                                     <Link to='/issue' >
                                         <Button type="danger"
-                                          
+
                                             className="login-form-button"
-                               
+
 
                                         >
                                             Cancel
