@@ -81,7 +81,7 @@ const Register = props => {
             })
             .catch(error => {
                 console.log(error.response)
-                
+
                 setError(true);
                 setMessage('Register Incorrect data');
 
@@ -242,6 +242,12 @@ const Register = props => {
                             </Form.Item>
                             <Form.Item>
                                 <Col>
+                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
+                                    {errorStat ? <Alert type="error" message={message} ></Alert> : null}
+                                </Col>
+                            </Form.Item>
+                            <Form.Item>
+                                <Col>
                                     <Button type="primary"
                                         htmlType="submit"
                                         className="login-form-button"
@@ -262,12 +268,7 @@ const Register = props => {
                                     </Link>
                                 </Col>
                             </Form.Item>
-                            <Form.Item>
-                                <Col>
-                                    {statussubmit ? <Alert type='success' message={message}></Alert> : null}
-                                    {errorStat ? <Alert type="error" message={message} ></Alert> : null}
-                                </Col>
-                            </Form.Item>
+
                         </Form>
                     </Card>
                 </Col>

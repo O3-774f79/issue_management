@@ -42,10 +42,13 @@ const ChagePass = () => {
                 }
             })
             .catch(error => {
-
-
+                console.log(error.response)
+                console.log("Status Ja", error.response.status)
+             if(error.response.status === 400 || error.response.status === 401){
                 setStatussubmit(false)
-                setMessage('Please Check NewPassword not correct')
+                setMessage('Password incorrect')
+            
+             }
 
             })
     }
