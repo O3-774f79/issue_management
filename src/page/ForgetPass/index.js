@@ -57,9 +57,9 @@ const Forgetpass = () => {
             })
             .catch(isError => {
 
-                setStatussubmit(false)
-                setError(true)
-                setMessage('กรุณากรอกข้อมูลให้ครบ')
+                // setStatussubmit(false)
+                // setError(true)
+                // setMessage('Input incorrect')
 
             })
     }
@@ -74,6 +74,7 @@ const Forgetpass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                     type="text"
                                     placeholder="Email"
@@ -86,6 +87,7 @@ const Forgetpass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="text"
                                     placeholder="First name English"
@@ -99,9 +101,10 @@ const Forgetpass = () => {
                             <Form.Item>
 
                                 <Input
+                                    required
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)', textAlign: 'center' }} />}
                                     type="text"
-                                    placeholder="Last name"
+                                    placeholder="Last name English"
                                     name="lastname"
                                     value={Lname}
                                     onChange={e => setLname(e.target.value)}
