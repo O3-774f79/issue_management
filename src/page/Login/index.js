@@ -97,7 +97,8 @@ const Login = props => {
   }
 
   return (
-    <div className='bg'>
+    <div >
+      
       <div className="login-box">
         <Row type="flex" align="middle">
           <Col className="login-box-body" >
