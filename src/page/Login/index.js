@@ -31,7 +31,7 @@ const Login = props => {
 
   const [message, setMessage] = useState('');
 
-
+ 
 
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
@@ -97,7 +97,7 @@ const Login = props => {
   }
 
   return (
-    <div >
+   
       
       <div className="login-box">
         <Row type="flex" align="middle">
@@ -148,7 +148,7 @@ const Login = props => {
           </Col>
         </Row>
       </div>
-    </div>
+   
   );
 };
 

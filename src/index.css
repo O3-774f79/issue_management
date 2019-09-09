@@ -10,8 +10,7 @@ body {
   /* Scrollbar disabled */
 }
 body {
-  height: 100%;
-  margin:0;
+  
   background-image: url('../src/img/vhoa0.jpg');
   background-size: cover;
   background-position: center;
@@ -39,7 +38,7 @@ code {
 .login-box, .register-box {
   height: 100%;
   width: 360px;
-  margin-left: 40%;
+  margin: 7% auto;
 }.login-page, .register-page {
   background: #d2d6de;
 }
@@ -56,7 +55,6 @@ code {
   
 }.login-box-body, .register-box-body {
 
-  margin-top: 30%;
   border-top: 0;
   color: #666;
 }.has-feedback {
