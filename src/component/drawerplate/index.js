@@ -19,11 +19,35 @@ import {
 import Axios from 'axios';
 import moment, { relativeTimeThreshold } from 'moment';
 
-
+import { useAuth } from '../../context/auth';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
+
+const http = Axios.create({
+  // baseURL:'http://localhost:50000/api',
+  baseURL: 'http://139.180.130.44:50000/api',
+  // headers:{'Cache-Control': 'no-cache' },
+  headers: { 'Access-Control-Allow-Origin': '*' ,
+    Authorization: `Bearer ${getCookie("UseTok")}`,
+},
+})
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
 const Editor = ({ onChange, onSubmit, submitting, value, hidden }) => (
   <div>
 
@@ -58,7 +82,7 @@ class Drawerplate extends React.Component {
     TicketDesc: '',
     PriorityID: 1,
     PriorityName: 1,
-    TicketStatus: '',
+    TicketStatus: 'OPEN',
     Priovalue: [],
     StatepriorityName: '',
     data: [],
@@ -72,9 +96,11 @@ class Drawerplate extends React.Component {
   };
 
   componentDidMount() {
-
-    Axios.get(
-      '/Priority/GetList', {
+    http.get(`/Priority/GetList`
+      // Axios.get(
+      //   'http://localhost:50000/api/Priority/GetList'
+      // '/Priority/GetList'
+      , {
       },
     )
       .then((result) => {
@@ -94,9 +120,9 @@ class Drawerplate extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-    CheckSuccess: false,
-      message:''
-  })
+      CheckSuccess: false,
+      message: ''
+    })
 
     if (this.props.dataList !== nextProps.dataList) {
       this.setState({
@@ -109,8 +135,11 @@ class Drawerplate extends React.Component {
         CommentList: nextProps.commentList,
 
       })
-      Axios.get(
-        `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`)
+      http.get(`/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
+        // Axios.get(
+        //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
+        // `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
+      )
         .then((ResComment) => {
           this.setState({
             CommentList: ResComment.data
@@ -129,7 +158,7 @@ class Drawerplate extends React.Component {
   onClose = () => {
     this.setState({
       visible: false,
-     
+
       CommentList: [],
     });
   };
@@ -154,8 +183,11 @@ class Drawerplate extends React.Component {
     }, 3000);
     if (this.props.disStat === false) {
       return (
-        Axios.post(
-          '/Ticket/OpenTicket', {
+        http.post(`/Ticket/OpenTicket`
+          // Axios.post(
+          //   'http://localhost:50000/api/Ticket/OpenTicket'
+          // '/Ticket/OpenTicket'
+          , {
 
             ticketName: this.state.TicketName,
             description: this.state.TicketDesc,
@@ -192,9 +224,11 @@ class Drawerplate extends React.Component {
         return (
 
 
-
-          Axios.post(
-            '/Ticket/UpdateTicket', {
+          http.post(`/Ticket/UpdateTicket`
+            // Axios.post(
+            //   'http://localhost:50000/api/Ticket/UpdateTicket'
+            // '/Ticket/UpdateTicket'
+            , {
 
 
               id: this.state.TicketID,
@@ -213,9 +247,11 @@ class Drawerplate extends React.Component {
             console.log(moment().format('YYYY MM DD hh:mm:ss'))
             console.log(moment().fromNow())
             console.log(moment().format())
-
-            Axios.get(
-              `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`)
+            http.get(`/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
+              // Axios.get(
+              //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
+              // `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
+            )
               .then((ResComment) => {
                 this.setState({
                   CommentList: ResComment.data,
@@ -242,9 +278,11 @@ class Drawerplate extends React.Component {
       } else {
         return (
 
-
-          Axios.post(
-            '/Ticket/UpdateTicket', {
+          http.post(`/Ticket/UpdateTicket`
+            // Axios.post(
+            //   'http://localhost:50000/api/Ticket/UpdateTicket'
+            // '/Ticket/UpdateTicket'
+            , {
 
 
               id: this.state.TicketID,
@@ -409,7 +447,7 @@ class Drawerplate extends React.Component {
                   >
                     <Option value="OPEN">Open</Option>
                     <Option value="WAITING">Waiting</Option>
-                    <Option value="CLOSE">Closed</Option>
+                    <Option value="CLOSE">Close</Option>
                   </Select>
                 </Form.Item>
               </Col>

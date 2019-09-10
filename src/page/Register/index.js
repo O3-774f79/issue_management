@@ -47,6 +47,29 @@ const Register = props => {
 
     const { Option } = Select;
 
+    const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: { 'Access-Control-Allow-Origin': '*' ,
+          Authorization: `Bearer ${getCookie("UseTok")}`,
+      },
+      })
+    
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 
 
     const HandleSubmit = (event) => {
@@ -54,8 +77,11 @@ const Register = props => {
         setError(false)
         setMessage('')
         // setRound([]);
-        Axios.post(
-            '/Register', {
+        http.post('/Register'
+        // Axios.post(
+        //     'http://localhost:50000/api/Register'
+            // '/Register'
+            , {
                 email: Inemail,
                 password: Inpassword,
                 confirmPassword: Inconpassword,
@@ -94,7 +120,9 @@ const Register = props => {
 
     useEffect(() => {
         Axios.get(
-            '/Role/GetRole', {
+            'http://localhost:50000/api/Role/GetRole'
+            // '/Role/GetRole'
+            , {
             }
         )
             .then((result) => {
@@ -115,7 +143,7 @@ const Register = props => {
     const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)
 
     return (
-        <div className="login-box">
+        <div className="Registerbox">
             <Row type="flex" align="middle">
                 <Col className="login-box-body" >
                     <Card title='Register' type="flex" justify="center" align="middle" style={{ width: 350 }}>

@@ -16,6 +16,29 @@ import {
 } from 'antd';
 import Axios from 'axios';
 
+const http = Axios.create({
+    // baseURL:'http://localhost:50000/api',
+    baseURL: 'http://139.180.130.44:50000/api',
+    // headers:{'Cache-Control': 'no-cache' },
+    headers: { 'Access-Control-Allow-Origin': '*' ,
+      Authorization: `Bearer ${getCookie("UseTok")}`,
+  },
+  })
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 const Forgetpass = () => {
 
     const [email, setEmail] = useState('');
@@ -29,8 +52,10 @@ const Forgetpass = () => {
         setStatussubmit(false)
         setError(false)
         setMessage('')
-        Axios.post(
-            '/Password/ForgetPassword', {
+        http.post('/Password/ForgetPassword'
+        // Axios.post(
+        //     'http://localhost:50000/api/Password/ForgetPassword'
+            , {
                 email: email,
                 firstnameEN: Fname,
                 lastnameEN: Lname,

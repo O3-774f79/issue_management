@@ -31,13 +31,21 @@ const Login = props => {
 
   const [message, setMessage] = useState('');
 
- 
+
 
   const { setAuthTokens } = useAuth();
   const referer = '/issue';
   const changepass = '/ChangePassFL';
 
-
+  const http = axios.create({
+    // baseURL:'http://localhost:50000/api',
+    baseURL: 'http://139.180.130.44:50000/api',
+    // headers:{'Cache-Control': 'no-cache' },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      // Authorization: `Bearer ${authTokens}`
+    },
+  })
 
   const _handleSubmit = () => {
 
@@ -52,8 +60,11 @@ const Login = props => {
     setTimeout(() => {
       setLoading(false);
     }, 3000);
-    axios
-      .post('/Login', {
+    http.post(`/Login`
+      // axios
+      //   .post('http://localhost:50000/api/Login'
+      // .post('/Login'
+      , {
         userName,
         password,
       })
@@ -61,10 +72,12 @@ const Login = props => {
         if (result.status === 200) {
           setAuthTokens(result.data.employee);
 
+          document.cookie = "UseTok="+result.data.token;
+          
+
 
           setfirstlogin(result.data.employee.firstLogin);
           setLoggedIn(true);
-
 
 
         } if (result.status === 401) {
@@ -76,7 +89,7 @@ const Login = props => {
       })
       .catch(e => {
         setIsError(true);
-        setMessage(e.response.data.message)
+        // setMessage(e.response.data.message)
 
       });
 
@@ -97,58 +110,60 @@ const Login = props => {
   }
 
   return (
-   
-      
-      <div className="login-box">
-        <Row type="flex" align="middle">
-          <Col className="login-box-body" >
-            <Card title='Login' type="flex" justify="center" align="middle" style={{ width: 350 }}>
 
-              <Form className="login-form" style={{ width: "80%", height: "100%", textAlign: 'center' }}>
-                {props.title}
-                <Form.Item
 
-                >
-                  <Input
-                    required
-                    value={userName}
-                    name="id"
-                    type="text"
-                    onChange={e => setUserName(e.target.value)}
+    <div className="login-box" >
+      <Row type="flex" align="middle">
 
-                  />
+        <Col className="login-box-body" >
+          <Card title='Login' type="flex" justify="center" align="middle" style={{ width: 350 }}>
 
-                </Form.Item>
-                <Form.Item
+            <Form className="login-form" style={{ width: "80%", height: "100%", textAlign: 'center' }}>
+              {props.title}
+              <Form.Item
 
-                >
-                  <Input
-                    required
-                    value={password}
-                    name="password"
-                    type="password"
-                    onChange={e => setPassword(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
-                  {/* {errorStat ? <Alert type='error' message={message}></Alert> : null} */}
-                  {isError ? <p style={{ color: 'red' }}>{message}</p> : null}
-                </Form.Item>
-                <Form.Item>
-                  <Button htmlType="submit" type='primary' loading={loading} onClick={() => _handleSubmit()}>Login</Button>
-                </Form.Item>
-                <Form.Item>
+              >
+                <Input
+                  required
+                  value={userName}
+                  name="id"
+                  type="text"
+                  onChange={e => setUserName(e.target.value)}
 
-                  <Link to='/forgetpass'><p>Forget Password</p></Link>
-                </Form.Item>
+                />
 
-              </Form>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-   
+              </Form.Item>
+              <Form.Item
+
+              >
+                <Input
+                  required
+                  value={password}
+                  name="password"
+                  type="password"
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item>
+                {/* {statussubmit ? <Alert type='success' message={message}></Alert> : null} */}
+                {/* {errorStat ? <Alert type='error' message={message}></Alert> : null} */}
+                {isError ? <p style={{ color: 'red' }}>{message}</p> : null}
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit" type='primary' loading={loading} onClick={() => _handleSubmit()}>Login</Button>
+              </Form.Item>
+              <Form.Item>
+
+                <Link to='/forgetpass'><p>Forget Password</p></Link>
+              </Form.Item>
+
+            </Form>
+          </Card>
+        </Col>
+
+      </Row>
+    </div>
+
   );
 };
 

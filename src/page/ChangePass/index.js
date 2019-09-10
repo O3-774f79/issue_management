@@ -8,11 +8,35 @@ import {
     Form,
     Icon,
     Card,
+    Alert,
 
 } from 'antd';
 import Axios from 'axios';
 
 
+const http = Axios.create({
+    // baseURL:'http://localhost:50000/api',
+    baseURL: 'http://139.180.130.44:50000/api',
+    // headers:{'Cache-Control': 'no-cache' },
+    headers: { 'Access-Control-Allow-Origin': '*' ,
+      Authorization: `Bearer ${getCookie("UseTok")}`,
+  },
+  })
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 const ChagePass = () => {
 
     const [oldpass, setOldpass] = useState('');
@@ -24,8 +48,11 @@ const ChagePass = () => {
     const handlesubmit = (event) => {
         setStatussubmit(false);
         setMessage('');
-        Axios.post(
-            '/Password/ChangePassword', {
+        http.post('/Password/ChangePassword'
+        // Axios.post(
+        //     'http://localhost:50000/api/Password/ChangePassword'
+            // '/Password/ChangePassword'
+            , {
                 oldPassword: oldpass,
                 newPassword: newpass,
                 confirmNewPassword: conpass
@@ -44,11 +71,11 @@ const ChagePass = () => {
             .catch(error => {
                 console.log(error.response)
                 console.log("Status Ja", error.response.status)
-             if(error.response.status === 400 || error.response.status === 401){
-                setStatussubmit(false)
-                setMessage('Password incorrect')
-            
-             }
+                if (error.response.status === 400 || error.response.status === 401) {
+                    setStatussubmit(false)
+                    setMessage('Password incorrect')
+
+                }
 
             })
     }
@@ -101,8 +128,8 @@ const ChagePass = () => {
                                 />
                             </Form.Item>
                             {statussubmit ?
-                                <Form.Item>{message}</Form.Item> :
-                                <Form.Item><p style={{ color: "red" }}>{message}</p></Form.Item>}
+                                <Form.Item><p style={{ color: 'green' }}>{message}</p></Form.Item> :
+                                <Form.Item><p style={{ color: 'red' }}>{message}</p></Form.Item>}
                             <Form.Item>
                                 <Col>
                                     <Button type="primary"

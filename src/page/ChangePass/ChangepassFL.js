@@ -13,12 +13,37 @@ import {
 } from 'antd';
 import Axios from 'axios';
 
+const http = Axios.create({
+    // baseURL:'http://localhost:50000/api',
+    baseURL: 'http://139.180.130.44:50000/api',
+    // headers:{'Cache-Control': 'no-cache' },
+    headers: { 'Access-Control-Allow-Origin': '*' ,
+      Authorization: `Bearer ${getCookie("UseTok")}`,
+  },
+  })
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 const ChagePassFL = () => {
 
     const [oldpass, setOldpass] = useState('');
     const [newpass, setNewpass] = useState('');
     const [conpass, setConpass] = useState('');
+
+    const [tomain, setMain] = useState(false);
 
     const [statussubmit, setStatussubmit] = useState(false);
     const [message, setMessage] = useState('');
@@ -28,8 +53,11 @@ const ChagePassFL = () => {
 
         setStatussubmit(false);
         setMessage('');
-        Axios.post(
-            '/Password/ChangePassword', {
+        // Axios.post(
+            http.get(`/Password/ChangePassword`
+            // 'http://localhost:50000/api/Password/ChangePassword'
+            // '/Password/ChangePassword'
+            , {
                 oldPassword: oldpass,
                 newPassword: newpass,
                 confirmNewPassword: conpass
@@ -43,6 +71,9 @@ const ChagePassFL = () => {
                 } else {
                     setStatussubmit(true)
                     setMessage('Change Password Complete')
+                    setTimeout(()=>{
+                        setMain(true);
+                    }, 3000);
                 }
             })
             .catch(error => {
@@ -54,6 +85,9 @@ const ChagePassFL = () => {
     }
     return (
         <div className="login-box">
+
+            {tomain ? <Redirect to="/issue" />:null}
+            
             <Row type="flex" align="middle">
                 <Col className="login-box-body" >
                     <Card title='Change password' type="flex" justify="center" align="middle" style={{ width: 350 }}>

@@ -12,7 +12,7 @@ const Issue = () => {
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [show, setShow] = React.useState(false);
- 
+
   const [priorityName, setPriorityName] = React.useState("")
   const [data, setData] = React.useState();
   const [tableload, setLoadTable] = React.useState(false)
@@ -24,14 +24,42 @@ const Issue = () => {
   // Control form
   const [formcontrol, setformcontrol] = React.useState('');
 
+  const http = Axios.create({
+    // baseURL:'http://localhost:50000/api',
+    baseURL: 'http://139.180.130.44:50000/api',
+    // headers:{'Cache-Control': 'no-cache' },
+    headers: { 'Access-Control-Allow-Origin': '*' ,
+      Authorization: `Bearer ${getCookie("UseTok")}`,
+  },
+  })
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
   useEffect(() => {
     setLoadTable(true);
+      
     setTimeout(() => {
       setLoadTable(false);
     }, 1500);
     if (authTokens.userType === 'ADMIN') {
-      Axios.get(
-        '/Ticket/GetAllTicket', {
+      http.get(`/Ticket/GetAllTicket`
+        // Axios.get(
+        //   'http://localhost:50000/api/Ticket/GetAllTicket'
+        // '/Ticket/GetAllTicket'
+        , {
         }
       )
         .then((result) => {
@@ -39,11 +67,15 @@ const Issue = () => {
 
         })
         .catch(error => {
-
+         
+          
         })
     } else if (authTokens.userType === 'USER') {
-      Axios.get(
-        '/Ticket/GetList', {
+      http.get(`/Ticket/GetList`
+        // Axios.get(
+        //   'http://localhost:50000/api/Ticket/GetList'
+        // '/Ticket/GetList'
+        , {
         }
       )
         .then((result) => {
@@ -51,7 +83,7 @@ const Issue = () => {
 
         })
         .catch(error => {
-
+         
         })
     }
 
@@ -59,8 +91,11 @@ const Issue = () => {
 
   const onClickDisplay = async (record) => {
     const comment =
-      await Axios.get(
-        `/Ticket/GetTicketComment?ticketId=${record.id}`)
+      await http.get(`/Ticket/GetTicketComment?ticketId=${record.id}`
+        // await Axios.get(
+        //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${record.id}`
+        // `/Ticket/GetTicketComment?ticketId=${record.id}`
+      )
     await setCommentList(comment.data)
     await setRecord(record)
     await setPriorityName(record.priorityName)
