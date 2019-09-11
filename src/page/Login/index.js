@@ -89,7 +89,7 @@ const Login = props => {
       })
       .catch(e => {
         setIsError(true);
-        // setMessage(e.response.data.message)
+        setMessage(e.response.data.message)
 
       });
 

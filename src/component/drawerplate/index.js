@@ -158,7 +158,7 @@ class Drawerplate extends React.Component {
   onClose = () => {
     this.setState({
       visible: false,
-
+      valueComments:'',
       CommentList: [],
     });
   };
@@ -181,7 +181,7 @@ class Drawerplate extends React.Component {
         loading: false,
       })
     }, 3000);
-    if (this.props.disStat === false) {
+    if (this.props.formcontrol === 'add') {
       return (
         http.post(`/Ticket/OpenTicket`
           // Axios.post(
@@ -441,7 +441,7 @@ class Drawerplate extends React.Component {
                   <Select
                     placeholder="Select status"
                     defaultValue="OPEN"
-                    disabled={false}
+                    disabled={this.props.disStat}
                     onChange={this.onChangeSStatus}
                     value={this.state.TicketStatus}
                   >
@@ -463,6 +463,7 @@ class Drawerplate extends React.Component {
               <Col span={24}>
                 <Form.Item layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
+                  disabled={this.props.disStat}
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
 
@@ -515,6 +516,7 @@ class Drawerplate extends React.Component {
                   <Col span={4}>
                     <Form.Item>
                       <Button type="primary"
+                      hidden={this.props.hidStat}
                         loading={this.state.loading}
                         htmlType="submit"
                         className="login-form-button"
