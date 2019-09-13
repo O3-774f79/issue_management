@@ -54,7 +54,7 @@ const LayoutTemplate = props => {
       </div>
     </Content>
     <Footer style={{ textAlign: 'center' }}>
-      Ant Design ©2018 Created by Ant UED
+      You Can Do It With Leaderplanet
     </Footer>
   </Layout>
 );
