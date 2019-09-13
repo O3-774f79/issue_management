@@ -16,14 +16,7 @@ import {
 } from 'antd';
 import Axios from 'axios';
 
-const http = Axios.create({
-    // baseURL:'http://localhost:50000/api',
-    baseURL: 'http://139.180.130.44:50000/api',
-    // headers:{'Cache-Control': 'no-cache' },
-    headers: { 'Access-Control-Allow-Origin': '*' ,
-    
-  },
-  })
+
 
   function getCookie(cname) {
     var name = cname + "=";
@@ -49,6 +42,14 @@ const Forgetpass = () => {
     const [message, setMessage] = useState('');
 
     const handlesubmit = (event) => {
+        const http = Axios.create({
+            // baseURL:'http://localhost:50000/api',
+            baseURL: 'http://139.180.130.44:50000/api',
+            // headers:{'Cache-Control': 'no-cache' },
+            headers: { 'Access-Control-Allow-Origin': '*' ,
+            
+          },
+          })
         setStatussubmit(false)
         setError(false)
         setMessage('')

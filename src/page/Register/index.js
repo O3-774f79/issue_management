@@ -35,6 +35,7 @@ const Register = props => {
     const [CCode, setCcode] = useState('1000');
 
     const [GetUser, setGetUser] = useState([]);
+    const [GetCode, setCode] = useState([]);
 
     const [value, setValue] = useState('USER');
 
@@ -47,16 +48,9 @@ const Register = props => {
 
     const { Option } = Select;
 
-    const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
-        baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
-        headers: { 'Access-Control-Allow-Origin': '*' ,
-          Authorization: `Bearer ${getCookie("UseTok")}`,
-      },
-      })
-    
-      function getCookie(cname) {
+
+
+    function getCookie(cname) {
         var name = cname + "=";
         var ca = document.cookie.split(';');
         for (var i = 0; i < ca.length; i++) {
@@ -73,13 +67,23 @@ const Register = props => {
 
 
     const HandleSubmit = (event) => {
+        const http = Axios.create({
+            // baseURL:'http://localhost:50000/api',
+            baseURL: 'http://139.180.130.44:50000/api',
+            // headers:{'Cache-Control': 'no-cache' },
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'no-cache',
+                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+            },
+        })
         setStatussubmit(false)
         setError(false)
         setMessage('')
         // setRound([]);
         http.post('/Register'
-        // Axios.post(
-        //     'http://localhost:50000/api/Register'
+            // Axios.post(
+            //     'http://localhost:50000/api/Register'
             // '/Register'
             , {
                 email: Inemail,
@@ -119,9 +123,29 @@ const Register = props => {
 
 
     useEffect(() => {
-        
+        const http = Axios.create({
+            // baseURL:'http://localhost:50000/api',
+            baseURL: 'http://139.180.130.44:50000/api',
+            // headers:{'Cache-Control': 'no-cache' },
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'no-cache',
+                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+            },
+        })
+        http.get(`/Company/GetList`
+            , {
+            }
+        )
+            .then((ResComlist) => {
+                setCode(ResComlist.data);
+            })
+            .catch(error => {
+                console.log("Get partner Error");
+            })
+
         http.get('/Role/GetRole'
-        // Axios.get(
+            // Axios.get(
             // 'http://localhost:50000/api/Role/GetRole'
             // '/Role/GetRole'
             , {
@@ -140,11 +164,12 @@ const Register = props => {
     const onChangeSelect = value => {
         setValue(value);
         setUserType(value);
-        
-
+    }
+    const onChangeCode = value => {
+        setCcode(value);
     }
     const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)
-
+    const ComCode = GetCode.map(Coderes => <Option value={Coderes.companyCode}>{Coderes.companyName}</Option>)
     return (
         <div className="Registerbox">
             <Row type="flex" align="middle">
@@ -255,6 +280,21 @@ const Register = props => {
                                 >
 
                                     {options}
+
+                                </Select>
+                            </Form.Item>
+                            <Form.Item>
+                                {/* CompanyCode */}
+                                <Select
+
+                                    name='companySel'
+
+                                    placeholder="Select company"
+                                    value={CCode}
+                                    onChange={onChangeCode}
+                                >
+
+                                    {ComCode}
 
                                 </Select>
                             </Form.Item>

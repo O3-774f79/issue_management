@@ -14,16 +14,9 @@ import {
 import Axios from 'axios';
 
 
-const http = Axios.create({
-    // baseURL:'http://localhost:50000/api',
-    baseURL: 'http://139.180.130.44:50000/api',
-    // headers:{'Cache-Control': 'no-cache' },
-    headers: { 'Access-Control-Allow-Origin': '*' ,
-      Authorization: `Bearer ${getCookie("UseTok")}`,
-  },
-  })
 
-  function getCookie(cname) {
+
+function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -46,11 +39,21 @@ const ChagePass = () => {
     const [statussubmit, setStatussubmit] = useState(false);
     const [message, setMessage] = useState('');
     const handlesubmit = (event) => {
+        const http = Axios.create({
+            // baseURL:'http://localhost:50000/api',
+            baseURL: 'http://139.180.130.44:50000/api',
+            // headers:{'Cache-Control': 'no-cache' },
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'no-cache',
+                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+            },
+        })
         setStatussubmit(false);
         setMessage('');
         http.post('/Password/ChangePassword'
-        // Axios.post(
-        //     'http://localhost:50000/api/Password/ChangePassword'
+            // Axios.post(
+            //     'http://localhost:50000/api/Password/ChangePassword'
             // '/Password/ChangePassword'
             , {
                 oldPassword: oldpass,

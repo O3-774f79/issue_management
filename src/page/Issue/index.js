@@ -11,6 +11,7 @@ const Issue = () => {
   const [tickNodis, setTickNodis] = React.useState(false);
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
+  const [hidbut, setHidbut] = React.useState(false);
   const [show, setShow] = React.useState(false);
 
   const [priorityName, setPriorityName] = React.useState("")
@@ -20,21 +21,22 @@ const Issue = () => {
   const [recordList, setRecord] = React.useState({})
   const [commentList, setCommentList] = React.useState([])
 
-  const [searchtext , setSearchtext] = React.useState('');
+  const [searchtext, setSearchtext] = React.useState('');
 
 
   // Control form
   const [formcontrol, setformcontrol] = React.useState('');
 
-  const http = Axios.create({
-    // baseURL:'http://localhost:50000/api',
-    baseURL: 'http://139.180.130.44:50000/api',
-    // headers:{'Cache-Control': 'no-cache' },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${getCookie("UseTok")}`,
-    },
-  })
+  // const http = Axios.create({
+  //   // baseURL:'http://localhost:50000/api',
+  //   baseURL: 'http://139.180.130.44:50000/api',
+  //   // headers:{'Cache-Control': 'no-cache' },
+  //   headers: {
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Cache-Control': 'no-cache',
+  //     Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+  //   },
+  // })
 
   function getCookie(cname) {
     var name = cname + "=";
@@ -50,14 +52,25 @@ const Issue = () => {
     }
     return "";
   }
-  
+
   useEffect(() => {
+
     setLoadTable(true);
 
     setTimeout(() => {
-      
+
     }, 1500);
-    if (authTokens.userType === 'ADMIN') {
+    if (authTokens.companyCode === '1000') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
       http.get(`/Ticket/GetAllTicket`
         // Axios.get(
         //   'http://localhost:50000/api/Ticket/GetAllTicket'
@@ -68,12 +81,49 @@ const Issue = () => {
         .then((result) => {
           setData(result.data);
           setLoadTable(false);
+          console.log("Get All");
         })
         .catch(error => {
 
 
         })
-    } else if (authTokens.userType === 'USER') {
+    } else if (authTokens.companyCode === '1001') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
+      http.get(`/Ticket/GetAssignTicket`
+        // Axios.get(
+        //   'http://localhost:50000/api/Ticket/GetList'
+        // '/Ticket/GetList'
+        , {
+        }
+      )
+        .then((result) => {
+          setData(result.data);
+          setLoadTable(false);
+          console.log("Get Assign");
+        })
+        .catch(error => {
+
+        })
+    } else if (authTokens.companyCode === '1002') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
       http.get(`/Ticket/GetList`
         // Axios.get(
         //   'http://localhost:50000/api/Ticket/GetList'
@@ -84,6 +134,7 @@ const Issue = () => {
         .then((result) => {
           setData(result.data);
           setLoadTable(false);
+          console.log("Get List");
         })
         .catch(error => {
 
@@ -93,6 +144,16 @@ const Issue = () => {
   }, [show])
 
   const onClickDisplay = async (record) => {
+    const http = await Axios.create({
+      // baseURL:'http://localhost:50000/api',
+      baseURL: 'http://139.180.130.44:50000/api',
+      // headers:{'Cache-Control': 'no-cache' },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
+        Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+      },
+    })
     const comment =
       await http.get(`/Ticket/GetTicketComment?ticketId=${record.id}`
         // await Axios.get(
@@ -103,7 +164,8 @@ const Issue = () => {
     await setRecord(record)
     await setPriorityName(record.priorityName)
     await setDis(true);
-    await setHid(true);
+    await setHid(false);
+    await setHidbut(true);
 
 
     await setTickNodis(true);
@@ -112,6 +174,16 @@ const Issue = () => {
     await setShow(true);
   }
   const onClickEdit = async (record) => {
+    const http = await Axios.create({
+      // baseURL:'http://localhost:50000/api',
+      baseURL: 'http://139.180.130.44:50000/api',
+      // headers:{'Cache-Control': 'no-cache' },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
+        Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+      },
+    })
     const comment =
       await http.get(`/Ticket/GetTicketComment?ticketId=${record.id}`
         // await Axios.get(
@@ -123,7 +195,7 @@ const Issue = () => {
     await setPriorityName(record.priorityName)
     await setDis(false);
     await setHid(false);
-
+    await setHidbut(false);
 
     await setTickNodis(true);
     await setTitledraw('Display Ticket');
@@ -135,6 +207,7 @@ const Issue = () => {
     setShow(true);
     setDis(false);
     setHid(true);
+    setHidbut(false);
     setTitledraw('Add Ticket');
     setTickNodis(true);
 
@@ -144,13 +217,23 @@ const Issue = () => {
     setRecord('');
 
   }
-  function Reload(){
+  function Reload() {
     setLoadTable(true);
 
     setTimeout(() => {
       setLoadTable(false);
     }, 1500);
-    if (authTokens.userType === 'ADMIN') {
+    if (authTokens.companyCode === '1000') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
       http.get(`/Ticket/GetAllTicket`
         // Axios.get(
         //   'http://localhost:50000/api/Ticket/GetAllTicket'
@@ -160,13 +243,51 @@ const Issue = () => {
       )
         .then((result) => {
           setData(result.data);
-
+          console.log('GetAll')
         })
         .catch(error => {
 
 
         })
-    } else if (authTokens.userType === 'USER') {
+    } else if (authTokens.companyCode === '1001') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
+
+      http.get(`/Ticket/GetAssignTicket`
+        // Axios.get(
+        //   'http://localhost:50000/api/Ticket/GetList'
+        // '/Ticket/GetList'
+        , {
+        }
+      )
+        .then((result) => {
+          setData(result.data);
+          console.log('GetAssign')
+        })
+        .catch(error => {
+
+        })
+
+    } else if (authTokens.companyCode === '1002') {
+      const http = Axios.create({
+        // baseURL:'http://localhost:50000/api',
+        baseURL: 'http://139.180.130.44:50000/api',
+        // headers:{'Cache-Control': 'no-cache' },
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        },
+      })
+
       http.get(`/Ticket/GetList`
         // Axios.get(
         //   'http://localhost:50000/api/Ticket/GetList'
@@ -176,13 +297,14 @@ const Issue = () => {
       )
         .then((result) => {
           setData(result.data);
-
+          console.log('Getlist')
         })
         .catch(error => {
 
         })
+
     }
-    
+
   }
 
 
@@ -291,6 +413,7 @@ const Issue = () => {
       <Drawerplate visible={show} onClose={() => setShow(false)}
         disStat={dis}
         hidStat={hid}
+        hidButStat={hidbut}
 
         authTokens={authTokens}
         titledraw={titledraw}

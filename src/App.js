@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Link, Route, Redirect, } from 'react-router-dom';
+import { Router as Router, Link, Route, Redirect, } from 'react-router-dom';
 import PrivateRoute from './component/privateRoute';
 import { AuthContext } from './context/auth';
 import LayoutTemplate from './component/layout';

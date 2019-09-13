@@ -39,7 +39,7 @@ const LayoutTemplate = props => {
 
       </Menu>
       <div style={{ display: 'flex' }}>
-        <NotificationRight />
+        {/* <NotificationRight /> */}
         <LogoutTab />
       </div>
     </div>
