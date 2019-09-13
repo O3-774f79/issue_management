@@ -119,8 +119,10 @@ const Register = props => {
 
 
     useEffect(() => {
-        Axios.get(
-            'http://localhost:50000/api/Role/GetRole'
+        
+        http.get('/Role/GetRole'
+        // Axios.get(
+            // 'http://localhost:50000/api/Role/GetRole'
             // '/Role/GetRole'
             , {
             }
@@ -138,6 +140,7 @@ const Register = props => {
     const onChangeSelect = value => {
         setValue(value);
         setUserType(value);
+        
 
     }
     const options = GetUser.map(rolemap => <Option value={rolemap.valueKey}>{rolemap.valueText}</Option>)

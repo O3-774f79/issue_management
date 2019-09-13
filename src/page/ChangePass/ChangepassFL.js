@@ -17,12 +17,13 @@ const http = Axios.create({
     // baseURL:'http://localhost:50000/api',
     baseURL: 'http://139.180.130.44:50000/api',
     // headers:{'Cache-Control': 'no-cache' },
-    headers: { 'Access-Control-Allow-Origin': '*' ,
-      Authorization: `Bearer ${getCookie("UseTok")}`,
-  },
-  })
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${getCookie("UseTok")}`,
+    },
+})
 
-  function getCookie(cname) {
+function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -50,11 +51,11 @@ const ChagePassFL = () => {
     const [redirect, setRedirect] = useState(false);
 
     const handlesubmit = (event) => {
-
+        
         setStatussubmit(false);
         setMessage('');
-        // Axios.post(
-            http.get(`/Password/ChangePassword`
+        http.post(`/Password/ChangePassword`
+            // Axios.post(
             // 'http://localhost:50000/api/Password/ChangePassword'
             // '/Password/ChangePassword'
             , {
@@ -68,26 +69,27 @@ const ChagePassFL = () => {
                 if (res.data.isError === true) {
                     setStatussubmit(false)
                     setMessage(res.data.message)
+                    console.log(res.data)
                 } else {
                     setStatussubmit(true)
                     setMessage('Change Password Complete')
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         setMain(true);
-                    }, 3000);
+                    }, 2000);
                 }
             })
             .catch(error => {
 
                 setStatussubmit(false)
-                setMessage('Please Check NewPassword not correct')
+                setMessage('Please Check NewPassword incorrect')
             })
 
     }
     return (
         <div className="login-box">
 
-            {tomain ? <Redirect to="/issue" />:null}
-            
+            {tomain ? <Redirect to="/issue" /> : null}
+
             <Row type="flex" align="middle">
                 <Col className="login-box-body" >
                     <Card title='Change password' type="flex" justify="center" align="middle" style={{ width: 350 }}>
@@ -103,7 +105,7 @@ const ChagePassFL = () => {
                                     name="oldpassword"
                                     value={oldpass}
                                     onChange={e => setOldpass(e.target.value)}
-                                    autoComplete={false}
+                                   
                                 />
                             </Form.Item>
                             <Form.Item>
@@ -135,11 +137,11 @@ const ChagePassFL = () => {
                                 />
                             </Form.Item>
                             {statussubmit ?
-                                <Form.Item>{message}</Form.Item> :
+                                <Form.Item><p style={{ color: "green" }}><Icon type='loading' height="50em" width="50em" />{' '}{message}</p></Form.Item> :
                                 <Form.Item><p style={{ color: "red" }}>{message}</p></Form.Item>}
                             <Form.Item>
                                 <Col>
-                                    {redirect ? <Redirect to="/issue" /> : null}
+                               
                                     <Button type="primary"
                                         htmlType="submit"
                                         className="login-form-button"

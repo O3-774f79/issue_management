@@ -96,6 +96,7 @@ class Drawerplate extends React.Component {
   };
 
   componentDidMount() {
+  
     http.get(`/Priority/GetList`
       // Axios.get(
       //   'http://localhost:50000/api/Priority/GetList'
@@ -106,6 +107,7 @@ class Drawerplate extends React.Component {
       .then((result) => {
         this.setState({
           Priovalue: result.data,
+          
         })
 
       })
@@ -120,6 +122,7 @@ class Drawerplate extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
+      valueComments:'',
       CheckSuccess: false,
       message: ''
     })
@@ -384,6 +387,7 @@ class Drawerplate extends React.Component {
     return (
 
       <div>
+        
         <Drawer
           title={this.props.titledraw}
           placement="right"
@@ -391,6 +395,7 @@ class Drawerplate extends React.Component {
           onClose={this.props.onClose}
           visible={this.props.visible}
           width='50%'
+          
         >
 
           <Form
@@ -538,7 +543,9 @@ class Drawerplate extends React.Component {
               </Col>
             </Row>
           </Form>
+          
         </Drawer>
+        
       </div>
     );
   }

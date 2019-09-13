@@ -21,7 +21,7 @@ const http = Axios.create({
     baseURL: 'http://139.180.130.44:50000/api',
     // headers:{'Cache-Control': 'no-cache' },
     headers: { 'Access-Control-Allow-Origin': '*' ,
-      Authorization: `Bearer ${getCookie("UseTok")}`,
+    
   },
   })
 
@@ -150,7 +150,7 @@ const Forgetpass = () => {
                                 </Button>
                                 </Col>
                                 <Col>
-                                    <Link to='/login' >
+                                    <Link to='/' >
                                         <Button type="danger"
 
                                             className="login-form-button"

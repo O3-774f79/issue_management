@@ -9,9 +9,11 @@ import { AuthContext } from '../context/auth';
 const { Content, Footer } = Layout;
 
 
-const LayoutTemplate = props => (
 
+const LayoutTemplate = props => {
 
+  const [current , setCurrent] = useState(['issue']);
+  return(
   <Layout className="layout">
     <div className="logo" />
     <div
@@ -25,13 +27,16 @@ const LayoutTemplate = props => (
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={['1']}
+        onClick={e =>setCurrent(e.key)}
+        defaultSelectedKeys={current}
         style={{ lineHeight: '64px', width: 300 }}
-      >
-        <Menu.Item key="1"> <Link to="/issue">inbox </Link></Menu.Item>
-{ props.authTokens.userType === 'ADMIN' ? <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> :null}
-        {/* <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> */}
        
+      >
+        <Menu.Item key="issue" > <Link to="/issue">inbox </Link></Menu.Item>
+        {props.authTokens.userType === 'ADMIN' ? 
+        <Menu.Item key="register"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> : null}
+        {/* <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> */}
+
       </Menu>
       <div style={{ display: 'flex' }}>
         <NotificationRight />
@@ -40,9 +45,9 @@ const LayoutTemplate = props => (
     </div>
     <Content style={{ padding: '0 50px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
+        {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
         <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
+        <Breadcrumb.Item>App</Breadcrumb.Item> */}
       </Breadcrumb>
       <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
         {props.children}
@@ -53,5 +58,8 @@ const LayoutTemplate = props => (
     </Footer>
   </Layout>
 );
+    }
+
+
 
 export default LayoutTemplate;

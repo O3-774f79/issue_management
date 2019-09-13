@@ -50,12 +50,12 @@ const Issue = () => {
     }
     return "";
   }
-
+  
   useEffect(() => {
     setLoadTable(true);
 
     setTimeout(() => {
-      setLoadTable(false);
+      
     }, 1500);
     if (authTokens.userType === 'ADMIN') {
       http.get(`/Ticket/GetAllTicket`
@@ -67,7 +67,7 @@ const Issue = () => {
       )
         .then((result) => {
           setData(result.data);
-
+          setLoadTable(false);
         })
         .catch(error => {
 
@@ -83,7 +83,7 @@ const Issue = () => {
       )
         .then((result) => {
           setData(result.data);
-
+          setLoadTable(false);
         })
         .catch(error => {
 
