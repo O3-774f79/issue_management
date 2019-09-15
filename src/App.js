@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Router as Router, Link, Route, Redirect, } from 'react-router-dom';
+import { BrowserRouter  as Router, Link, Route, Redirect, } from 'react-router-dom';
 import PrivateRoute from './component/privateRoute';
 import { AuthContext } from './context/auth';
 import LayoutTemplate from './component/layout';
@@ -24,10 +24,7 @@ function App(props) {
 
       <Router>
         <div>
-
           <Route exact path="/" component={Login} />
-
-
           {/* <LayoutTemplate> */}
 
           <PrivateRoute path="/issue" component={Issue} />
