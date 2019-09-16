@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter  as Router, Link, Route, Redirect, } from 'react-router-dom';
+import {  Link, Route, Redirect, } from 'react-router-dom';
 import PrivateRoute from './component/privateRoute';
 import { AuthContext } from './context/auth';
 import LayoutTemplate from './component/layout';
@@ -21,8 +21,6 @@ function App(props) {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-
-      <Router>
         <div>
           <Route exact path="/" component={Login} />
           {/* <LayoutTemplate> */}
@@ -35,7 +33,6 @@ function App(props) {
           {/* <Route path="/issue" component={Issue} /> */}
           {/* </LayoutTemplate> */}
         </div>
-      </Router>
     </AuthContext.Provider>
   );
 }
