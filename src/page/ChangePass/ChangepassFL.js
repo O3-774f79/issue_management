@@ -18,7 +18,7 @@ const ChagePassFL = () => {
 
   const handlesubmit = event => {
     const http = Axios.create({
-      baseURL: 'http://139.180.130.44:50000/api',
+      baseURL: 'http://139.180.130.44:80/ticketApi/api',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',

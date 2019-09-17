@@ -50,11 +50,11 @@ const Issue = () => {
     if (authTokens.companyCode === '1000') {
       const http = Axios.create({
 
-        baseURL: 'http://139.180.130.44:50000/api',
+        baseURL: 'http://139.180.130.44:80/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+          
         },
       })
       http.get(`/Ticket/GetAllTicket`
@@ -73,7 +73,7 @@ const Issue = () => {
     } else if (authTokens.companyCode === '1001') {
       const http = Axios.create({
 
-        baseURL: 'http://139.180.130.44:50000/api',
+        baseURL: 'http://139.180.130.44:80/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -97,7 +97,7 @@ const Issue = () => {
     } else if (authTokens.companyCode === '1002') {
       const http = Axios.create({
 
-        baseURL: 'http://139.180.130.44:50000/api',
+        baseURL: 'http://139.180.130.44:80/ticketApi',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -125,7 +125,7 @@ const Issue = () => {
   const onClickDisplay = async (record) => {
     const http = await Axios.create({
 
-      baseURL: 'http://139.180.130.44:50000/api',
+      baseURL: 'http://139.180.130.44:80/ticketApi/api',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
@@ -151,7 +151,7 @@ const Issue = () => {
   const onClickEdit = async (record) => {
     const http = await Axios.create({
 
-      baseURL: 'http://139.180.130.44:50000/api',
+      baseURL: 'http://139.180.130.44:80/ticketApi',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',

@@ -49,13 +49,13 @@ const Register = props => {
 
 
 
-   
+
 
 
     const HandleSubmit = (event) => {
         const http = Axios.create({
             // baseURL:'http://localhost:50000/api',
-            baseURL: 'http://139.180.130.44:50000/api',
+            baseURL: 'http://139.180.130.44:80/ticketApi/api',
             // headers:{'Cache-Control': 'no-cache' },
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -111,7 +111,7 @@ const Register = props => {
     useEffect(() => {
         const http = Axios.create({
             // baseURL:'http://localhost:50000/api',
-            baseURL: 'http://139.180.130.44:50000/api',
+            baseURL: 'http://139.180.130.44:80/ticketApi/api',
             // headers:{'Cache-Control': 'no-cache' },
             headers: {
                 'Access-Control-Allow-Origin': '*',

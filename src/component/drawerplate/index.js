@@ -75,7 +75,7 @@ class Drawerplate extends React.Component {
 
 
     const http = Axios.create({
-      baseURL: 'http://139.180.130.44:50000/api',
+      baseURL: 'http://139.180.130.44:80/ticketApi/api',
 
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -148,11 +148,11 @@ class Drawerplate extends React.Component {
 
     if (this.props.dataList !== nextProps.dataList) {
       const http = Axios.create({
-        baseURL: 'http://139.180.130.44:50000/api',
+        baseURL: 'http://139.180.130.44:80/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+         
         },
       })
       this.setState({
@@ -195,13 +195,6 @@ class Drawerplate extends React.Component {
   };
 
 
-
-
-  test = (e) => {
-
-    this.handleOnSubmit(e)
-  }
-
   handleOnSubmit = (event) => {
 
     event.preventDefault();
@@ -218,11 +211,11 @@ class Drawerplate extends React.Component {
     }, 3000);
     if (this.props.formcontrol === 'add') {
       const http = Axios.create({
-        baseURL: 'http://139.180.130.44:50000/api',
+        baseURL: 'http://139.180.130.44:80/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+         
         },
       })
       return (
@@ -266,11 +259,11 @@ class Drawerplate extends React.Component {
     } else {
       if (this.state.valueComments !== '') {
         const http = Axios.create({
-          baseURL: 'http://139.180.130.44:50000/api',
+          baseURL: 'http://139.180.130.44:80/ticketApi/api',
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',
-            Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+           
           },
         })
         return (
@@ -319,11 +312,11 @@ class Drawerplate extends React.Component {
         )
       } else {
         const http = Axios.create({
-          baseURL: 'http://139.180.130.44:50000/api',
+          baseURL: 'http://139.180.130.44:80/ticketApi/api',
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',
-            Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+           
           },
         })
         return (

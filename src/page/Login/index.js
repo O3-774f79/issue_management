@@ -23,9 +23,11 @@ const Login = props => {
 
   const http = axios.create({
 
-    baseURL: 'http://139.180.130.44:50000/api',
+    baseURL: 'http://139.180.130.44:80/ticketApi/api',
     headers: {
       'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-cache',
+     
     },
   });
 
@@ -51,6 +53,10 @@ const Login = props => {
           setfirstlogin(result.data.employee.firstLogin);
           setLoggedIn(true);
           localStorage.setItem('UseTok', result.data.token);
+          console.log('Header Token',result.headers);
+          console.log('data Token',result.data.token);
+          console.log('Access Token', result.data);
+          console.log('acces_token ',result.headers.get('access_token'));
         }
         if (result.status === 401) {
           setIsError(true);
@@ -59,7 +65,7 @@ const Login = props => {
       })
       .catch(e => {
         setIsError(true);
-        console.log("show e ", e);
+        
       });
 
   };
