@@ -18,11 +18,11 @@ const ChagePassFL = () => {
 
   const handlesubmit = event => {
     const http = Axios.create({
-      baseURL: 'http://139.180.130.44:80/ticketApi/api',
+      baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
-        Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        
       },
     });
     setStatussubmit(false);

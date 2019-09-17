@@ -55,12 +55,12 @@ const Register = props => {
     const HandleSubmit = (event) => {
         const http = Axios.create({
             // baseURL:'http://localhost:50000/api',
-            baseURL: 'http://139.180.130.44:80/ticketApi/api',
+            baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
             // headers:{'Cache-Control': 'no-cache' },
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
-                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+                
             },
         })
         setStatussubmit(false)
@@ -111,12 +111,12 @@ const Register = props => {
     useEffect(() => {
         const http = Axios.create({
             // baseURL:'http://localhost:50000/api',
-            baseURL: 'http://139.180.130.44:80/ticketApi/api',
+            baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
             // headers:{'Cache-Control': 'no-cache' },
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
-                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+                
             },
         })
         http.get(`/Company/GetList`

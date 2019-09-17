@@ -27,10 +27,10 @@ const Forgetpass = () => {
 
     const handlesubmit = (event) => {
         const http = Axios.create({
-            baseURL: 'http://139.180.130.44:80/ticketApi/api',
+            baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+                
             },
         })
         setStatussubmit(false)

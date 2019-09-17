@@ -75,12 +75,12 @@ class Drawerplate extends React.Component {
 
 
     const http = Axios.create({
-      baseURL: 'http://139.180.130.44:80/ticketApi/api',
+      baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
 
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
-        Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
+        
       },
     })
 
@@ -148,7 +148,7 @@ class Drawerplate extends React.Component {
 
     if (this.props.dataList !== nextProps.dataList) {
       const http = Axios.create({
-        baseURL: 'http://139.180.130.44:80/ticketApi/api',
+        baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -211,7 +211,7 @@ class Drawerplate extends React.Component {
     }, 3000);
     if (this.props.formcontrol === 'add') {
       const http = Axios.create({
-        baseURL: 'http://139.180.130.44:80/ticketApi/api',
+        baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -259,7 +259,7 @@ class Drawerplate extends React.Component {
     } else {
       if (this.state.valueComments !== '') {
         const http = Axios.create({
-          baseURL: 'http://139.180.130.44:80/ticketApi/api',
+          baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',
@@ -312,7 +312,7 @@ class Drawerplate extends React.Component {
         )
       } else {
         const http = Axios.create({
-          baseURL: 'http://139.180.130.44:80/ticketApi/api',
+          baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',

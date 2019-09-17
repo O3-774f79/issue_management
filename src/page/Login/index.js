@@ -23,7 +23,7 @@ const Login = props => {
 
   const http = axios.create({
 
-    baseURL: 'http://139.180.130.44:80/ticketApi/api',
+    baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-cache',
