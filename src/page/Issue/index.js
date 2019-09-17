@@ -1,14 +1,14 @@
 import React, { Component, useState, useEffect } from 'react';
 import TableIssue from '../../component/table';
 
-import { Tag, Button, Icon, Alert, Row, Col } from 'antd';
+import { Tag, Button, Icon, Row, Col } from 'antd';
 import Drawerplate from '../../component/drawerplate/index';
 import Axios from 'axios';
 import { useAuth } from '../../context/auth';
+import moment, { relativeTimeThreshold } from 'moment';
 const Issue = () => {
   const { authTokens } = useAuth();
 
-  const [tickNodis, setTickNodis] = React.useState(false);
   const [dis, setDis] = React.useState(false);
   const [hid, setHid] = React.useState(false);
   const [hidbut, setHidbut] = React.useState(false);
@@ -27,31 +27,6 @@ const Issue = () => {
   // Control form
   const [formcontrol, setformcontrol] = React.useState('');
 
-  // const http = Axios.create({
-  //   // baseURL:'http://localhost:50000/api',
-  //   baseURL: 'http://139.180.130.44:50000/api',
-  //   // headers:{'Cache-Control': 'no-cache' },
-  //   headers: {
-  //     'Access-Control-Allow-Origin': '*',
-  //     'Cache-Control': 'no-cache',
-  //     Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
-  //   },
-  // })
-
-  function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
 
   useEffect(() => {
 
@@ -60,11 +35,22 @@ const Issue = () => {
     setTimeout(() => {
 
     }, 1500);
+    loadAll();
+
+  },
+    [])
+
+  const loadAll = () => {
+
+    setLoadTable(true);
+
+    setTimeout(() => {
+
+    }, 1500);
     if (authTokens.companyCode === '1000') {
       const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
+
         baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -72,16 +58,13 @@ const Issue = () => {
         },
       })
       http.get(`/Ticket/GetAllTicket`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetAllTicket'
-        // '/Ticket/GetAllTicket'
+
         , {
         }
       )
         .then((result) => {
           setData(result.data);
           setLoadTable(false);
-          console.log("Get All");
         })
         .catch(error => {
 
@@ -89,65 +72,60 @@ const Issue = () => {
         })
     } else if (authTokens.companyCode === '1001') {
       const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
+
         baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
           Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
         },
       })
+
       http.get(`/Ticket/GetAssignTicket`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetList'
-        // '/Ticket/GetList'
+
         , {
         }
       )
         .then((result) => {
           setData(result.data);
           setLoadTable(false);
-          console.log("Get Assign");
         })
         .catch(error => {
 
         })
+
     } else if (authTokens.companyCode === '1002') {
       const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
+
         baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
           Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
         },
       })
+
       http.get(`/Ticket/GetList`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetList'
-        // '/Ticket/GetList'
+
         , {
         }
       )
         .then((result) => {
           setData(result.data);
           setLoadTable(false);
-          console.log("Get List");
         })
         .catch(error => {
 
         })
+
     }
 
-  }, [show])
+  }
 
   const onClickDisplay = async (record) => {
     const http = await Axios.create({
-      // baseURL:'http://localhost:50000/api',
+
       baseURL: 'http://139.180.130.44:50000/api',
-      // headers:{'Cache-Control': 'no-cache' },
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
@@ -156,9 +134,7 @@ const Issue = () => {
     })
     const comment =
       await http.get(`/Ticket/GetTicketComment?ticketId=${record.id}`
-        // await Axios.get(
-        //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${record.id}`
-        // `/Ticket/GetTicketComment?ticketId=${record.id}`
+
       )
     await setCommentList(comment.data)
     await setRecord(record)
@@ -168,16 +144,14 @@ const Issue = () => {
     await setHidbut(true);
 
 
-    await setTickNodis(true);
     await setTitledraw('Show Ticket');
     await setformcontrol('display');
     await setShow(true);
   }
   const onClickEdit = async (record) => {
     const http = await Axios.create({
-      // baseURL:'http://localhost:50000/api',
+
       baseURL: 'http://139.180.130.44:50000/api',
-      // headers:{'Cache-Control': 'no-cache' },
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
@@ -186,9 +160,7 @@ const Issue = () => {
     })
     const comment =
       await http.get(`/Ticket/GetTicketComment?ticketId=${record.id}`
-        // await Axios.get(
-        //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${record.id}`
-        // `/Ticket/GetTicketComment?ticketId=${record.id}`
+
       )
     await setCommentList(comment.data)
     await setRecord(record)
@@ -197,7 +169,6 @@ const Issue = () => {
     await setHid(false);
     await setHidbut(false);
 
-    await setTickNodis(true);
     await setTitledraw('Display Ticket');
     await setformcontrol('edit');
     await setShow(true);
@@ -209,7 +180,6 @@ const Issue = () => {
     setHid(true);
     setHidbut(false);
     setTitledraw('Add Ticket');
-    setTickNodis(true);
 
     setformcontrol('add');
 
@@ -217,112 +187,29 @@ const Issue = () => {
     setRecord('');
 
   }
-  function Reload() {
-    setLoadTable(true);
 
+  const loadcon = () => {
+    setLoadTable(true)
+    setShow(false)
     setTimeout(() => {
-      setLoadTable(false);
-    }, 1500);
-    if (authTokens.companyCode === '1000') {
-      const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
-        baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
-        },
-      })
-      http.get(`/Ticket/GetAllTicket`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetAllTicket'
-        // '/Ticket/GetAllTicket'
-        , {
-        }
-      )
-        .then((result) => {
-          setData(result.data);
-          console.log('GetAll')
-        })
-        .catch(error => {
+    });
+    loadAll();
+  }
 
 
-        })
-    } else if (authTokens.companyCode === '1001') {
-      const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
-        baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
-        },
-      })
-
-      http.get(`/Ticket/GetAssignTicket`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetList'
-        // '/Ticket/GetList'
-        , {
-        }
-      )
-        .then((result) => {
-          setData(result.data);
-          console.log('GetAssign')
-        })
-        .catch(error => {
-
-        })
-
-    } else if (authTokens.companyCode === '1002') {
-      const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
-        baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-cache',
-          Authorization: `Bearer ${localStorage.getItem('UseTok')}`,
-        },
-      })
-
-      http.get(`/Ticket/GetList`
-        // Axios.get(
-        //   'http://localhost:50000/api/Ticket/GetList'
-        // '/Ticket/GetList'
-        , {
-        }
-      )
-        .then((result) => {
-          setData(result.data);
-          console.log('Getlist')
-        })
-        .catch(error => {
-
-        })
-
-    }
-
+  function Reload() {
+    loadAll()
   }
 
 
 
-
   const [column, setColumn] = React.useState([
-    {
-      title: 'Ticket Name',
-      dataIndex: 'ticketName',
 
-      width: '20%',
-      editable: true,
-    },
     {
       title: 'Ticket Number',
       dataIndex: 'ticketNo',
       width: '20%',
-      editable: true,
+
     },
     {
       title: 'Description',
@@ -333,12 +220,65 @@ const Issue = () => {
       title: 'Priority',
       dataIndex: 'priorityName',
       width: '5%',
+      filters: [{
+        text: 'Low',
+        value: 'Low'
+      },
+      {
+        text: 'Medium',
+        value: 'Medium'
+      },
+      {
+        text: 'High',
+        value: 'High'
+      },
+      ],
+      filterMultiple: false,
+      onFilters: (value, record) => record.priorityName.indexOf(value) === 0,
+    },
+    {
+      title: 'Create Date',
+      dataIndex: 'createDate',
+      width: '15%',
+
+      render: function (text, record) {
+        var str = record.createDate
+
+        return moment(str).subtract(10, 'days').calendar();
+      }
+    },
+    {
+      title: 'Created Time',
+      dataIndex: 'createDate',
+      width: '5%',
+      render: function (text, record) {
+        var str = record.onlineTime
+        let h = str / 60
+        let d = str / 1440
+        return parseInt(d) + " วัน" + parseInt(h) + " ชั่วโมง"
+      }
+
     },
     {
       title: 'Status',
       key: 'status',
       width: '10%',
       dataIndex: 'status',
+      filters: [{
+        text: 'OPEN',
+        value: 'OPEN'
+      },
+      {
+        text: 'WAITING',
+        value: 'WAITING'
+      },
+      {
+        text: 'CLOSE',
+        value: 'CLOSE'
+      },
+      ],
+      filterMultiple: false,
+      onFilters: (value, record) => record.status.indexOf(value) === 0,
       render: status => {
         switch (status) {
           case 'WAITING':
@@ -363,6 +303,7 @@ const Issue = () => {
             );
         }
       },
+
     },
     {
       title: 'Action',
@@ -418,9 +359,9 @@ const Issue = () => {
         authTokens={authTokens}
         titledraw={titledraw}
         commentList={commentList}
-        tickNodis={tickNodis}
         formcontrol={formcontrol}
         dataList={recordList}
+        loadcon={loadcon}
       />
 
     </React.Fragment>

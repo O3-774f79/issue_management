@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, } from 'react-router-dom';
 import {
     Button,
     Input,
@@ -42,7 +42,6 @@ const Register = props => {
     const [statussubmit, setStatussubmit] = useState(false);
     const [errorStat, setError] = useState(false);
     const [message, setMessage] = useState([]);
-    const [round, setRound] = useState([]);
 
 
 
@@ -50,20 +49,7 @@ const Register = props => {
 
 
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
+   
 
 
     const HandleSubmit = (event) => {

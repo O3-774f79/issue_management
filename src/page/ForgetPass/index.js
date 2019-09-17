@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
 
 import {
     Button,
@@ -9,7 +9,6 @@ import {
     Form,
     Icon,
     Card,
-    Select,
     Alert,
 
 
@@ -17,21 +16,6 @@ import {
 import Axios from 'axios';
 
 
-
-  function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
 const Forgetpass = () => {
 
     const [email, setEmail] = useState('');
@@ -43,19 +27,16 @@ const Forgetpass = () => {
 
     const handlesubmit = (event) => {
         const http = Axios.create({
-            // baseURL:'http://localhost:50000/api',
             baseURL: 'http://139.180.130.44:50000/api',
-            // headers:{'Cache-Control': 'no-cache' },
-            headers: { 'Access-Control-Allow-Origin': '*' ,
-            
-          },
-          })
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+
+            },
+        })
         setStatussubmit(false)
         setError(false)
         setMessage('')
         http.post('/Password/ForgetPassword'
-        // Axios.post(
-        //     'http://localhost:50000/api/Password/ForgetPassword'
             , {
                 email: email,
                 firstnameEN: Fname,
@@ -83,9 +64,6 @@ const Forgetpass = () => {
             })
             .catch(isError => {
 
-                // setStatussubmit(false)
-                // setError(true)
-                // setMessage('Input incorrect')
 
             })
     }

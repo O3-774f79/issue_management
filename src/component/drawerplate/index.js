@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Drawer,
   Button,
@@ -8,12 +8,8 @@ import {
   Select,
   Comment,
   Avatar,
-  List,
   Form,
-  Divider,
-  Icon,
   Alert,
-  Tooltip,
   TimePicker,
 } from 'antd';
 
@@ -27,21 +23,6 @@ const { TextArea } = Input;
 
 
 
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 const Editor = ({ onChange, onSubmit, submitting, value, hidden }) => (
   <div>
 
@@ -49,9 +30,7 @@ const Editor = ({ onChange, onSubmit, submitting, value, hidden }) => (
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
     <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary"  >
-        Add Comment
-      </Button>
+
     </Form.Item>
   </div>
 );
@@ -65,7 +44,6 @@ class Drawerplate extends React.Component {
     disabledStat: false,
     hiddenStat: false,
     visible: false,
-    comments: [],
     submitting: false,
     loading: false,
     CheckError: false,
@@ -76,9 +54,10 @@ class Drawerplate extends React.Component {
     TicketDesc: '',
     PriorityID: 1,
     PriorityName: 1,
-    TicketStatus: 'OPEN',
+    TicketStatus: 'เปิด',
     Priovalue: [],
     CompanyList: [],
+    StatusList: [],
     Company: '',
     StatepriorityName: '',
     data: [],
@@ -94,10 +73,10 @@ class Drawerplate extends React.Component {
 
   componentDidMount() {
 
+
     const http = Axios.create({
-      // baseURL:'http://localhost:50000/api',
       baseURL: 'http://139.180.130.44:50000/api',
-      // headers:{'Cache-Control': 'no-cache' },
+
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
@@ -113,6 +92,7 @@ class Drawerplate extends React.Component {
         this.setState({
           CompanyList: getpart.data,
         })
+
       })
       .catch(error => {
         console.log("Get partner Error");
@@ -120,15 +100,29 @@ class Drawerplate extends React.Component {
 
 
     http.get(`/Priority/GetList`
-      // Axios.get(
-      //   'http://localhost:50000/api/Priority/GetList'
-      // '/Priority/GetList'
       , {
       },
     )
       .then((result) => {
         this.setState({
           Priovalue: result.data,
+
+        })
+
+      })
+      .catch(error => {
+
+
+      }
+      )
+
+    http.get(`/ValueHelp/GetTicketStatus`
+      , {
+      },
+    )
+      .then((getStat) => {
+        this.setState({
+          StatusList: getStat.data,
 
         })
 
@@ -147,14 +141,14 @@ class Drawerplate extends React.Component {
     this.setState({
       valueComments: '',
       CheckSuccess: false,
-      message: ''
+      message: '',
+
+
     })
 
     if (this.props.dataList !== nextProps.dataList) {
       const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
         baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -170,19 +164,18 @@ class Drawerplate extends React.Component {
         TicketStatus: nextProps.dataList.status,
         CommentList: nextProps.commentList,
         Company: nextProps.dataList.assignTo,
-        Time : nextProps.dataList.onlineTime,
+        Time: nextProps.dataList.onlineTime,
 
       })
+
+      
       http.get(`/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
-        // Axios.get(
-        //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
-        // `/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
       )
         .then((ResComment) => {
           this.setState({
             CommentList: ResComment.data
           })
-          console.log(ResComment.data)
+       
 
         })
         .catch(error => {
@@ -204,12 +197,16 @@ class Drawerplate extends React.Component {
 
 
 
+  test = (e) => {
 
+    this.handleOnSubmit(e)
+  }
 
   handleOnSubmit = (event) => {
+
     event.preventDefault();
     this.setState({
-      loading: true,
+
       CheckError: false,
       CheckSuccess: false,
       Message: '',
@@ -221,9 +218,7 @@ class Drawerplate extends React.Component {
     }, 3000);
     if (this.props.formcontrol === 'add') {
       const http = Axios.create({
-        // baseURL:'http://localhost:50000/api',
         baseURL: 'http://139.180.130.44:50000/api',
-        // headers:{'Cache-Control': 'no-cache' },
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
@@ -233,16 +228,13 @@ class Drawerplate extends React.Component {
       return (
 
         http.post(`/Ticket/OpenTicket`
-          // Axios.post(
-          //   'http://localhost:50000/api/Ticket/OpenTicket'
-          // '/Ticket/OpenTicket'
           , {
 
             ticketName: this.state.TicketName,
             description: this.state.TicketDesc,
             priorityId: this.state.PriorityID,
             assignTo: this.state.Company,
-            status: this.state.TicketStatus,
+            status: 'OPEN',
 
           }
         ).then((ople) => {
@@ -255,10 +247,11 @@ class Drawerplate extends React.Component {
             status: 'OPEN',
             CheckError: false,
             CheckSuccess: true,
+            loading: true,
             Message: 'Open Ticket complete'
 
           })
-
+          this.props.loadcon()
 
         }).catch(error => {
 
@@ -273,9 +266,7 @@ class Drawerplate extends React.Component {
     } else {
       if (this.state.valueComments !== '') {
         const http = Axios.create({
-          // baseURL:'http://localhost:50000/api',
           baseURL: 'http://139.180.130.44:50000/api',
-          // headers:{'Cache-Control': 'no-cache' },
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',
@@ -286,9 +277,6 @@ class Drawerplate extends React.Component {
 
 
           http.post(`/Ticket/UpdateTicket`
-            // Axios.post(
-            //   'http://localhost:50000/api/Ticket/UpdateTicket'
-            // '/Ticket/UpdateTicket'
             , {
 
 
@@ -304,14 +292,7 @@ class Drawerplate extends React.Component {
               // companycode: '1000',
             }
           ).then((ople) => {
-
-            console.log(moment().format('YYYY MM DD hh:mm:ss'))
-            console.log(moment().fromNow())
-            console.log(moment().format())
             http.get(`/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
-              // Axios.get(
-              //   `http://localhost:50000/api/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
-              // `/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
             )
               .then((ResComment) => {
                 this.setState({
@@ -338,9 +319,7 @@ class Drawerplate extends React.Component {
         )
       } else {
         const http = Axios.create({
-          // baseURL:'http://localhost:50000/api',
           baseURL: 'http://139.180.130.44:50000/api',
-          // headers:{'Cache-Control': 'no-cache' },
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache',
@@ -350,9 +329,7 @@ class Drawerplate extends React.Component {
         return (
 
           http.post(`/Ticket/UpdateTicket`
-            // Axios.post(
-            //   'http://localhost:50000/api/Ticket/UpdateTicket'
-            // '/Ticket/UpdateTicket'
+
             , {
 
 
@@ -372,7 +349,7 @@ class Drawerplate extends React.Component {
               CheckSuccess: true,
               Message: 'Update Ticket complete'
             })
-
+            this.props.loadcon()
           }).catch(error => {
             this.setState({
               CheckError: true,
@@ -421,28 +398,7 @@ class Drawerplate extends React.Component {
 
   }
 
-  handleSubmit = () => {
-    if (!this.state.valueComments) {
-      return;
-    }
 
-    this.setState({
-      submitting: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        submitting: false,
-        valueComments: '',
-        comments: [
-          {
-            content: <p>{this.state.valueComments}</p>,
-            // datetime: moment().fromNow(),
-          },
-          ...this.state.comments,
-        ],
-      });
-    }, 1000);
-  };
 
   handleChange = e => {
     this.setState({
@@ -452,14 +408,18 @@ class Drawerplate extends React.Component {
   };
   render() {
 
-    const { comments, submitting, value } = this.state;
+    const { submitting,  } = this.state;
     const options =
       this.state.Priovalue.map(Fdata =>
-        <Option value={Fdata.id}>{Fdata.priorityName}</Option>)
+        <Option value={Fdata.id}  >{Fdata.priorityName}</Option>)
 
     const Partoptions =
       this.state.CompanyList.map(partner =>
-        <Option value={partner.companyCode}>{partner.companyName}</Option>)
+        <Option value={partner.companyCode}  >{partner.companyName}</Option>)
+
+    const Statoptions =
+      this.state.StatusList.map(Slist =>
+        <Option value={Slist.valueKey} >{Slist.valueText}</Option>)
 
     return (
 
@@ -476,7 +436,7 @@ class Drawerplate extends React.Component {
         >
 
           <Form
-            onSubmit={this.handleOnSubmit}
+
           >
             <Row gutter={16}>
               <Col span={12}>
@@ -495,7 +455,7 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
-                  <Input type='text' name='TicketNo' disabled={this.props.tickNodis}
+                  <Input type='text' name='TicketNo' disabled
 
                     value={this.state.TicketNo}
                   />
@@ -523,7 +483,7 @@ class Drawerplate extends React.Component {
 
 
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Priority" >
+                <Form.Item name='PriorityItem' layout="horizontal" label="Priority" >
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
@@ -541,29 +501,29 @@ class Drawerplate extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Status" >
+                {this.props.titledraw !== 'Add Ticket' ? <Form.Item name='StatusItem' layout="horizontal" label="Status" >
                   <Select
                     placeholder="Select status"
-                    defaultValue="OPEN"
-                    disabled={this.props.disStat}
+
+                    disabled={this.props.hidStat}
                     onChange={this.onChangeSStatus}
                     value={this.state.TicketStatus}
                   >
-                    <Option value="OPEN">Open</Option>
-                    <Option value="WAITING">Waiting</Option>
-                    <Option value="CLOSE">Close</Option>
+                    {Statoptions}
                   </Select>
                 </Form.Item>
+                  : null}
               </Col>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Time" >
+                {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Time" >
 
-                 <TimePicker defaultValue={this.state.time,'HH,mm,ss'} disabled />
+                  <TimePicker value={moment.unix(this.state.Time)} disabled={this.props.visible} />
                 </Form.Item>
+                  : null}
               </Col>
 
               <Col span={24}>
-                <Form.Item layout="horizontal" label="Description" >
+                <Form.Item name='DescriptionItem' layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
                     disabled={this.props.disStat}
                     onChange={this.onChangeSDescription}
@@ -622,6 +582,7 @@ class Drawerplate extends React.Component {
                         loading={this.state.loading}
                         htmlType="submit"
                         className="login-form-button"
+                        onClick={(event) => this.handleOnSubmit(event)}
 
                       >
                         Submit

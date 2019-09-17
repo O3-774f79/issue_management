@@ -1,5 +1,5 @@
 import React from 'react';
-import {Badge, Icon, Menu, List, Avatar, Dropdown} from 'antd';
+import {Badge, Icon, List, Avatar, Dropdown} from 'antd';
 
 const NotificationRight = props => {
   const menu = (

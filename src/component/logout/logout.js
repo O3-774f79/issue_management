@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Link, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route,} from 'react-router-dom';
 import {Menu, Icon, Dropdown, Avatar, Button} from 'antd';
 import {useAuth} from '../../context/auth';
 
@@ -8,12 +8,8 @@ import {useAuth} from '../../context/auth';
 
 const LogoutTab = props => {
   const {setAuthTokens,authTokens} = useAuth ();
-  console.log(`het`,setAuthTokens)
-  console.log('checkckckck',authTokens)
-  console.log(document.cookie)
   function logOut () {
     setAuthTokens ();
-  
   }
 
   

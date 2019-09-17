@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  Link, Route, Redirect, } from 'react-router-dom';
+import { Link, Route, Redirect, } from 'react-router-dom';
 import PrivateRoute from './component/privateRoute';
 import { AuthContext } from './context/auth';
 import LayoutTemplate from './component/layout';
@@ -21,18 +21,18 @@ function App(props) {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-        <div>
-          <Route exact path="/" component={Login} />
-          {/* <LayoutTemplate> */}
+      <div>
+        <Route exact path="/" component={Login} />
+        {/* <LayoutTemplate> */}
 
-          <PrivateRoute path="/issue" component={Issue} />
-          <PrivateRoute path="/ChangePass" component={ChangePass} />
-          <PrivateRoute path="/ChangePassFL" component={ChangePassFL} />
-          <Route path="/Forgetpass" component={Forgetpass} />
-          <PrivateRoute path="/register" component={Register} />
-          {/* <Route path="/issue" component={Issue} /> */}
-          {/* </LayoutTemplate> */}
-        </div>
+        <PrivateRoute path="/issue" component={Issue} />
+        <PrivateRoute path="/ChangePass" component={ChangePass} />
+        <PrivateRoute path="/ChangePassFL" component={ChangePassFL} />
+        <Route path="/Forgetpass" component={Forgetpass} />
+        <PrivateRoute path="/register" component={Register} />
+
+        {/* </LayoutTemplate> */}
+      </div>
     </AuthContext.Provider>
   );
 }

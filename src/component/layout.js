@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import LogoutTab from './logout/logout';
 import NotificationRight from './notification_right';
-import { AuthContext } from '../context/auth';
 const { Content, Footer } = Layout;
 
 

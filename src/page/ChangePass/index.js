@@ -8,28 +8,13 @@ import {
     Form,
     Icon,
     Card,
-    Alert,
+
 
 } from 'antd';
 import Axios from 'axios';
 
 
 
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
 const ChagePass = () => {
 
     const [oldpass, setOldpass] = useState('');
@@ -40,9 +25,7 @@ const ChagePass = () => {
     const [message, setMessage] = useState('');
     const handlesubmit = (event) => {
         const http = Axios.create({
-            // baseURL:'http://localhost:50000/api',
             baseURL: 'http://139.180.130.44:50000/api',
-            // headers:{'Cache-Control': 'no-cache' },
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
@@ -52,9 +35,6 @@ const ChagePass = () => {
         setStatussubmit(false);
         setMessage('');
         http.post('/Password/ChangePassword'
-            // Axios.post(
-            //     'http://localhost:50000/api/Password/ChangePassword'
-            // '/Password/ChangePassword'
             , {
                 oldPassword: oldpass,
                 newPassword: newpass,
