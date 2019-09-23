@@ -11,16 +11,21 @@ import Register from './page/Register';
 import Forgetpass from './page/ForgetPass';
 
 
+
 function App(props) {
   const [authTokens, setAuthTokens] = useState();
-  
+
   const setTokens = data => {
     localStorage.setItem('tokens', JSON.stringify(data));
     setAuthTokens(data);
   };
 
+
+
+
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+      
       <div>
         <Route exact path="/" component={Login} />
         {/* <LayoutTemplate> */}

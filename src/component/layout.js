@@ -11,53 +11,53 @@ const { Content, Footer } = Layout;
 
 const LayoutTemplate = props => {
 
-  const [current , setCurrent] = useState(['issue']);
-  return(
-  <Layout className="layout">
-    <div className="logo" />
-    <div
-      style={{
-        width: '100%',
-        backgroundColor: '#001529',
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        onClick={e =>setCurrent(e.key)}
-        defaultSelectedKeys={current}
-        style={{ lineHeight: '64px', width: 300 }}
-       
+  const [current, setCurrent] = useState(['issue']);
+  return (
+    <Layout className="layout">
+      <div className="logo" />
+      <div
+        style={{
+          width: '100%',
+          backgroundColor: '#001529',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
       >
-        <Menu.Item key="issue" > <Link to="/issue">inbox </Link></Menu.Item>
-        {props.authTokens.userType === 'ADMIN' ? 
-        <Menu.Item key="register"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> : null}
-        {/* <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> */}
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          onClick={e => setCurrent(e.key),console.log(current)}
+          defaultSelectedKeys={current}
+          style={{ lineHeight: '64px', width: 300 }}
 
-      </Menu>
-      <div style={{ display: 'flex' }}>
-        {/* <NotificationRight /> */}
-        <LogoutTab />
+        >
+          <Menu.Item key="issue"><Link to="/issue">inbox </Link></Menu.Item>
+          {props.authTokens.userType === 'ADMIN' ?
+          <Menu.Item key="register"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> : null}
+          {/* <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> */}
+
+        </Menu>
+        <div style={{ display: 'flex' }}>
+          {/* <NotificationRight /> */}
+          <LogoutTab />
+        </div>
       </div>
-    </div>
-    <Content style={{ padding: '0 50px' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
+      <Content style={{ padding: '0 50px' }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          {/* <Breadcrumb.Item>Home</Breadcrumb.Item>
         <Breadcrumb.Item>List</Breadcrumb.Item>
         <Breadcrumb.Item>App</Breadcrumb.Item> */}
-      </Breadcrumb>
-      <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-        {props.children}
-      </div>
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>
-      You Can Do It With Leaderplanet
+        </Breadcrumb>
+        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          {props.children}
+        </div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>
+        You Can Do It With Leaderplanet
     </Footer>
-  </Layout>
-);
-    }
+    </Layout>
+  );
+}
 
 
 

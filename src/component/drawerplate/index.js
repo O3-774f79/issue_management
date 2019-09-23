@@ -11,6 +11,8 @@ import {
   Form,
   Alert,
   TimePicker,
+  Steps,
+  InputNumber
 } from 'antd';
 
 import Axios from 'axios';
@@ -21,13 +23,14 @@ import { useAuth } from '../../context/auth';
 const { Option } = Select;
 const { TextArea } = Input;
 
+const { Step } = Steps;
 
 
-const Editor = ({ onChange, onSubmit, submitting, value, hidden }) => (
+const Editor = ({ onChange, onSubmit, submitting, value, disabled }) => (
   <div>
 
     <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
+      <TextArea rows={4} onChange={onChange} value={value} disabled={disabled} />
     </Form.Item>
     <Form.Item>
 
@@ -56,10 +59,13 @@ class Drawerplate extends React.Component {
     PriorityName: 1,
     TicketStatus: 'เปิด',
     Priovalue: [],
-    CompanyList: [],
+    // CompanyList: [],
     StatusList: [],
-    Company: '',
+    TypeList: [],
+    // Company: '',
+    CreTime:'',
     StatepriorityName: '',
+    Typepick: '',
     data: [],
     dataList: {},
     valueComments: '',
@@ -67,36 +73,41 @@ class Drawerplate extends React.Component {
     Message: '',
     date: '',
     Time: 0,
+    ManHour: 0,
 
-
+    // Status wait , process , finish , error
+    StepStatus1: 'process',
+    StepStatus2: 'wait',
+    StepStatus3: 'wait',
+    StepStatus4: 'wait',
   };
 
   componentDidMount() {
 
 
+
     const http = Axios.create({
       baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
-
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
-        
+
       },
     })
 
-    http.get(`/Company/GetPartner`
-      , {
-      }
-    )
-      .then((getpart) => {
-        this.setState({
-          CompanyList: getpart.data,
-        })
+    // http.get(`/Company/GetPartner`
+    //   , {
+    //   }
+    // )
+    //   .then((getpart) => {
+    //     this.setState({
+    //       CompanyList: getpart.data,
+    //     })
 
-      })
-      .catch(error => {
-        console.log("Get partner Error");
-      })
+    //   })
+    //   .catch(error => {
+    //     console.log("Get partner Error");
+    //   })
 
 
     http.get(`/Priority/GetList`
@@ -112,7 +123,7 @@ class Drawerplate extends React.Component {
       })
       .catch(error => {
 
-
+        console.log("Get List Error");
       }
       )
 
@@ -128,7 +139,23 @@ class Drawerplate extends React.Component {
 
       })
       .catch(error => {
+        console.log("Get Status Error");
 
+      }
+      )
+    http.get(`/ValueHelp/GetTicketType`
+      , {
+      },
+    )
+      .then((getType) => {
+        this.setState({
+          TypeList: getType.data,
+
+        })
+
+      })
+      .catch(error => {
+        console.log("Get Type Error");
 
       }
       )
@@ -152,7 +179,7 @@ class Drawerplate extends React.Component {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
-         
+
         },
       })
       this.setState({
@@ -163,19 +190,73 @@ class Drawerplate extends React.Component {
         PriorityID: nextProps.dataList.priorityId,
         TicketStatus: nextProps.dataList.status,
         CommentList: nextProps.commentList,
-        Company: nextProps.dataList.assignTo,
+        // Company: nextProps.dataList.assignTo,
         Time: nextProps.dataList.onlineTime,
-
+        Typepick: nextProps.dataList.ticketType,
+        ManHour: nextProps.dataList.estimateTime,
+        CreTime: nextProps.dataList.createDate,
       })
+     
 
+      if (nextProps.dataList.status === 'GETREQ'
+      ) {
+        this.setState({
+          StepStatus1: 'process',
+          StepStatus2: 'wait',
+          StepStatus3: 'wait',
+          StepStatus4: 'wait',
+          current: 1,
+          
+        })
+
+
+      } else if (nextProps.dataList.status === 'OPEN') {
+        this.setState({
+          StepStatus1: 'finish',
+          StepStatus2: 'process',
+          StepStatus3: 'wait',
+          StepStatus4: 'wait',
+          current: 2,
+         
+        })
+      } else if (nextProps.dataList.status === 'WAITING') {
+        this.setState({
+          StepStatus1: 'finish',
+          StepStatus2: 'finish',
+          StepStatus3: 'process',
+          StepStatus4: 'wait',
+          current: 3,
+          
+        })
+      } else if (nextProps.dataList.status === 'CLOSE') {
+        this.setState({
+          StepStatus1: 'finish',
+          StepStatus2: 'finish',
+          StepStatus3: 'finish',
+          StepStatus4: 'finish',
+          current: 4,
       
+        })
+      } else {
+        this.setState({
+          StepStatus1: 'process',
+          StepStatus2: 'wait',
+          StepStatus3: 'wait',
+          StepStatus4: 'wait',
+          current: 1,
+         
+        })
+      }
+
+
+
       http.get(`/Ticket/GetTicketComment?ticketId=${nextProps.dataList.id}`
       )
         .then((ResComment) => {
           this.setState({
             CommentList: ResComment.data
           })
-       
+
 
         })
         .catch(error => {
@@ -191,8 +272,11 @@ class Drawerplate extends React.Component {
       visible: false,
       valueComments: '',
       CommentList: [],
+
     });
   };
+
+
 
 
   handleOnSubmit = (event) => {
@@ -215,7 +299,7 @@ class Drawerplate extends React.Component {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Cache-Control': 'no-cache',
-         
+
         },
       })
       return (
@@ -226,8 +310,10 @@ class Drawerplate extends React.Component {
             ticketName: this.state.TicketName,
             description: this.state.TicketDesc,
             priorityId: this.state.PriorityID,
-            assignTo: this.state.Company,
-            status: 'OPEN',
+            // assignTo: this.state.Company,
+            status: 'GETREQ',
+            ticketType: this.state.Typepick,
+            // estimateTime: this.state.ManHour,
 
           }
         ).then((ople) => {
@@ -236,13 +322,14 @@ class Drawerplate extends React.Component {
             TicketName: '',
             TicketDesc: '',
             PriorityID: 1,
-            Company: 'Partner',
-            status: 'OPEN',
+            // Company: 'Partner',
+            status: 'GETREQ',
+            Typepick: 'K2',
             CheckError: false,
             CheckSuccess: true,
             loading: true,
-            Message: 'Open Ticket complete'
-
+            Message: 'Open Ticket complete',
+            ManHour: 0,
           })
           this.props.loadcon()
 
@@ -257,105 +344,55 @@ class Drawerplate extends React.Component {
 
       )
     } else {
-      if (this.state.valueComments !== '') {
-        const http = Axios.create({
-          baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Cache-Control': 'no-cache',
-           
-          },
-        })
-        return (
 
+      const http = Axios.create({
+        baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
 
-          http.post(`/Ticket/UpdateTicket`
-            , {
+        },
+      })
 
+      return (
 
-              id: this.state.TicketID,
-              // ticketNo: this.state.TicketNo,
-              // ticketName: this.state.TicketName,
-              // description: this.state.TicketDesc,
-              // priorityId: this.state.PriorityID,
-              // priorityName: this.state.PriorityName,
-              status: this.state.TicketStatus,
-              comment: this.state.valueComments,
-              datetime: moment().format('YYYY MM DD'),
-              // companycode: '1000',
-            }
-          ).then((ople) => {
-            http.get(`/Ticket/GetTicketComment?ticketId=${this.state.TicketID}`
-            )
-              .then((ResComment) => {
-                this.setState({
-                  CommentList: ResComment.data,
-                })
+        http.post(`/Ticket/UpdateTicket`
 
-              })
-              .catch(error => {
-              }
-              )
+          , {
 
-
-            this.setState({
-              valueComments: '',
-
-            })
-
-
-
-          }).catch(error => {
+            id: this.state.TicketID,
+            // ticketNo: this.state.TicketNo,
+            // ticketName: this.state.TicketName,
+            description: this.state.TicketDesc,
+            // priorityId: this.state.PriorityID,
+            // priorityName: this.state.PriorityName,
+            status: this.state.TicketStatus,
+            // comment: this.state.valueComments,
+            // companycode: '1000',
+            estimateTime: this.state.ManHour,
+          }
+        ).then((ople) => {
+          this.setState({
+            CheckError: false,
+            CheckSuccess: true,
+            Message: 'Update Ticket complete',
+            ManHour: 0,
           })
+          this.props.loadcon()
+        }).catch(error => {
+          this.setState({
 
-
-        )
-      } else {
-        const http = Axios.create({
-          baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Cache-Control': 'no-cache',
-           
-          },
-        })
-        return (
-
-          http.post(`/Ticket/UpdateTicket`
-
-            , {
-
-
-              id: this.state.TicketID,
-              // ticketNo: this.state.TicketNo,
-              // ticketName: this.state.TicketName,
-              description: this.state.TicketDesc,
-              // priorityId: this.state.PriorityID,
-              // priorityName: this.state.PriorityName,
-              status: this.state.TicketStatus,
-              // comment: this.state.valueComments,
-              // companycode: '1000',
-            }
-          ).then((ople) => {
-            this.setState({
-              CheckError: false,
-              CheckSuccess: true,
-              Message: 'Update Ticket complete'
-            })
-            this.props.loadcon()
-          }).catch(error => {
-            this.setState({
-              CheckError: true,
-              CheckSuccess: false,
-              Message: error.message,
-            })
+            CheckError: true,
+            CheckSuccess: false,
+            Message: error.message,
           })
+        })
 
 
-        )
+      )
 
 
-      }
+
     }
   }
 
@@ -377,9 +414,16 @@ class Drawerplate extends React.Component {
     })
 
   }
-  onChangeSCompany = value => {
+  // onChangeSCompany = value => {
+  //   this.setState({
+  //     Company: value
+  //   })
+
+
+  // }
+  onChangeSType = value => {
     this.setState({
-      Company: value
+      Typepick: value
     })
 
 
@@ -390,30 +434,43 @@ class Drawerplate extends React.Component {
     })
 
   }
-
+  onChangeStep = current => {
+    this.setState({ current });
+  };
 
 
   handleChange = e => {
     this.setState({
       valueComments: e.target.value,
     });
-
   };
+
+  onChangeT = value => {
+
+    this.setState({
+      // ManHour: e.target.value
+      ManHour: value
+    })
+  }
+
   render() {
 
-    const { submitting,  } = this.state;
+    const { submitting, current } = this.state;
     const options =
       this.state.Priovalue.map(Fdata =>
         <Option value={Fdata.id}  >{Fdata.priorityName}</Option>)
 
-    const Partoptions =
-      this.state.CompanyList.map(partner =>
-        <Option value={partner.companyCode}  >{partner.companyName}</Option>)
+    // const Partoptions =
+    //   this.state.CompanyList.map(partner =>
+    //     <Option value={partner.companyCode}  >{partner.companyName}</Option>)
 
     const Statoptions =
       this.state.StatusList.map(Slist =>
         <Option value={Slist.valueKey} >{Slist.valueText}</Option>)
 
+    const Typeoptions =
+      this.state.TypeList.map(Tlist =>
+        <Option value={Tlist.valueKey} >{Tlist.valueText} </Option>)
     return (
 
       <div>
@@ -432,11 +489,29 @@ class Drawerplate extends React.Component {
 
           >
             <Row gutter={16}>
+              <Col span={24}>
+
+                <Steps
+                  type="navigation"
+                  // size="small"
+                  current={current}
+                  onChange={this.onChangeStep}
+
+                >
+                  <Step name='step1' status={this.state.StepStatus1} title="Get Requirement" />
+                  <Step status={this.state.StepStatus2} title="Open" />
+                  <Step status={this.state.StepStatus3} title="Test" />
+                  <Step status={this.state.StepStatus4} title="Close" />
+                </Steps>
+              </Col>
+              <Col span={24}>
+
+              </Col>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="TicketName" >
 
                   <Input type='text' name='TicketName'
-                    disabled={this.props.disStat}
+                    disabled={this.props.editStat}
                     onChange={this.onChangeSTicketName}
                     value={this.state.TicketName}
 
@@ -444,7 +519,24 @@ class Drawerplate extends React.Component {
                 </Form.Item>
 
               </Col>
+              <Col span={12}>
+                <Form.Item layout="horizontal" label="Type" >
+                  <Select
+                    name='typeSel'
+                    placeholder="Select Type"
 
+                    disabled={this.props.editStat}
+
+                    onChange={this.onChangeSType}
+                    value={this.state.Typepick}
+                  >
+                    {Typeoptions}
+
+                  </Select>
+
+
+                </Form.Item>
+              </Col>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
@@ -456,21 +548,21 @@ class Drawerplate extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Assign To" >
-                  <Select
+                {/* <Form.Item layout="horizontal"  > */}
+                {/* <Select
                     name='companySel'
                     placeholder="Select Company"
 
-                    disabled={this.props.disStat}
-
+                    disabled={this.props.editStat}
+                    // onChange={this.onChangeSType}
                     onChange={this.onChangeSCompany}
                     value={this.state.Company}
                   >
                     {Partoptions}
 
-                  </Select>
+                  </Select> */}
 
-                </Form.Item>
+                {/* </Form.Item> */}
               </Col>
 
 
@@ -481,7 +573,7 @@ class Drawerplate extends React.Component {
                     name='prioritySel'
                     placeholder="Select Priority"
 
-                    disabled={this.props.disStat}
+                    disabled={this.props.editStat}
 
                     onChange={this.onChangeSPriorityID}
                     value={this.state.PriorityID}
@@ -498,7 +590,7 @@ class Drawerplate extends React.Component {
                   <Select
                     placeholder="Select status"
 
-                    disabled={this.props.hidStat}
+                    disabled={this.props.disStat}
                     onChange={this.onChangeSStatus}
                     value={this.state.TicketStatus}
                   >
@@ -507,11 +599,31 @@ class Drawerplate extends React.Component {
                 </Form.Item>
                   : null}
               </Col>
-              <Col span={12}>
-                {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Time" >
 
-                  <TimePicker value={moment.unix(this.state.Time)} disabled={this.props.visible} />
+              <Col span={12}>
+              
+                {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Create Date" >
+
+                  
+                 <p>{moment(this.state.CreTime).format('DD-MM-YYYY HH:mm')}</p>
+
                 </Form.Item>
+                  : null}
+              </Col>
+              <Col span={12}>
+                {this.props.titledraw !== 'Add Ticket' ?
+                  <Form.Item layout="horizontal" label="Estimate Time" style={{ width: '50%' }} >
+                    <InputNumber type='text'
+                      // hidden={this.disStat}
+                      disabled=
+                      {this.props.disEst}
+                      onChange={this.onChangeT}
+                      value={this.state.ManHour}
+                      min={1}
+                    // formatter={value => `${value}Hour`}
+                    // parser={value => value.replace('Hour', '')}
+                    />  Hour
+                  </Form.Item>
                   : null}
               </Col>
 
@@ -554,14 +666,15 @@ class Drawerplate extends React.Component {
 
                     )}
 
+                    {this.props.titledraw !== 'Add Ticket' && this.props.titledraw !== 'Show Ticket' ?
+                      <Editor
 
-                    <Editor
-
-                      onChange={this.handleChange}
-                      onSubmit={this.handleSubmit}
-                      submitting={submitting}
-                      value={this.state.valueComments}
-                    />
+                        onChange={this.handleChange}
+                        onSubmit={this.handleSubmit}
+                        submitting={submitting}
+                        value={this.state.valueComments}
+                        disable={this.props.editStat}
+                      /> : null}
                   </Form.Item> : null}
                   <Col span={4}></Col>
                   <Col span={4}></Col>
@@ -571,6 +684,7 @@ class Drawerplate extends React.Component {
                   <Col span={4}>
                     <Form.Item>
                       <Button type="primary"
+
                         hidden={this.props.hidButStat}
                         loading={this.state.loading}
                         htmlType="submit"

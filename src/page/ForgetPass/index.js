@@ -30,7 +30,7 @@ const Forgetpass = () => {
             baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                
+                'Cache-Control': 'no-cache',
             },
         })
         setStatussubmit(false)
