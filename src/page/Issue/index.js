@@ -43,7 +43,7 @@ const Issue = () => {
   },
     [loadAll])
 
-  const loadAll = () => {
+  const loadAll = (() => {
 
     setLoadTable(true);
 
@@ -123,7 +123,7 @@ const Issue = () => {
 
     }
 
-  }
+  })
 
   const onClickDisplay = async (record) => {
     const http = await Axios.create({
@@ -288,13 +288,15 @@ const Issue = () => {
       dataIndex: 'createDate',
       width: '5%',
       render: function (text, record) {
-        var str = record.onlineTime
-        var now = moment().fromNow()
-        // var diftime = str.getTime() - now.getTime()
-        // var difdate = diftime / (1000*3600*24)
-        let h = str / 60
-        let d = str / 1440
-        return parseInt(d) + " วัน" + parseInt(h) + " ชั่วโมง"
+        var str = record.onlineTime 
+        
+        var days = Math.floor(str / 1440);
+        var htd = (days * 1440)
+        var hours = Math.floor((str - htd ) / 60 ) ;        
+
+        // let h = str / 60
+        // let d = str / 1440
+        return days + ' วัน' +  hours + ' ชั่วโมง'
         // return parseInt(difdate) + " วัน" + parseInt(diftime) + " ชั่วโมง"
       }
 
