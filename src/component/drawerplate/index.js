@@ -616,7 +616,9 @@ class Drawerplate extends React.Component {
                     <InputNumber type='text'
                       // hidden={this.disStat}
                       disabled=
-                      {this.props.disEst}
+                      {this.state.TicketStatus === 'GETREQ'
+                      && this.props.formcontrol === 'edit'
+                      ? this.props.disEst : true }
                       onChange={this.onChangeT}
                       value={this.state.ManHour}
                       min={1}

@@ -41,7 +41,7 @@ const Issue = () => {
     loadAll();
 
   },
-    [])
+    [loadAll])
 
   const loadAll = () => {
 
