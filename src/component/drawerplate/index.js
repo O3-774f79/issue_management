@@ -367,7 +367,7 @@ class Drawerplate extends React.Component {
             // priorityId: this.state.PriorityID,
             // priorityName: this.state.PriorityName,
             status: this.state.TicketStatus,
-            // comment: this.state.valueComments,
+            comment: this.state.valueComments,
             // companycode: '1000',
             estimateTime: this.state.ManHour,
           }
@@ -644,7 +644,7 @@ class Drawerplate extends React.Component {
 
               <Col span={24}>
                 <div  >
-                  {!this.props.hidStat ? <Form.Item label="Comment"  >
+                  {!this.props.hidStat && this.props.titledraw !== 'Add Ticket' ? <Form.Item label="Comment"  >
 
 
 
@@ -668,7 +668,8 @@ class Drawerplate extends React.Component {
 
                     )}
 
-                    {this.props.titledraw !== 'Add Ticket' && this.props.titledraw !== 'Show Ticket' ?
+                    {this.props.titledraw !== 'Add Ticket' && this.props.titledraw !== 'Show Ticket' 
+                     ?
                       <Editor
 
                         onChange={this.handleChange}

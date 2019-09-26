@@ -53,18 +53,22 @@ const Login = props => {
           setfirstlogin(result.data.employee.firstLogin);
           setLoggedIn(true);
           localStorage.setItem('UseTok', result.data.token);
-          console.log('Header Token',result.headers);
-          console.log('data Token',result.data.token);
-          console.log('Access Token', result.data);
-          console.log('acces_token ',result.headers.get('access_token'));
+          // console.log('Header Token',result.headers);
+          // console.log('data Token',result.data.token);
+          // console.log('Access Token', result.data);
+          // console.log('acces_token ',result.headers.get('access_token'));
+          
         }
         if (result.status === 401) {
           setIsError(true);
           setMessage(result.data.message);
+          
         }
       })
       .catch(e => {
         setIsError(true);
+        
+        setMessage(e.response.data.message)
         
       });
 

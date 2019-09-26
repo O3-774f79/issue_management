@@ -284,8 +284,8 @@ const Issue = () => {
       }
     },
     {
-      title: 'Created Time',
-      dataIndex: 'createDate',
+      title: 'Online Time',
+      dataIndex: 'onlineTime',
       width: '5%',
       render: function (text, record) {
         var str = record.onlineTime 
