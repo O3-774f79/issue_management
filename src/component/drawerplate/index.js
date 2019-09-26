@@ -26,6 +26,7 @@ const { TextArea } = Input;
 const { Step } = Steps;
 
 
+
 const Editor = ({ onChange, onSubmit, submitting, value, disabled }) => (
   <div>
 
@@ -63,7 +64,7 @@ class Drawerplate extends React.Component {
     StatusList: [],
     TypeList: [],
     // Company: '',
-    CreTime:'',
+    CreTime: '',
     StatepriorityName: '',
     Typepick: '',
     data: [],
@@ -196,7 +197,7 @@ class Drawerplate extends React.Component {
         ManHour: nextProps.dataList.estimateTime,
         CreTime: nextProps.dataList.createDate,
       })
-     
+
 
       if (nextProps.dataList.status === 'GETREQ'
       ) {
@@ -206,7 +207,7 @@ class Drawerplate extends React.Component {
           StepStatus3: 'wait',
           StepStatus4: 'wait',
           current: 1,
-          
+
         })
 
 
@@ -217,7 +218,7 @@ class Drawerplate extends React.Component {
           StepStatus3: 'wait',
           StepStatus4: 'wait',
           current: 2,
-         
+
         })
       } else if (nextProps.dataList.status === 'WAITING') {
         this.setState({
@@ -226,7 +227,7 @@ class Drawerplate extends React.Component {
           StepStatus3: 'process',
           StepStatus4: 'wait',
           current: 3,
-          
+
         })
       } else if (nextProps.dataList.status === 'CLOSE') {
         this.setState({
@@ -235,7 +236,7 @@ class Drawerplate extends React.Component {
           StepStatus3: 'finish',
           StepStatus4: 'finish',
           current: 4,
-      
+
         })
       } else {
         this.setState({
@@ -244,7 +245,7 @@ class Drawerplate extends React.Component {
           StepStatus3: 'wait',
           StepStatus4: 'wait',
           current: 1,
-         
+
         })
       }
 
@@ -488,7 +489,8 @@ class Drawerplate extends React.Component {
           <Form
 
           >
-            <Row gutter={16}>
+            {/* Row 1 */}
+            <Row gutter={16} type='flex' justify='start'>
               <Col span={24}>
 
                 <Steps
@@ -504,9 +506,9 @@ class Drawerplate extends React.Component {
                   <Step status={this.state.StepStatus4} title="Close" />
                 </Steps>
               </Col>
-              <Col span={24}>
-
-              </Col>
+            </Row>
+            {/* Row 2 */}
+            <Row gutter={16} type='flex' justify='center'>
               <Col span={12}>
                 <Form.Item layout="horizontal" label="TicketName" >
 
@@ -537,6 +539,9 @@ class Drawerplate extends React.Component {
 
                 </Form.Item>
               </Col>
+            </Row>
+            {/* Row 3 */}
+            <Row gutter={16} type='flex' justify='center' >
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
@@ -546,26 +551,6 @@ class Drawerplate extends React.Component {
                   />
                 </Form.Item>
               </Col>
-
-              <Col span={12}>
-                {/* <Form.Item layout="horizontal"  > */}
-                {/* <Select
-                    name='companySel'
-                    placeholder="Select Company"
-
-                    disabled={this.props.editStat}
-                    // onChange={this.onChangeSType}
-                    onChange={this.onChangeSCompany}
-                    value={this.state.Company}
-                  >
-                    {Partoptions}
-
-                  </Select> */}
-
-                {/* </Form.Item> */}
-              </Col>
-
-
 
               <Col span={12}>
                 <Form.Item name='PriorityItem' layout="horizontal" label="Priority" >
@@ -584,7 +569,9 @@ class Drawerplate extends React.Component {
 
                 </Form.Item>
               </Col>
-
+            </Row>
+            {/* Row 4 */}
+            <Row gutter={16} type='flex' justify='center' >
               <Col span={12}>
                 {this.props.titledraw !== 'Add Ticket' ? <Form.Item name='StatusItem' layout="horizontal" label="Status" >
                   <Select
@@ -599,26 +586,28 @@ class Drawerplate extends React.Component {
                 </Form.Item>
                   : null}
               </Col>
+                <Col span={12}>
 
-              <Col span={12}>
-              
-                {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Create Date" >
+                  {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Create Date" >
 
-                  
-                 <p>{moment(this.state.CreTime).format('DD-MM-YYYY HH:mm')}</p>
 
-                </Form.Item>
-                  : null}
-              </Col>
-              <Col span={12}>
+                    <p>{moment(this.state.CreTime).format('DD-MM-YYYY HH:mm')}</p>
+
+                  </Form.Item>
+                    : null}
+                </Col>
+              </Row>
+               {/* Row 5 */}
+            <Row gutter={16} type='flex' justify='start' >
+              <Col span={24}>
                 {this.props.titledraw !== 'Add Ticket' ?
                   <Form.Item layout="horizontal" label="Estimate Time" style={{ width: '50%' }} >
                     <InputNumber type='text'
                       // hidden={this.disStat}
                       disabled=
                       {this.state.TicketStatus === 'GETREQ'
-                      && this.props.formcontrol === 'edit'
-                      ? this.props.disEst : true }
+                        && this.props.formcontrol === 'edit'
+                        ? this.props.disEst : true}
                       onChange={this.onChangeT}
                       value={this.state.ManHour}
                       min={1}
@@ -628,7 +617,8 @@ class Drawerplate extends React.Component {
                   </Form.Item>
                   : null}
               </Col>
-
+              </Row>
+            <Row gutter={16}>
               <Col span={24}>
                 <Form.Item name='DescriptionItem' layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
@@ -640,11 +630,12 @@ class Drawerplate extends React.Component {
                 </Form.Item>
               </Col>
 
-
-
+            </Row>
+            <Row gutter={16}>
               <Col span={24}>
-                <div  >
-                  {!this.props.hidStat && this.props.titledraw !== 'Add Ticket' ? <Form.Item label="Comment"  >
+
+                {!this.props.hidStat && this.props.titledraw !== 'Add Ticket'
+                  ? <Form.Item label="Comment"  >
 
 
 
@@ -668,8 +659,8 @@ class Drawerplate extends React.Component {
 
                     )}
 
-                    {this.props.titledraw !== 'Add Ticket' && this.props.titledraw !== 'Show Ticket' 
-                     ?
+                    {this.props.titledraw !== 'Add Ticket' && this.props.titledraw !== 'Show Ticket'
+                      ?
                       <Editor
 
                         onChange={this.handleChange}
@@ -679,37 +670,36 @@ class Drawerplate extends React.Component {
                         disable={this.props.editStat}
                       /> : null}
                   </Form.Item> : null}
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}>{}</Col>
-                  <Col span={4}></Col>
-                  <Col span={4}></Col>
-                  <Col span={4}>
-                    <Form.Item>
-                      <Button type="primary"
-
-                        hidden={this.props.hidButStat}
-                        loading={this.state.loading}
-                        htmlType="submit"
-                        className="login-form-button"
-                        onClick={(event) => this.handleOnSubmit(event)}
-
-                      >
-                        Submit
-              </Button>
-
-                    </Form.Item>
-
-                  </Col>
-                  <Col span={24}>
-                    <Form.Item>
-                      {this.state.CheckSuccess ? <Alert type='success' message={this.state.Message} /> : null}
-                      {this.state.CheckError ? <Alert type='error' message={this.state.Message} /> : null}
-                    </Form.Item>
-                  </Col>
-                </div>
               </Col>
             </Row>
+            <Row gutter={16} type='flex' justify='end'>
+              <Col pan={{ xs: 4, sm: 6, md: 8, lg: 10 }} >
+                <Form.Item>
+                  <Button type="primary"
+                    block
+                    hidden={this.props.hidButStat}
+                    loading={this.state.loading}
+                    htmlType="submit"
+                    className="login-form-button"
+                    onClick={(event) => this.handleOnSubmit(event)}
+
+                  >
+                    Submit
+              </Button>
+
+                </Form.Item>
+
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item>
+                  {this.state.CheckSuccess ? <Alert type='success' message={this.state.Message} /> : null}
+                  {this.state.CheckError ? <Alert type='error' message={this.state.Message} /> : null}
+                </Form.Item>
+              </Col>
+            </Row>
+
           </Form>
 
         </Drawer>

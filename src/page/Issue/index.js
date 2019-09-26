@@ -24,7 +24,7 @@ const Issue = () => {
   const [recordList, setRecord] = React.useState({})
   const [commentList, setCommentList] = React.useState([])
 
-
+  const ButtonGroup = Button.Group;
 
 
   // Control form
@@ -176,12 +176,12 @@ const Issue = () => {
     await setTitledraw('Edit Ticket');
     await setformcontrol('edit');
     await setShow(true);
-    if(authTokens.companyCode === '1000' && 
-    authTokens.companyCode === '1001'){
-    await setDisest(true);
-  } else{
-    await setDisest(false);
-  }
+    if (authTokens.companyCode === '1000' &&
+      authTokens.companyCode === '1001') {
+      await setDisest(true);
+    } else {
+      await setDisest(false);
+    }
   }
 
   function onClickAdd() {
@@ -288,15 +288,15 @@ const Issue = () => {
       dataIndex: 'onlineTime',
       width: '5%',
       render: function (text, record) {
-        var str = record.onlineTime 
-        
+        var str = record.onlineTime
+
         var days = Math.floor(str / 1440);
         var htd = (days * 1440)
-        var hours = Math.floor((str - htd ) / 60 ) ;        
+        var hours = Math.floor((str - htd) / 60);
 
         // let h = str / 60
         // let d = str / 1440
-        return days + ' วัน' +  hours + ' ชั่วโมง'
+        return days + ' วัน' + hours + ' ชั่วโมง'
         // return parseInt(difdate) + " วัน" + parseInt(diftime) + " ชั่วโมง"
       }
 
@@ -397,22 +397,20 @@ const Issue = () => {
   return (
     <React.Fragment>
       <Row>
-        <Col span={2}>
-          <Button type="primary"
+        <Col>
 
-            onClick={() => onClickAdd()}
-          >
-            <Icon type="plus-circle" />Add
-      </Button>
+          <ButtonGroup>
+            <Button type='primary' onClick={() => onClickAdd()}>
+              <Icon type="plus-circle" />
+              Add
+        </Button>
+            <Button  onClick={() => Reload()}>
+              <Icon type="retweet" />
+              Refresh
+        </Button>
+          </ButtonGroup>
         </Col>
-        <Col span={2}>
-          <Button type="primary"
 
-            onClick={() => Reload()}
-          >
-            <Icon type="retweet" />Refresh
-      </Button>
-        </Col>
       </Row>
       <TableIssue columns={column} data={data} loading={tableload} />
       <Drawerplate visible={show} onClose={() => setShow(false)}
