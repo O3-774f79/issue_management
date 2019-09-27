@@ -494,16 +494,15 @@ class Drawerplate extends React.Component {
               <Col span={24}>
 
                 <Steps
-                  type="navigation"
-                  // size="small"
-                  current={current}
-                  onChange={this.onChangeStep}
+                
+                  size="small"
+                  
 
                 >
-                  <Step name='step1' status={this.state.StepStatus1} title="Get Requirement" />
-                  <Step status={this.state.StepStatus2} title="Open" />
-                  <Step status={this.state.StepStatus3} title="Test" />
-                  <Step status={this.state.StepStatus4} title="Close" />
+                  <Step name='step1' status={this.state.StepStatus1} title="Get Requirement" disabled  />
+                  <Step status={this.state.StepStatus2} title="Open" disabled />
+                  <Step status={this.state.StepStatus3} title="Test" disabled />
+                  <Step status={this.state.StepStatus4} title="Close" disabled />
                 </Steps>
               </Col>
             </Row>
@@ -586,18 +585,18 @@ class Drawerplate extends React.Component {
                 </Form.Item>
                   : null}
               </Col>
-                <Col span={12}>
+              <Col span={12}>
 
-                  {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Create Date" >
+                {this.props.titledraw !== 'Add Ticket' ? <Form.Item layout="horizontal" label="Create Date" >
 
 
-                    <p>{moment(this.state.CreTime).format('DD-MM-YYYY HH:mm')}</p>
+                  <p>{moment(this.state.CreTime).format('DD-MM-YYYY HH:mm')}</p>
 
-                  </Form.Item>
-                    : null}
-                </Col>
-              </Row>
-               {/* Row 5 */}
+                </Form.Item>
+                  : null}
+              </Col>
+            </Row>
+            {/* Row 5 */}
             <Row gutter={16} type='flex' justify='start' >
               <Col span={24}>
                 {this.props.titledraw !== 'Add Ticket' ?
@@ -617,12 +616,13 @@ class Drawerplate extends React.Component {
                   </Form.Item>
                   : null}
               </Col>
-              </Row>
+            </Row>
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item name='DescriptionItem' layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
-                    disabled={this.props.disStat}
+                    // disabled={this.props.disStat}
+                    disabled={this.props.titledraw === 'Show Ticket' ? true : false }
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
 
