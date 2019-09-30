@@ -24,10 +24,12 @@ const Issue = () => {
   const [recordList, setRecord] = React.useState({})
   const [commentList, setCommentList] = React.useState([])
 
+  const [pagination, setPagination] = React.useState({});
+
   const ButtonGroup = Button.Group;
 
 
-  // Control form
+  // Control form edit/add/display
   const [formcontrol, setformcontrol] = React.useState('');
 
 
@@ -211,8 +213,7 @@ const Issue = () => {
     loadAll()
   }
 
-
-
+ 
 
   const [column, setColumn] = React.useState([
 
@@ -294,10 +295,7 @@ const Issue = () => {
         var htd = (days * 1440)
         var hours = Math.floor((str - htd) / 60);
 
-        // let h = str / 60
-        // let d = str / 1440
         return days + ' วัน' + hours + ' ชั่วโมง'
-        // return parseInt(difdate) + " วัน" + parseInt(diftime) + " ชั่วโมง"
       }
 
     },
@@ -366,25 +364,23 @@ const Issue = () => {
       width: '10%',
       render: (text, record) => (
         [
-          // <span style={{ cursor: 'pointer' }}
+
           <Button shape='circle'
             onClick={() => onClickDisplay(record)}
           >
             <Icon type="search" height="50em" width="50em" />
-            {/* {' '} */}
-            {/* </span> */}
+
+
           </Button>
           ,
 
-          // <span style={{ cursor: 'pointer' }}
+
           <Button shape='circle'
             hidden={record.status === 'CLOSE' ? true : false}
             onClick={() => onClickEdit(record)}>
-            {/* {' '} */}
-            <Icon type="edit" height="50em" width="50em" />
-            {/* {' '} */}
 
-            {/* </span> */}
+            <Icon type="edit" height="50em" width="50em" />
+
           </Button>
         ]
       ),
@@ -404,7 +400,7 @@ const Issue = () => {
               <Icon type="plus-circle" />
               Add
         </Button>
-            <Button  onClick={() => Reload()}>
+            <Button onClick={() => Reload()}>
               <Icon type="retweet" />
               Refresh
         </Button>
@@ -412,7 +408,7 @@ const Issue = () => {
         </Col>
 
       </Row>
-      <TableIssue columns={column} data={data} loading={tableload} />
+      <TableIssue columns={column} data={data} loading={tableload}  />
       <Drawerplate visible={show} onClose={() => setShow(false)}
         disStat={dis}
         hidStat={hid}
