@@ -8,7 +8,7 @@ import {
     Form,
     Icon,
     Card,
-    
+
 
 } from 'antd';
 import Axios from 'axios';
@@ -29,7 +29,7 @@ const ChagePass = () => {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
-                
+
             },
         })
         setStatussubmit(false);

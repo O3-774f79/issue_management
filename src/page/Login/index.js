@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Card, Col, Row,} from 'antd';
+import { Form, Input, Button, Card, Col, Row, } from 'antd';
 
 const Login = props => {
   const [userName, setUserName] = useState('');
@@ -27,7 +27,7 @@ const Login = props => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-cache',
-     
+
     },
   });
 
@@ -53,23 +53,19 @@ const Login = props => {
           setfirstlogin(result.data.employee.firstLogin);
           setLoggedIn(true);
           localStorage.setItem('UseTok', result.data.token);
-          // console.log('Header Token',result.headers);
-          // console.log('data Token',result.data.token);
-          // console.log('Access Token', result.data);
-          // console.log('acces_token ',result.headers.get('access_token'));
-          
+
         }
         if (result.status === 401) {
           setIsError(true);
           setMessage(result.data.message);
-          
+
         }
       })
       .catch(e => {
         setIsError(true);
-        
+
         setMessage(e.response.data.message)
-        
+
       });
 
   };

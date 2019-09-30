@@ -25,7 +25,7 @@ function App(props) {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      
+
       <div>
         <Route exact path="/" component={Login} />
         {/* <LayoutTemplate> */}

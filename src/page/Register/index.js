@@ -54,23 +54,21 @@ const Register = props => {
 
     const HandleSubmit = (event) => {
         const http = Axios.create({
-            // baseURL:'http://localhost:50000/api',
+
             baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
-            // headers:{'Cache-Control': 'no-cache' },
+
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
-                
+
             },
         })
         setStatussubmit(false)
         setError(false)
         setMessage('')
-        // setRound([]);
+
         http.post('/Register'
-            // Axios.post(
-            //     'http://localhost:50000/api/Register'
-            // '/Register'
+
             , {
                 email: Inemail,
                 password: Inpassword,
@@ -110,13 +108,13 @@ const Register = props => {
 
     useEffect(() => {
         const http = Axios.create({
-            // baseURL:'http://localhost:50000/api',
+
             baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
-            // headers:{'Cache-Control': 'no-cache' },
+
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Cache-Control': 'no-cache',
-                
+
             },
         })
         http.get(`/Company/GetList`
@@ -131,9 +129,7 @@ const Register = props => {
             })
 
         http.get('/Role/GetRole'
-            // Axios.get(
-            // 'http://localhost:50000/api/Role/GetRole'
-            // '/Role/GetRole'
+
             , {
             }
         )

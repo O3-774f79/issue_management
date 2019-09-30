@@ -60,10 +60,8 @@ class Drawerplate extends React.Component {
     PriorityName: 1,
     TicketStatus: 'เปิด',
     Priovalue: [],
-    // CompanyList: [],
     StatusList: [],
     TypeList: [],
-    // Company: '',
     CreTime: '',
     StatepriorityName: '',
     Typepick: '',
@@ -85,8 +83,6 @@ class Drawerplate extends React.Component {
 
   componentDidMount() {
 
-
-
     const http = Axios.create({
       baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
       headers: {
@@ -95,21 +91,6 @@ class Drawerplate extends React.Component {
 
       },
     })
-
-    // http.get(`/Company/GetPartner`
-    //   , {
-    //   }
-    // )
-    //   .then((getpart) => {
-    //     this.setState({
-    //       CompanyList: getpart.data,
-    //     })
-
-    //   })
-    //   .catch(error => {
-    //     console.log("Get partner Error");
-    //   })
-
 
     http.get(`/Priority/GetList`
       , {
@@ -124,7 +105,6 @@ class Drawerplate extends React.Component {
       })
       .catch(error => {
 
-        console.log("Get List Error");
       }
       )
 
@@ -140,7 +120,7 @@ class Drawerplate extends React.Component {
 
       })
       .catch(error => {
-        console.log("Get Status Error");
+
 
       }
       )
@@ -156,7 +136,7 @@ class Drawerplate extends React.Component {
 
       })
       .catch(error => {
-        console.log("Get Type Error");
+
 
       }
       )
@@ -191,7 +171,7 @@ class Drawerplate extends React.Component {
         PriorityID: nextProps.dataList.priorityId,
         TicketStatus: nextProps.dataList.status,
         CommentList: nextProps.commentList,
-        // Company: nextProps.dataList.assignTo,
+
         Time: nextProps.dataList.onlineTime,
         Typepick: nextProps.dataList.ticketType,
         ManHour: nextProps.dataList.estimateTime,
@@ -311,10 +291,10 @@ class Drawerplate extends React.Component {
             ticketName: this.state.TicketName,
             description: this.state.TicketDesc,
             priorityId: this.state.PriorityID,
-            // assignTo: this.state.Company,
+
             status: 'GETREQ',
             ticketType: this.state.Typepick,
-            // estimateTime: this.state.ManHour,
+
 
           }
         ).then((ople) => {
@@ -323,7 +303,7 @@ class Drawerplate extends React.Component {
             TicketName: '',
             TicketDesc: '',
             PriorityID: 1,
-            // Company: 'Partner',
+
             status: 'GETREQ',
             Typepick: 'K2',
             CheckError: false,
@@ -362,14 +342,10 @@ class Drawerplate extends React.Component {
           , {
 
             id: this.state.TicketID,
-            // ticketNo: this.state.TicketNo,
-            // ticketName: this.state.TicketName,
+
             description: this.state.TicketDesc,
-            // priorityId: this.state.PriorityID,
-            // priorityName: this.state.PriorityName,
             status: this.state.TicketStatus,
             comment: this.state.valueComments,
-            // companycode: '1000',
             estimateTime: this.state.ManHour,
           }
         ).then((ople) => {
@@ -415,13 +391,6 @@ class Drawerplate extends React.Component {
     })
 
   }
-  // onChangeSCompany = value => {
-  //   this.setState({
-  //     Company: value
-  //   })
-
-
-  // }
   onChangeSType = value => {
     this.setState({
       Typepick: value
@@ -449,7 +418,6 @@ class Drawerplate extends React.Component {
   onChangeT = value => {
 
     this.setState({
-      // ManHour: e.target.value
       ManHour: value
     })
   }
@@ -460,10 +428,6 @@ class Drawerplate extends React.Component {
     const options =
       this.state.Priovalue.map(Fdata =>
         <Option value={Fdata.id}  >{Fdata.priorityName}</Option>)
-
-    // const Partoptions =
-    //   this.state.CompanyList.map(partner =>
-    //     <Option value={partner.companyCode}  >{partner.companyName}</Option>)
 
     const Statoptions =
       this.state.StatusList.map(Slist =>
@@ -494,12 +458,12 @@ class Drawerplate extends React.Component {
               <Col span={24}>
 
                 <Steps
-                
+
                   size="small"
-                  
+
 
                 >
-                  <Step name='step1' status={this.state.StepStatus1} title="Get Requirement" disabled  />
+                  <Step name='step1' status={this.state.StepStatus1} title="Get Requirement" disabled />
                   <Step status={this.state.StepStatus2} title="Open" disabled />
                   <Step status={this.state.StepStatus3} title="Test" disabled />
                   <Step status={this.state.StepStatus4} title="Close" disabled />
@@ -602,7 +566,6 @@ class Drawerplate extends React.Component {
                 {this.props.titledraw !== 'Add Ticket' ?
                   <Form.Item layout="horizontal" label="Estimate Time" style={{ width: '50%' }} >
                     <InputNumber type='text'
-                      // hidden={this.disStat}
                       disabled=
                       {this.state.TicketStatus === 'GETREQ'
                         && this.props.formcontrol === 'edit'
@@ -610,8 +573,6 @@ class Drawerplate extends React.Component {
                       onChange={this.onChangeT}
                       value={this.state.ManHour}
                       min={1}
-                    // formatter={value => `${value}Hour`}
-                    // parser={value => value.replace('Hour', '')}
                     />  Hour
                   </Form.Item>
                   : null}
@@ -621,8 +582,7 @@ class Drawerplate extends React.Component {
               <Col span={24}>
                 <Form.Item name='DescriptionItem' layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
-                    // disabled={this.props.disStat}
-                    disabled={this.props.titledraw === 'Show Ticket' ? true : false }
+                    disabled={this.props.titledraw === 'Show Ticket' ? true : false}
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
 

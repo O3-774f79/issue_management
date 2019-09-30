@@ -45,7 +45,7 @@ const Issue = () => {
   },
     [loadAll])
 
-  const loadAll = (() => {
+  const loadAll = ((params = {}) => {
 
     setLoadTable(true);
 
@@ -63,13 +63,20 @@ const Issue = () => {
         },
       })
       http.get(`/Ticket/GetAllTicket`
-
         , {
+          data: {
+            results: 10,
+            ...params,
+          }
         }
       )
         .then((result) => {
+          const pagination = { ...pagination }
+          pagination.total = 200;
           setData(result.data);
           setLoadTable(false);
+          setPagination({ pagination })
+
         })
         .catch(error => {
 
@@ -89,11 +96,18 @@ const Issue = () => {
       http.get(`/Ticket/GetAssignTicket`
 
         , {
+          data: {
+            results: 10,
+            ...params,
+          }
         }
       )
         .then((result) => {
+          const pagination = { ...pagination }
+          pagination.total = 200;
           setData(result.data);
           setLoadTable(false);
+          setPagination({ pagination })
         })
         .catch(error => {
 
@@ -113,11 +127,18 @@ const Issue = () => {
       http.get(`/Ticket/GetList`
 
         , {
+          data: {
+            results: 10,
+            ...params,
+          }
         }
       )
         .then((result) => {
+          const pagination = { ...pagination }
+          pagination.total = 200;
           setData(result.data);
           setLoadTable(false);
+          setPagination({ pagination })
         })
         .catch(error => {
 
@@ -213,7 +234,21 @@ const Issue = () => {
     loadAll()
   }
 
- 
+  const onChangeTable = (pagination, filters, sorter) => {
+    const pager = { ...pagination };
+    pager.current = pagination.current;
+    setPagination({ pager })
+    loadAll({
+      results: pagination.pageSize,
+      page: pagination.current,
+      sortField: sorter.field,
+      sortOrder: sorter.order,
+      ...filters,
+    });
+
+  }
+
+
 
   const [column, setColumn] = React.useState([
 
@@ -246,7 +281,7 @@ const Issue = () => {
       },
       ],
       filterMultiple: false,
-      onFilters: (value, record) => record.priorityName.indexOf(value) === 0,
+      onFilter: (value, record) => record.priorityName.indexOf(value) === 0,
       render: priorityName => {
         switch (priorityName) {
 
@@ -277,7 +312,7 @@ const Issue = () => {
       title: 'Create Date',
       dataIndex: 'createDate',
       width: '15%',
-      sorter: true,
+
       render: function (text, record) {
         var str = record.createDate
 
@@ -288,6 +323,8 @@ const Issue = () => {
       title: 'Online Time',
       dataIndex: 'onlineTime',
       width: '5%',
+      sorter: (a, b) => a.onlineTime - b.onlineTime,
+      sortDirections: ['ascend', 'descend'],
       render: function (text, record) {
         var str = record.onlineTime
 
@@ -323,7 +360,7 @@ const Issue = () => {
         },
       ],
       filterMultiple: false,
-      onFilters: (value, record) => record.status.indexOf(value) === 0,
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
       render: status => {
         switch (status) {
           case 'GETREQ':
@@ -408,7 +445,13 @@ const Issue = () => {
         </Col>
 
       </Row>
-      <TableIssue columns={column} data={data} loading={tableload}  />
+      <TableIssue
+        columns={column}
+        data={data}
+        loading={tableload}
+        onchange={onChangeTable}
+
+      />
       <Drawerplate visible={show} onClose={() => setShow(false)}
         disStat={dis}
         hidStat={hid}

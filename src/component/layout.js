@@ -26,11 +26,11 @@ const LayoutTemplate = props => {
         <Menu
           theme="dark"
           mode="horizontal"
-          onClick={e => setCurrent(e.key),console.log(current)}
+          onClick={e => setCurrent(e.key), console.log(current)}
           defaultSelectedKeys={current}
           defaultOpenKeys={current}
           style={{ lineHeight: '64px', width: 300 }}
-      
+
         >
           <Menu.Item key="/issue">
             <Link to="/issue">
@@ -44,8 +44,7 @@ const LayoutTemplate = props => {
             </Link>
             </Menu.Item>
             : null}
-            
-          {/* <Menu.Item key="2"><Link to="/register">เพิ่มผู้ใช้</Link></Menu.Item> */}
+
 
         </Menu>
         <div style={{ display: 'flex' }}>
@@ -59,7 +58,7 @@ const LayoutTemplate = props => {
         <Breadcrumb.Item>List</Breadcrumb.Item>
         <Breadcrumb.Item>App</Breadcrumb.Item> */}
         </Breadcrumb>
-        <div style={{ background: '#fff', padding: 24, minHeight: 280  }}>
+        <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
           {props.children}
         </div>
       </Content>

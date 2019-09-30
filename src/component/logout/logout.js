@@ -1,18 +1,18 @@
 import React from 'react';
-import {BrowserRouter as Router, Link, Route,} from 'react-router-dom';
-import {Menu, Icon, Dropdown, Avatar, Button} from 'antd';
-import {useAuth} from '../../context/auth';
+import { BrowserRouter as Router, Link, Route, } from 'react-router-dom';
+import { Menu, Icon, Dropdown, Avatar, Button } from 'antd';
+import { useAuth } from '../../context/auth';
 
 
 
 
 const LogoutTab = props => {
-  const {setAuthTokens,authTokens} = useAuth ();
-  function logOut () {
-    setAuthTokens ();
+  const { setAuthTokens, authTokens } = useAuth();
+  function logOut() {
+    setAuthTokens();
   }
 
-  
+
   const menu = (
     <Menu>
       <Menu.Item>
@@ -24,20 +24,20 @@ const LogoutTab = props => {
             justifyContent: 'flex-end',
           }}
         >
-          <div><Icon type="logout" style={{marginRight: 10}} /></div>
+          <div><Icon type="logout" style={{ marginRight: 10 }} /></div>
           <div>Log out</div>
         </div>
       </Menu.Item>
       <Menu.Item>
-      <Link to="/changepass">  <div
-          
+        <Link to="/changepass">  <div
+
           style={{
             fontSize: '15px',
             display: 'flex',
             justifyContent: 'flex-end',
           }}
         >
-          <div><Icon type="lock" style={{marginRight: 10}} /></div>
+          <div><Icon type="lock" style={{ marginRight: 10 }} /></div>
           <div>Change Password</div>
         </div>
         </Link>
@@ -45,7 +45,7 @@ const LogoutTab = props => {
     </Menu>
   );
   return (
-    <div style={{display: 'flex', alignItems: 'center', marginRight: 5}}>
+    <div style={{ display: 'flex', alignItems: 'center', marginRight: 5 }}>
       <Dropdown overlay={menu} placement="bottomLeft" trigger={['hover']}>
         <Button shape="round" size={'large'}>
           <span
@@ -56,7 +56,7 @@ const LogoutTab = props => {
               paddign: 10,
             }}
           >
-            <Avatar size={30} icon="user" style={{marginRight: 5}} />
+            <Avatar size={30} icon="user" style={{ marginRight: 5 }} />
             {authTokens.firstNameTh}
           </span>
         </Button>
