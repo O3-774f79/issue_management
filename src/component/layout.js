@@ -26,7 +26,7 @@ const LayoutTemplate = props => {
         <Menu
           theme="dark"
           mode="horizontal"
-          onClick={e => setCurrent(e.key), console.log(current)}
+          onClick={e => setCurrent(e.key)}
           defaultSelectedKeys={current}
           defaultOpenKeys={current}
           style={{ lineHeight: '64px', width: 300 }}
