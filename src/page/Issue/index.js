@@ -113,7 +113,9 @@ const Issue = () => {
 
         })
 
-    } else if (authTokens.companyCode === '1002') {
+    } else
+    // if (authTokens.companyCode === '1002') 
+    {
       const http = Axios.create({
 
         baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
@@ -124,7 +126,8 @@ const Issue = () => {
         },
       })
 
-      http.get(`/Ticket/GetList`
+      // http.get(`/Ticket/GetList`
+      http.get(`/Ticket/GetCompanyTicket`
 
         , {
           data: {
@@ -464,6 +467,7 @@ const Issue = () => {
         formcontrol={formcontrol}
         dataList={recordList}
         loadcon={loadcon}
+        authTokens={authTokens}
       />
 
     </React.Fragment>

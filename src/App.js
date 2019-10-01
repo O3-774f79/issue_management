@@ -32,7 +32,8 @@ function App(props) {
 
         <PrivateRoute path="/issue" component={Issue} />
         <PrivateRoute path="/ChangePass" component={ChangePass} />
-        <PrivateRoute path="/ChangePassFL" component={ChangePassFL} />
+        {/* <PrivateRoute path="/ChangePassFL" component={ChangePassFL} /> */}
+        <Route path="/ChangePassFL" component={ChangePassFL} />
         <Route path="/Forgetpass" component={Forgetpass} />
         <PrivateRoute path="/register" component={Register} />
 

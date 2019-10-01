@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { Button, Input, Col, Row, Form, Icon, Card } from 'antd';
 import Axios from 'axios';
-
+import { useAuth } from '../../context/auth';
 
 const ChagePassFL = () => {
   const [oldpass, setOldpass] = useState('');
@@ -13,8 +13,13 @@ const ChagePassFL = () => {
   const [tomain, setMain] = useState(false);
 
   const [statussubmit, setStatussubmit] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState([]);
   const [redirect, setRedirect] = useState(false);
+
+  const { setAuthTokens, authTokens } = useAuth();
+  function logOut() {
+    setAuthTokens();
+  }
 
   const handlesubmit = event => {
     const http = Axios.create({
@@ -51,9 +56,22 @@ const ChagePassFL = () => {
       })
       .catch(error => {
         setStatussubmit(false);
-        setMessage('Please Check NewPassword incorrect');
+        if (error.response.data.OldPassword !== undefined) {
+          setMessage(error.response.data.OldPassword[0])
+     
+        } else
+        if (error.response.data.NewPassword !== undefined) {
+          setMessage(error.response.data.NewPassword[0])
+      
+        } else 
+        if (error.response.data.ConfirmNewPassword !== undefined) {
+          setMessage(error.response.data.ConfirmNewPassword[0])
+       
+        }
+
+        
       });
-    event.preventDefault();
+
   };
   return (
     <div className="login-box">
@@ -82,6 +100,7 @@ const ChagePassFL = () => {
                   prefix={
                     <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
+                  type="password"
                   placeholder="Old password"
                   name="oldpassword"
                   value={oldpass}
@@ -146,8 +165,9 @@ const ChagePassFL = () => {
                   </Button>
                 </Col>
                 <Col>
-                  <Link to="/login">
+                  <Link to='/'>
                     <Button
+                      onClick={logOut}
                       type="danger"
                       className="login-form-button"
                     >

@@ -19,6 +19,7 @@ import Axios from 'axios';
 import moment, { relativeTimeThreshold } from 'moment';
 
 import { useAuth } from '../../context/auth';
+import { throwStatement } from '@babel/types';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -253,7 +254,9 @@ class Drawerplate extends React.Component {
       visible: false,
       valueComments: '',
       CommentList: [],
-
+      message:'',
+      CheckError:false,
+      CheckSuccess:false,
     });
   };
 
@@ -262,19 +265,32 @@ class Drawerplate extends React.Component {
 
   handleOnSubmit = (event) => {
 
-    event.preventDefault();
+    
+
     this.setState({
 
       CheckError: false,
       CheckSuccess: false,
       Message: '',
+      loading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-      })
-    }, 3000);
-    if (this.props.formcontrol === 'add') {
+  
+    if(this.state.TicketName !== undefined
+      && this.state.PriorityID !== undefined
+      && this.state.Typepick !== undefined
+      ){   
+        this.setState({
+
+          CheckError: false,
+          CheckSuccess: false,
+          Message: '',
+          
+        });
+    if (
+      this.props.formcontrol == 'add'
+     
+    ) {
+      
       const http = Axios.create({
         baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
         headers: {
@@ -298,7 +314,7 @@ class Drawerplate extends React.Component {
 
           }
         ).then((ople) => {
-
+          
           this.setState({
             TicketName: '',
             TicketDesc: '',
@@ -308,23 +324,25 @@ class Drawerplate extends React.Component {
             Typepick: 'K2',
             CheckError: false,
             CheckSuccess: true,
-            loading: true,
+            loading: false,
             Message: 'Open Ticket complete',
             ManHour: 0,
           })
-          this.props.loadcon()
+        this.props.loadcon()
 
         }).catch(error => {
 
           this.setState({
             CheckError: true,
             CheckSuccess: false,
-            Message: error.message
+            Message: error.message,
+            loading: false,
           })
         })
 
       )
-    } else {
+    } 
+    if(this.props.formcontrol === 'edit'){
 
       const http = Axios.create({
         baseURL: 'http://ams.leaderplanet.co.th/ticketApi/api',
@@ -354,6 +372,7 @@ class Drawerplate extends React.Component {
             CheckSuccess: true,
             Message: 'Update Ticket complete',
             ManHour: 0,
+            loading:false,
           })
           this.props.loadcon()
         }).catch(error => {
@@ -371,8 +390,19 @@ class Drawerplate extends React.Component {
 
 
     }
-  }
+  } else {
+    console.log('name',this.state.TicketName)
+    console.log('name',this.state.PriorityID)
+    console.log('name',this.state.Typepick)
 
+    this.setState({
+      CheckError:true,
+      CheckSuccess:false,
+      Message:'Please Fill out Require field',
+      loading:false,
+    })
+  }
+  } 
 
   onChangeSTicketName = e => {
     this.setState({
@@ -473,24 +503,24 @@ class Drawerplate extends React.Component {
             {/* Row 2 */}
             <Row gutter={16} type='flex' justify='center'>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="TicketName" >
+                <Form.Item layout="horizontal" label="TicketName" required >
 
                   <Input type='text' name='TicketName'
-                    disabled={this.props.editStat}
+                    required
+                    readOnly={this.props.editStat}
                     onChange={this.onChangeSTicketName}
                     value={this.state.TicketName}
-
-                  />
+                 />
                 </Form.Item>
 
               </Col>
               <Col span={12}>
-                <Form.Item layout="horizontal" label="Type" >
+                <Form.Item required layout="horizontal" label="Type" >
                   <Select
                     name='typeSel'
                     placeholder="Select Type"
-
-                    disabled={this.props.editStat}
+                    
+                    readOnly={this.props.editStat}
 
                     onChange={this.onChangeSType}
                     value={this.state.Typepick}
@@ -508,7 +538,7 @@ class Drawerplate extends React.Component {
               <Col span={12}>
                 <Form.Item layout="horizontal" label="Ticket No." >
 
-                  <Input type='text' name='TicketNo' disabled
+                  <Input type='text' name='TicketNo' readOnly
 
                     value={this.state.TicketNo}
                   />
@@ -516,7 +546,7 @@ class Drawerplate extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item name='PriorityItem' layout="horizontal" label="Priority" >
+                <Form.Item required name='PriorityItem' layout="horizontal" label="Priority" >
                   <Select
                     name='prioritySel'
                     placeholder="Select Priority"
@@ -539,7 +569,7 @@ class Drawerplate extends React.Component {
                 {this.props.titledraw !== 'Add Ticket' ? <Form.Item name='StatusItem' layout="horizontal" label="Status" >
                   <Select
                     placeholder="Select status"
-
+                    required
                     disabled={this.props.disStat}
                     onChange={this.onChangeSStatus}
                     value={this.state.TicketStatus}
@@ -569,6 +599,8 @@ class Drawerplate extends React.Component {
                       disabled=
                       {this.state.TicketStatus === 'GETREQ'
                         && this.props.formcontrol === 'edit'
+                        && (this.props.authTokens.companyCode === '1000'
+                        || this.props.authTokens.companyCode === '1001')
                         ? this.props.disEst : true}
                       onChange={this.onChangeT}
                       value={this.state.ManHour}
@@ -582,7 +614,7 @@ class Drawerplate extends React.Component {
               <Col span={24}>
                 <Form.Item name='DescriptionItem' layout="horizontal" label="Description" >
                   <TextArea rows={4} type='text' name='Description'
-                    disabled={this.props.titledraw === 'Show Ticket' ? true : false}
+                    readOnly={this.props.titledraw === 'Show Ticket' ? true : false}
                     onChange={this.onChangeSDescription}
                     value={this.state.TicketDesc}
 

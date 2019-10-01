@@ -94,11 +94,50 @@ const Register = props => {
                 }
             })
             .catch(error => {
-                console.log(error.response)
+
 
                 setError(true);
-                setMessage('Register Incorrect data');
+                setStatussubmit(false);
+                if (error.response.data.Email !== undefined) {
+                    setMessage(error.response.data.Email[0])
 
+                } else
+                    if (error.response.data.Password !== undefined) {
+                        setMessage(error.response.data.Password[0])
+
+                    } else
+                        if (error.response.data.ConfirmPassword !== undefined) {
+                            setMessage(error.response.data.ConfirmPassword[0])
+
+                        } else
+                            if (error.response.data.FirstNameTh !== undefined) {
+                                setMessage(error.response.data.FirstNameTh[0])
+
+                            } else
+                                if (error.response.data.LastNameTh !== undefined) {
+                                    setMessage(error.response.data.LastNameTh[0])
+
+                                } else
+                                    if (error.response.data.FirstNameEn !== undefined) {
+                                        setMessage(error.response.data.FirstNameEn[0])
+
+                                    } else
+                                        if (error.response.data.LastNameEn !== undefined) {
+                                            setMessage(error.response.data.LastNameEn[0])
+
+                                        } else
+                                            if (error.response.data.UserType !== undefined) {
+                                                setMessage(error.response.data.UserType[0])
+
+                                            } else
+                                                if (error.response.data.CompanyCode !== undefined) {
+                                                    setMessage(error.response.data.CompanyCode[0])
+
+                                                } else
+                                                    if (error.response.data.TelNo !== undefined) {
+                                                        setMessage(error.response.data.TelNo[0])
+
+                                                    }
 
 
             })

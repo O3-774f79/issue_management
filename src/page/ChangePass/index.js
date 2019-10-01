@@ -52,12 +52,19 @@ const ChagePass = () => {
                 }
             })
             .catch(error => {
-                console.log(error.response)
-                console.log("Status Ja", error.response.status)
-                if (error.response.status === 400 || error.response.status === 401) {
-                    setStatussubmit(false)
-                    setMessage('Password incorrect')
-
+              
+                setStatussubmit(false);
+                if (error.response.data.OldPassword !== undefined) {
+                  setMessage(error.response.data.OldPassword[0])
+             
+                } else
+                if (error.response.data.NewPassword !== undefined) {
+                  setMessage(error.response.data.NewPassword[0])
+              
+                } else 
+                if (error.response.data.ConfirmNewPassword !== undefined) {
+                  setMessage(error.response.data.ConfirmNewPassword[0])
+               
                 }
 
             })

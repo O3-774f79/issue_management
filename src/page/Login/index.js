@@ -95,7 +95,7 @@ const Login = props => {
               style={{ width: '80%', height: '100%', textAlign: 'center' }}
             >
               {props.title}
-              <Form.Item>
+              <Form.Item >
                 <Input
                   required
                   value={userName}
