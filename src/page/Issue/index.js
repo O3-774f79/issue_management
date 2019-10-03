@@ -334,8 +334,11 @@ const Issue = () => {
         var days = Math.floor(str / 1440);
         var htd = (days * 1440)
         var hours = Math.floor((str - htd) / 60);
-
-        return days + ' วัน' + hours + ' ชั่วโมง'
+        if (days < 1) {
+          return hours + ' ชั่วโมง'
+        } else {
+          return days + ' วัน' + hours + ' ชั่วโมง'
+        }
       }
 
     },
@@ -432,22 +435,20 @@ const Issue = () => {
 
   return (
     <React.Fragment>
-      <Row>
-        <Col>
 
-          <ButtonGroup>
+      <div>
+        
             <Button type='primary' onClick={() => onClickAdd()}>
               <Icon type="plus-circle" />
               Add
         </Button>
-            <Button onClick={() => Reload()}>
+        <span>{' '}</span>
+            <Button onClick={() => Reload()} loading={tableload} >
               <Icon type="retweet" />
               Refresh
         </Button>
-          </ButtonGroup>
-        </Col>
-
-      </Row>
+        
+      </div>
       <TableIssue
         columns={column}
         data={data}

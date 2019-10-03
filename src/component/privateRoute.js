@@ -4,13 +4,13 @@ import { useAuth } from '../context/auth';
 import LayoutTemplate from './layout';
 function PrivateRoute({ component: Component, ...rest }) {
   const { authTokens } = useAuth();
-
+  
   return (
     <Route
       {...rest}
       render={props =>
         authTokens
-          ? <LayoutTemplate authTokens={authTokens}><Component {...props} /></LayoutTemplate>
+          ? <LayoutTemplate  authTokens={authTokens}><Component {...props} /></LayoutTemplate>
           :
           <Redirect
             to={{ pathname: '/', state: { referer: props.location } }} />

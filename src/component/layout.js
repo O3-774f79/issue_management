@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Link, Route, Redirect, } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { HashRouter , Link, Route, Redirect, } from 'react-router-dom';
+import { Layout, Menu, Breadcrumb, Tooltip } from 'antd';
 import LogoutTab from './logout/logout';
 import NotificationRight from './notification_right';
 const { Content, Footer } = Layout;
 
-
-
 const LayoutTemplate = props => {
-
-  const [current, setCurrent] = useState(['/issue']);
+  
+  const [current, setCurrent] = useState(['1']);
+  
   return (
+    
     <Layout className="layout">
       <div className="logo" />
       <div
@@ -27,21 +27,21 @@ const LayoutTemplate = props => {
           theme="dark"
           mode="horizontal"
           onClick={e => setCurrent(e.key)}
-          defaultSelectedKeys={current}
-          defaultOpenKeys={current}
+          selectedKeys={current}
           style={{ lineHeight: '64px', width: 300 }}
 
         >
-          <Menu.Item key="/issue">
-            <Link to="/issue">
-              inbox
+          <Menu.Item key="1"  >
+            
+            <Link to="/issue" >
+             <span>Inbox</span> 
           </Link>
           </Menu.Item>
           {props.authTokens.userType === 'ADMIN' ?
-            <Menu.Item key="/register">
-              <Link to="/register">
-                เพิ่มผู้ใช้
-            </Link>
+          <Menu.Item key="2" >
+              <Link to="/register" >
+              <span>Register</span>
+             </Link>
             </Menu.Item>
             : null}
 
@@ -66,6 +66,7 @@ const LayoutTemplate = props => {
         You Can Do It With Leaderplanet
     </Footer>
     </Layout>
+    
   );
 }
 
